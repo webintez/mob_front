@@ -1,0 +1,105 @@
+/* ============================================
+   PRODUCT DETAILS GRID LAYOUT
+   Display Highlights, Seller, Payment, Description side by side
+   ============================================ */
+
+/* Product Details Grid Container - 2 columns for top row, 1 column for description */
+.product-details-grid {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 0 !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+}
+
+/* Detail Row - Each section in grid */
+.product-details-grid > .detail-row {
+    display: grid !important;
+    grid-template-columns: 100px 1fr !important; /* Reduced label width from 140px to 100px */
+    gap: 16px !important;
+    padding: 16px 0 !important;
+    border-bottom: 1px solid #f0f0f0 !important;
+    border-right: 1px solid #f0f0f0 !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+    align-items: start !important; /* Align items to top */
+}
+
+/* Remove right border from right column items (Easy Payment Options) */
+.product-details-grid > .detail-row:nth-child(2) {
+    border-right: none !important;
+}
+
+/* Description - Full width, spans both columns */
+.product-details-grid > .detail-row.description-full-width {
+    grid-column: 1 / -1 !important;
+    border-right: none !important;
+    border-bottom: none !important;
+}
+
+/* Remove bottom border from top row */
+.product-details-grid > .detail-row:not(.description-full-width) {
+    border-bottom: 1px solid #f0f0f0 !important;
+}
+
+/* Detail Label - Consistent styling */
+.product-details-grid .detail-label {
+    font-size: 14px !important;
+    font-weight: 400 !important;
+    color: #878787 !important;
+    font-family: 'Roboto', sans-serif !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100px !important; /* Reduced width */
+    max-width: 100px !important;
+    flex-shrink: 0 !important;
+    line-height: 1.5 !important; /* Match content line-height */
+    align-self: start !important; /* Align to top */
+    padding-top: 0 !important; /* Remove any top padding */
+}
+
+/* Detail Content - Consistent styling */
+.product-details-grid .detail-content {
+    font-size: 14px !important;
+    color: #212121 !important;
+    font-family: 'Roboto', sans-serif !important;
+    line-height: 1.6 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    flex: 1 !important; /* Increased width by taking remaining space */
+    min-width: 0 !important; /* Allow content to shrink if needed */
+    align-self: start !important; /* Align to top */
+    padding-top: 0 !important; /* Remove any top padding */
+}
+
+/* Ensure first line of content aligns with label */
+.product-details-grid .detail-content > *:first-child {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+.product-details-grid .detail-content ul,
+.product-details-grid .detail-content p {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+/* Responsive - Stack on mobile */
+@media (max-width: 768px) {
+    .product-details-grid {
+        grid-template-columns: 1fr !important;
+        grid-template-rows: auto !important;
+    }
+    
+    .product-details-grid > .detail-row {
+        border-right: none !important;
+        border-bottom: 1px solid #f0f0f0 !important;
+    }
+    
+    .product-details-grid > .detail-row:last-child {
+        border-bottom: none !important;
+    }
+}
+

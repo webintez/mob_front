@@ -1,0 +1,450 @@
+/* ============================================
+   BUY TOGETHER SECTION - FLIPKART STYLE FIX
+   Fix the "Frequently bought together" section
+   ============================================ */
+
+/* Section Container */
+.buy-together-section {
+    margin-top: 30px;
+    padding: 24px;
+    background: white;
+    border-top: 1px solid #f0f0f0;
+    border-radius: 0;
+}
+
+/* Title */
+.buy-together-title {
+    font-size: 24px;
+    font-weight: 500;
+    color: #212121;
+    margin: 0 0 24px 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+}
+
+/* Products Container - Horizontal Layout */
+.buy-together-products {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    flex-wrap: nowrap;
+    margin-bottom: 24px;
+    padding: 0;
+    padding-left: 0;
+    padding-right: 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: #c0c0c0 #f0f0f0;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.buy-together-products::-webkit-scrollbar {
+    height: 4px;
+}
+
+.buy-together-products::-webkit-scrollbar-track {
+    background: #f0f0f0;
+}
+
+.buy-together-products::-webkit-scrollbar-thumb {
+    background: #c0c0c0;
+    border-radius: 2px;
+}
+
+/* Product Item - Fixed Width */
+.buy-together-product-item {
+    flex: 0 0 200px;
+    min-width: 200px;
+    max-width: 200px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 16px;
+    background: white;
+    position: relative;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.2s ease;
+}
+
+/* Main Product - Blue Border */
+.buy-together-product-item.main-product {
+    border-color: #2874f0;
+    background: #f8f9ff;
+}
+
+/* Add-on Product - Selectable */
+.buy-together-product-item.addon-product {
+    cursor: pointer;
+    background: white;
+}
+
+.buy-together-product-item.addon-product:hover {
+    border-color: #2874f0;
+    box-shadow: 0 2px 8px rgba(40, 116, 240, 0.15);
+}
+
+.buy-together-product-item.addon-product.selected {
+    border-color: #2874f0;
+    background: #f8f9ff;
+}
+
+/* Checkbox - Top Right Corner */
+.addon-checkbox {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 20px;
+    height: 20px;
+    min-width: 20px;
+    min-height: 20px;
+    border: 2px solid #c0c0c0;
+    border-radius: 4px;
+    background: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    z-index: 10;
+    flex-shrink: 0;
+}
+
+.addon-checkbox:hover {
+    border-color: #2874f0;
+}
+
+.addon-checkbox.checked {
+    background: #2874f0;
+    border-color: #2874f0;
+}
+
+.addon-checkbox.checked::after {
+    content: '✓';
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 1;
+}
+
+/* Image Container */
+.buy-together-product-image-container {
+    width: 100%;
+    height: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+    background: #f8f8f8;
+    border-radius: 4px;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.buy-together-product-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+}
+
+/* Product Name */
+.buy-together-product-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: #212121;
+    margin-bottom: 8px;
+    line-height: 1.4;
+    min-height: 40px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Rating */
+.buy-together-product-rating {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 8px;
+    font-size: 12px;
+}
+
+.buy-together-rating-stars {
+    color: #ffa500;
+}
+
+.buy-together-rating-text {
+    color: #878787;
+}
+
+/* Price */
+.buy-together-product-price {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+    flex-wrap: wrap;
+}
+
+.buy-together-current-price {
+    font-size: 18px;
+    font-weight: 600;
+    color: #212121;
+}
+
+.buy-together-original-price {
+    font-size: 14px;
+    color: #878787;
+    text-decoration: line-through;
+}
+
+.buy-together-discount {
+    font-size: 12px;
+    color: #388e3c;
+    font-weight: 500;
+}
+
+.buy-together-special-price {
+    font-size: 12px;
+    color: #388e3c;
+    font-weight: 500;
+    margin-top: 4px;
+}
+
+/* Plus Sign */
+.buy-together-plus {
+    font-size: 24px;
+    font-weight: 300;
+    color: #878787;
+    align-self: center;
+    margin: 0 10px;
+    flex-shrink: 0;
+    line-height: 1;
+}
+
+/* Total Footer Wrapper */
+.buy-together-total-footer-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 16px 0 0 0;
+    border-top: 1px solid #f0f0f0;
+    margin-top: 24px;
+    flex-wrap: wrap;
+}
+
+/* Total Section */
+.buy-together-total-section {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 12px;
+    padding: 0;
+    margin: 0;
+    flex-wrap: wrap;
+    flex: 1;
+}
+
+.buy-together-total-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 14px;
+    color: #212121;
+    font-family: 'Roboto', sans-serif;
+}
+
+.buy-together-total-label {
+    color: #878787;
+    font-weight: 400;
+}
+
+.buy-together-total-price {
+    color: #212121;
+    font-weight: 500;
+}
+
+.buy-together-total-plus,
+.buy-together-total-equals {
+    font-size: 18px;
+    font-weight: 300;
+    color: #878787;
+    margin: 0 8px;
+}
+
+.buy-together-total-final {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #212121;
+    margin-left: 8px;
+}
+
+.buy-together-total-final-label {
+    color: #212121;
+    font-weight: 600;
+}
+
+.buy-together-total-final-price {
+    color: #212121;
+    font-weight: 600;
+    font-size: 18px;
+}
+
+/* Footer */
+.buy-together-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0;
+    margin: 0;
+    flex-shrink: 0;
+}
+
+/* Add to Cart Button */
+.buy-together-add-cart-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 32px;
+    background: #ff9f00;
+    color: white;
+    border: none;
+    border-radius: 2px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: 'Roboto', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 1px 2px 0 rgba(0,0,0,.2);
+    white-space: nowrap;
+}
+
+.buy-together-add-cart-btn:enabled:hover {
+    background: #ff8c00;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,.2);
+}
+
+.buy-together-add-cart-btn:disabled {
+    background: #878787;
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.buy-together-add-cart-btn i {
+    font-size: 18px;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .buy-together-section {
+        padding: 16px;
+        margin-top: 20px;
+    }
+
+    .buy-together-title {
+        font-size: 20px;
+        margin-bottom: 16px;
+    }
+
+    .buy-together-products {
+        gap: 12px;
+        margin-bottom: 20px;
+    }
+
+    .buy-together-product-item {
+        flex: 0 0 160px;
+        min-width: 160px;
+        max-width: 160px;
+        padding: 12px;
+    }
+
+    .buy-together-product-image-container {
+        height: 120px;
+        margin-bottom: 8px;
+    }
+
+    .buy-together-product-name {
+        font-size: 13px;
+        min-height: 36px;
+    }
+
+    .buy-together-current-price {
+        font-size: 16px;
+    }
+
+    .buy-together-plus {
+        font-size: 20px;
+        margin: 0 6px;
+    }
+
+    .buy-together-total-footer-wrapper {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+        padding-top: 16px;
+    }
+
+    .buy-together-total-section {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        width: 100%;
+    }
+
+    .buy-together-footer {
+        width: 100%;
+        justify-content: stretch;
+    }
+
+    .buy-together-add-cart-btn {
+        width: 100%;
+        justify-content: center;
+        padding: 14px 24px;
+        font-size: 14px;
+    }
+}
+
+/* Small Mobile */
+@media (max-width: 480px) {
+    .buy-together-section {
+        padding: 12px;
+    }
+
+    .buy-together-title {
+        font-size: 18px;
+        margin-bottom: 12px;
+    }
+
+    .buy-together-product-item {
+        flex: 0 0 140px;
+        min-width: 140px;
+        max-width: 140px;
+        padding: 10px;
+    }
+
+    .buy-together-product-image-container {
+        height: 100px;
+    }
+
+    .buy-together-product-name {
+        font-size: 12px;
+        min-height: 32px;
+    }
+
+    .buy-together-current-price {
+        font-size: 15px;
+    }
+}
+

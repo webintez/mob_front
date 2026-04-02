@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobitez - Online Shopping Site for Mobiles, Electronics, Furniture, Grocery, Lifestyle, Books & More. Best
+        Offers!</title>
+    <link rel="stylesheet" href="/css/style.css?v=nocache_1773128050">
+    <link rel="stylesheet" href="/css/categories.css">
+    <link rel="stylesheet" href="/css/homepage-categories.css">
+    <link rel="stylesheet" href="/css/recently-viewed.css">
+    <link rel="stylesheet" href="/css/mobile-responsive.css">
+    <link rel="stylesheet" href="/css/flipkart-mobile-style.css">
+    <!-- CRITICAL: Mobile header consistency - MUST load LAST -->
+    <link rel="stylesheet" href="/css/mobile-header-consistent.css">
+    <!-- CRITICAL: Flipkart-style mobile header - MUST load AFTER mobile-header-consistent -->
+    <link rel="stylesheet" href="/css/flipkart-mobile-header.css?v=nocache_1773128050">
+    <!-- CRITICAL: Remove empty container under search bar - MUST load AFTER all header styles -->
+    <link rel="stylesheet" href="/css/remove-empty-container-search.css">
+    <!-- CRITICAL: Mobile product buttons - side by side -->
+    <link rel="stylesheet" href="/css/mobile-product-buttons.css">
+    <!-- CRITICAL: Flipkart mobile homepage styling - MUST load LAST for mobile -->
+    <link rel="stylesheet" href="/css/flipkart-mobile-homepage.css">
+
+    <!-- DESKTOP FULL WIDTH: Force 100% width on large screens -->
+    <link rel="stylesheet" href="/css/desktop-full-width.css?v=nocache_1773128050">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="/js/auth.js?v=1769841027"></script>
+    <script src="/js/cart-api.js?v=1769841027"></script>
+    <script src="/js/wishlist-api.js?v=1769841027"></script>
+    <script src="/js/search-common.js?v=1769841027"></script>
+    <!-- SEO Footer Styles -->
+    <link rel="stylesheet" href="/css/seo-footer.css">
+    <link rel="stylesheet" href="/css/flipkart-footer.css">
+    <script src="/js/seo-footer.js?v=1769841027" defer></script>
+</head>
+
+<body class="homepage">
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <!-- Logo -->
+            <div class="logo">
+                <img src="/images/mobitez-logo.png" alt="Mobitez" class="logo-image">
+            </div>
+
+            <!-- Search Bar -->
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="Search for products, brands and more"
+                    id="searchInput" autocomplete="off">
+                <button class="search-btn" id="searchBtn">
+                    <i class="fas fa-search"></i>
+                </button>
+                <!-- Search Suggestions Dropdown -->
+                <div class="search-suggestions" id="searchSuggestions" style="display: none;">
+                    <div class="search-suggestions-content" id="searchSuggestionsContent">
+                        <!-- Suggestions will be populated here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side Menu -->
+            <div class="header-right">
+                <div class="header-item login-dropdown-wrapper">
+                    <a href="#" class="login-btn" id="loginBtn">
+                        Login
+                        <i class="fas fa-chevron-down"></i>
+                    </a>
+                    <div class="login-dropdown" id="loginDropdown">
+                        <a href="/login.html" class="dropdown-item">
+                            <i class="fas fa-sign-in-alt"></i>
+                            Login
+                        </a>
+                        <a href="/signup.html" class="dropdown-item">
+                            <i class="fas fa-user-plus"></i>
+                            Sign Up
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="/profile.html" class="dropdown-item">
+                            <i class="fas fa-user"></i>
+                            My Profile
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-star"></i>
+                            Mobitez Plus Zone
+                        </a>
+                        <a href="/orders.html" class="dropdown-item">
+                            <i class="fas fa-shopping-bag"></i>
+                            Orders
+                        </a>
+                        <a href="/wishlist.html" class="dropdown-item">
+                            <i class="fas fa-heart"></i>
+                            Wishlist
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-gift"></i>
+                            Rewards
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-credit-card"></i>
+                            Gift Cards
+                        </a>
+                    </div>
+                </div>
+                <div class="header-item">
+                    <a href="#" class="become-seller">Sell with Us</a>
+                </div>
+                <div class="header-item more-dropdown-wrapper">
+                    <a href="#" class="more-options">
+                        More
+                        <i class="fas fa-chevron-down"></i>
+                    </a>
+                    <div class="more-dropdown">
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-bell"></i>
+                            Notification Preferences
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-headset"></i>
+                            24x7 Customer Care
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-bullhorn"></i>
+                            Advertise
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-download"></i>
+                            Download App
+                        </a>
+                    </div>
+                </div>
+                <div class="header-item">
+                    <a href="/cart.html" class="cart">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-text">Cart</span>
+                        <span class="cart-count">0</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation Menu (Hidden on Homepage) -->
+    <nav class="nav-menu homepage-hidden">
+        <div class="nav-container" id="navContainer">
+            <!-- Categories will be loaded dynamically -->
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Categories Navigation Bar (Homepage - Flipkart Style) -->
+        <section class="homepage-categories-nav">
+            <div class="homepage-categories-container" id="homepageCategoriesNav">
+                <div class="loading-spinner">
+                    <div class="spinner"></div>
+                    <p>Loading categories...</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Banner Carousel -->
+        <section class="banner-section">
+            <div class="banner-container" id="bannerContainer">
+                <div class="banner-loading">Loading banners...</div>
+            </div>
+        </section>
+
+        <!-- Dynamic Sections Container -->
+        <div id="dynamic-sections-container" class="dynamic-sections-container"></div>
+
+        <!-- Featured Products Section -->
+        <section class="featured-section">
+            <div class="container">
+                <h2 class="section-title">Featured Products</h2>
+                <div class="carousel-container" id="featuredProducts">
+                    <div class="loading-spinner">
+                        <div class="spinner"></div>
+                        <p>Loading featured products...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- All Products Section -->
+        <section class="products-section">
+            <div class="container">
+                <h2 class="section-title">All Products</h2>
+                <div class="products-grid" id="allProducts">
+                    <!-- Products will be loaded here via infinite scroll -->
+                </div>
+                <div class="loading-more" id="loadingMore" style="display: none;">
+                    <div class="spinner"></div>
+                    <p>Loading more products...</p>
+                </div>
+                <div class="end-message" id="endMessage" style="display: none;">
+                    <p>You've reached the end! 🎉</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Recently Viewed Section -->
+        <section class="recently-viewed-section" id="recentlyViewedSection" style="display: none;">
+            <div class="container">
+                <h2 class="section-title">Recently Viewed</h2>
+                <div class="recently-viewed-container">
+                    <div class="recently-viewed-scroll" id="recentlyViewedScroll">
+                        <div class="recently-viewed-products" id="recentlyViewedProducts">
+                            <!-- Recently viewed products will be loaded here -->
+                        </div>
+                    </div>
+                    <button class="scroll-btn scroll-btn-right" id="recentlyViewedScrollRight">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer loaded dynamically -->
+    <script src="/js/footer-common.js?v=1769841026"></script>
+    <script src="/js/mobile-menu.js?v=1769841026"></script>
+    <script src="/js/flipkart-mobile-header.js?v=1769841026"></script>
+    <script src="/js/recently-viewed.js?v=1769841026"></script>
+    <script src="/js/app.js?v=1769841026"></script>
+</body>
+
+</html>

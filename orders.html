@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/favicon.png" type="image/png">
+    <title>My Orders - Mobitez</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/orders.css">
+    <link rel="stylesheet" href="/css/nav-menu-visible.css">
+    <link rel="stylesheet" href="/css/flipkart-dropdown.css">
+    <link rel="stylesheet" href="/css/mobile-responsive.css">
+    <link rel="stylesheet" href="/css/flipkart-mobile-style.css">
+    <!-- CRITICAL: Mobile header consistency - MUST load LAST -->
+    <link rel="stylesheet" href="/css/mobile-header-consistent.css">
+    <link rel="stylesheet" href="/css/flipkart-mobile-header.css?v=nocache_1773128051">
+    <link rel="stylesheet" href="/css/mobile-orders-fixes.css">
+
+    <!-- DESKTOP FULL WIDTH: Force 100% width on large screens -->
+    <link rel="stylesheet" href="/css/desktop-full-width.css?v=branding_fix_v11">
+    <link rel="stylesheet" href="/css/secondary-menu.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="/js/auth.js?v=1769841025"></script>
+    <script src="/js/cart-api.js?v=1769841025"></script>
+    <script src="/js/order-api.js?v=1769841025"></script>
+    <script src="/js/search-common.js?v=1769841025"></script>
+    <script src="/js/secondary-menu.js?v=1769841025" defer></script>
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <!-- Logo -->
+            <div class="logo">
+                <a href="/">
+                    <img src="/PNG/logo-yw.png?v=2" alt="Mobitez" class="logo-image">
+                </a>
+            </div>
+
+            <!-- Search Bar -->
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="Search for products, brands and more"
+                    id="searchInput" autocomplete="off">
+                <button class="search-btn" id="searchBtn">
+                    <i class="fas fa-search"></i>
+                </button>
+                <!-- Search Suggestions Dropdown -->
+                <div class="search-suggestions" id="searchSuggestions" style="display: none;">
+                    <div class="search-suggestions-content" id="searchSuggestionsContent">
+                        <!-- Suggestions will be populated here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side Menu -->
+            <div class="header-right">
+                <div class="header-item login-dropdown-wrapper">
+                    <a href="#" class="login-btn" id="loginBtn">
+                        Login
+                        <i class="fas fa-chevron-down"></i>
+                    </a>
+                    <div class="login-dropdown" id="loginDropdown">
+                        <a href="/login.html" class="dropdown-item">
+                            <i class="fas fa-sign-in-alt"></i>
+                            Login
+                        </a>
+                        <a href="/signup.html" class="dropdown-item">
+                            <i class="fas fa-user-plus"></i>
+                            Sign Up
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="/profile.html" class="dropdown-item">
+                            <i class="fas fa-user"></i>
+                            My Profile
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-star"></i>
+                            Mobitez Plus Zone
+                        </a>
+                        <a href="/orders.html" class="dropdown-item">
+                            <i class="fas fa-shopping-bag"></i>
+                            Orders
+                        </a>
+                        <a href="/wishlist.html" class="dropdown-item">
+                            <i class="fas fa-heart"></i>
+                            Wishlist
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-gift"></i>
+                            Rewards
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-credit-card"></i>
+                            Gift Cards
+                        </a>
+                    </div>
+                </div>
+                <div class="header-item">
+                    <a href="#" class="become-seller">Sell with Us</a>
+                </div>
+                <div class="header-item more-dropdown-wrapper">
+                    <a href="#" class="more-options">
+                        More
+                        <i class="fas fa-chevron-down"></i>
+                    </a>
+                    <div class="more-dropdown">
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-bell"></i>
+                            Notification Preferences
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-headset"></i>
+                            24x7 Customer Care
+                        </a>
+
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-download"></i>
+                            Download App
+                        </a>
+                    </div>
+                </div>
+                <div class="header-item">
+                    <a href="/cart.html" class="cart">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-text">Cart</span>
+                        <span class="cart-count">0</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation Menu -->
+    <nav class="nav-menu">
+        <div class="nav-container" id="navContainer">
+            <!-- Categories will be loaded dynamically -->
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content" style="padding-top: 112px;">
+        <div class="container orders-container">
+            <!-- Mobile Header -->
+            <div class="mobile-orders-header">
+                <a href="/profile.html" class="mobile-orders-back">
+                    <i class="fas fa-arrow-left"></i>
+                </a>
+                <span class="mobile-orders-title">My Orders</span>
+            </div>
+
+            <!-- Breadcrumbs -->
+            <div class="breadcrumbs desktop-only">
+                <div class="container">
+                    <a href="/">Home</a>
+                    <i class="fas fa-chevron-right breadcrumb-icon"></i>
+                    <a href="/profile.html">My Account</a>
+                    <i class="fas fa-chevron-right breadcrumb-icon"></i>
+                    <span>My Orders</span>
+                </div>
+            </div>
+
+            <!-- Orders Content -->
+            <div class="orders-content-wrapper">
+                <!-- Left: Filters -->
+                <div class="orders-filters-sidebar" id="ordersFilterSidebar">
+                    <!-- Mobile Filter Header (Back Button) -->
+                    <div class="mobile-filter-header">
+                        <button class="mobile-filter-back" id="closeOrdersFilterBtn">
+                            <i class="fas fa-arrow-left"></i> Back
+                        </button>
+                        <span class="mobile-filter-title">Filters</span>
+                    </div>
+
+                    <div class="filters-card">
+                        <h3 class="filters-title desktop-only">Filters</h3>
+
+                        <!-- Order Status Filter -->
+                        <div class="filter-section">
+                            <div class="filter-section-title">Order Status</div>
+                            <div class="filter-options">
+                                <label class="filter-option-label">
+                                    <input type="checkbox" class="filter-checkbox" data-filter="status"
+                                        data-value="on_the_way">
+                                    <span class="filter-option-text">On the way</span>
+                                </label>
+                                <label class="filter-option-label">
+                                    <input type="checkbox" class="filter-checkbox" data-filter="status"
+                                        data-value="delivered">
+                                    <span class="filter-option-text">Delivered</span>
+                                </label>
+                                <label class="filter-option-label">
+                                    <input type="checkbox" class="filter-checkbox" data-filter="status"
+                                        data-value="cancelled">
+                                    <span class="filter-option-text">Cancelled</span>
+                                </label>
+                                <label class="filter-option-label">
+                                    <input type="checkbox" class="filter-checkbox" data-filter="status"
+                                        data-value="returned">
+                                    <span class="filter-option-text">Returned</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Order Time Filter -->
+                        <div class="filter-section">
+                            <div class="filter-section-title">Order Time</div>
+                            <div class="filter-options">
+                                <label class="filter-option-label">
+                                    <input type="checkbox" class="filter-checkbox" data-filter="time"
+                                        data-value="last_30_days">
+                                    <span class="filter-option-text">Last 30 days</span>
+                                </label>
+                                <label class="filter-option-label">
+                                    <input type="checkbox" class="filter-checkbox" data-filter="time" data-value="2024">
+                                    <span class="filter-option-text">2024</span>
+                                </label>
+                                <label class="filter-option-label">
+                                    <input type="checkbox" class="filter-checkbox" data-filter="time" data-value="2023">
+                                    <span class="filter-option-text">2023</span>
+                                </label>
+                                <label class="filter-option-label">
+                                    <input type="checkbox" class="filter-checkbox" data-filter="time"
+                                        data-value="older">
+                                    <span class="filter-option-text">Older</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Orders List -->
+                <div class="orders-list-section">
+                    <!-- Search Orders -->
+                    <div class="search-orders-section">
+                        <div class="search-orders-box">
+                            <div class="search-input-wrapper">
+                                <i class="fas fa-search search-icon"></i>
+                                <input type="text" class="search-orders-input" placeholder="Search your order here"
+                                    id="searchOrdersInput">
+                            </div>
+                            <button class="btn-orders-filter" id="mobileOrdersFilterBtn">
+                                <i class="fas fa-filter"></i> Filters
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Orders List -->
+                    <div class="orders-list" id="ordersList">
+                        <!-- Orders will be loaded dynamically -->
+                        <div class="loading-spinner">
+                            <div class="spinner"></div>
+                            <p>Loading orders...</p>
+                        </div>
+                    </div>
+
+                    <!-- Empty State -->
+                    <div class="empty-orders" id="emptyOrders" style="display: none;">
+                        <div class="empty-orders-icon">
+                            <i class="fas fa-shopping-bag"></i>
+                        </div>
+                        <h2>No orders found</h2>
+                        <p>You haven't placed any orders yet.</p>
+                        <a href="/" class="btn-primary">Start Shopping</a>
+                    </div>
+
+                    <!-- No More Results -->
+                    <div class="no-more-results" id="noMoreResults" style="display: none;">
+                        No more results to display
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="/js/orders.js?v=1769841025"></script>
+    <script src="/js/category-nav-common.js?v=1769841025"></script>
+    <script src="/js/mobile-menu.js?v=1769841025"></script>
+    <script src="/js/flipkart-mobile-header.js?v=1769841025"></script>
+
+    <script>
+        // Setup login dropdown
+        function setupLoginDropdown() {
+            const loginBtn = document.getElementById('loginBtn');
+            const loginDropdown = document.getElementById('loginDropdown');
+            const loginWrapper = loginBtn?.closest('.login-dropdown-wrapper');
+
+            if (!loginBtn || !loginDropdown || !loginWrapper) return;
+
+            loginBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                loginWrapper.classList.toggle('active');
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!loginWrapper.contains(e.target)) {
+                    loginWrapper.classList.remove('active');
+                }
+            });
+        }
+
+        // Setup More Dropdown
+        function setupMoreDropdown() {
+            const moreOptions = document.querySelector('.more-options');
+            const moreDropdown = document.querySelector('.more-dropdown');
+            const moreWrapper = document.querySelector('.more-dropdown-wrapper');
+
+            if (moreOptions && moreDropdown && moreWrapper) {
+                // Function to position dropdown
+                function positionMoreDropdown() {
+                    const btnRect = moreOptions.getBoundingClientRect();
+                    moreDropdown.style.top = (btnRect.bottom + 8) + 'px';
+                    moreDropdown.style.right = (window.innerWidth - btnRect.right) + 'px';
+                }
+
+                // Position dropdown on hover
+                moreWrapper.addEventListener('mouseenter', () => {
+                    positionMoreDropdown();
+                });
+
+                // Reposition on scroll/resize when visible
+                window.addEventListener('scroll', () => {
+                    if (moreDropdown.style.opacity === '1' || moreDropdown.style.visibility === 'visible') {
+                        positionMoreDropdown();
+                    }
+                });
+
+                window.addEventListener('resize', () => {
+                    if (moreDropdown.style.opacity === '1' || moreDropdown.style.visibility === 'visible') {
+                        positionMoreDropdown();
+                    }
+                });
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            setupLoginDropdown();
+            setupMoreDropdown();
+
+            // Mobile Filter Logic for Orders Page
+            const mobileOrdersFilterBtn = document.getElementById('mobileOrdersFilterBtn');
+            const closeOrdersFilterBtn = document.getElementById('closeOrdersFilterBtn');
+            const ordersFilterSidebar = document.getElementById('ordersFilterSidebar');
+
+            if (mobileOrdersFilterBtn && ordersFilterSidebar) {
+                mobileOrdersFilterBtn.addEventListener('click', () => {
+                    ordersFilterSidebar.classList.add('active');
+                    document.body.style.overflow = 'hidden'; // Prevent background scrolling
+                });
+            }
+
+            if (closeOrdersFilterBtn && ordersFilterSidebar) {
+                closeOrdersFilterBtn.addEventListener('click', () => {
+                    ordersFilterSidebar.classList.remove('active');
+                    document.body.style.overflow = '';
+                });
+            }
+        });
+    </script>
+    <!-- Footer loaded dynamically -->
+    <script src="/js/footer-common.js?v=1769841025"></script>
+
+    <!-- Mobile Bottom Navigation -->
+    <div class="mobile-bottom-nav">
+        <a href="/" class="nav-item">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </a>
+        <a href="/all-categories.html" class="nav-item">
+            <i class="fas fa-th-large"></i>
+            <span>Categories</span>
+        </a>
+        <a href="/profile.html" class="nav-item active">
+            <i class="fas fa-user-circle"></i>
+            <span>Account</span>
+        </a>
+        <a href="/cart.html" class="nav-item">
+            <i class="fas fa-shopping-cart"></i>
+            <span>Cart</span>
+        </a>
+    </div>
+</body>
+
+</html>

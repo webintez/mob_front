@@ -1,0 +1,315 @@
+/* ============================================
+   FINAL STICKY FIX - Guaranteed to work
+   ============================================ */
+
+/* CRITICAL: Ensure all parent containers allow sticky */
+html, body {
+    overflow-x: hidden;
+    overflow-y: auto;
+    height: 100%;
+}
+
+/* NUCLEAR: Override ANY overflow-y: auto on product page containers */
+/* This MUST come after all other CSS rules */
+/* Use MAXIMUM specificity - every possible selector combination */
+/* CRITICAL: Set overflow-y FIRST before overflow shorthand to prevent browser from computing "hidden auto" */
+html body main.product-main,
+html body .product-main,
+body main.product-main,
+body .product-main,
+main.product-main,
+main.product-main.container,
+.product-main,
+.product-main.container {
+    overflow-y: visible !important; /* SET FIRST - prevents browser from computing "hidden auto" */
+    overflow-x: hidden !important;
+    overflow: visible !important; /* Set AFTER individual properties */
+    position: relative !important;
+    transform: none !important;
+    will-change: auto !important;
+    height: auto !important;
+    max-height: none !important;
+}
+
+html body main.product-main > .container,
+html body .product-main > .container,
+html body main.product-main .container,
+html body .product-main .container,
+body main.product-main > .container,
+body .product-main > .container,
+body main.product-main .container,
+body .product-main .container,
+main.product-main > .container,
+main.product-main .container,
+.product-main > .container,
+.product-main .container,
+main.product-main > div.container,
+.product-main > div.container,
+main.product-main div.container,
+.product-main div.container,
+div.product-main > div.container,
+div.product-main div.container,
+html body .product-main .container,
+body .product-main .container,
+.product-main .container,
+.container {
+    overflow-y: visible !important; /* SET FIRST - prevents browser from computing "hidden auto" */
+    overflow-x: hidden !important;
+    overflow: visible !important; /* Set AFTER individual properties */
+    position: relative !important;
+    transform: none !important;
+    will-change: auto !important;
+    height: auto !important;
+    max-height: none !important;
+}
+
+html body main.product-main .product-container,
+html body .product-main .product-container,
+html body .product-container,
+body main.product-main .product-container,
+body .product-main .product-container,
+body .product-container,
+main.product-main .product-container,
+.product-main .product-container,
+.product-container,
+div.product-container {
+    overflow-y: visible !important; /* SET FIRST - prevents browser from computing "hidden auto" */
+    overflow-x: hidden !important;
+    overflow: visible !important; /* Set AFTER individual properties */
+    position: relative !important;
+    transform: none !important;
+    will-change: auto !important;
+    height: auto !important;
+    max-height: none !important;
+}
+
+html body main.product-main .product-container #productContainer,
+html body .product-main .product-container #productContainer,
+html body .product-container #productContainer,
+body main.product-main .product-container #productContainer,
+body .product-main .product-container #productContainer,
+body .product-container #productContainer,
+main.product-main .product-container #productContainer,
+.product-main .product-container #productContainer,
+.product-container #productContainer,
+#productContainer,
+div#productContainer {
+    overflow-y: visible !important; /* SET FIRST - prevents browser from computing "hidden auto" */
+    overflow-x: hidden !important;
+    overflow: visible !important; /* Set AFTER individual properties */
+    position: relative !important;
+    transform: none !important;
+    will-change: auto !important;
+    height: auto !important;
+    max-height: none !important;
+}
+
+html body main.product-main .product-container #productContainer #productContent,
+html body .product-main .product-container #productContainer #productContent,
+html body .product-container #productContainer #productContent,
+html body .product-container #productContent,
+html body #productContainer #productContent,
+body main.product-main .product-container #productContainer #productContent,
+body .product-main .product-container #productContainer #productContent,
+body .product-container #productContainer #productContent,
+body .product-container #productContent,
+body #productContainer #productContent,
+main.product-main .product-container #productContainer #productContent,
+.product-main .product-container #productContainer #productContent,
+.product-container #productContainer #productContent,
+.product-container #productContent,
+#productContainer #productContent,
+#productContent,
+div#productContent,
+.product-content,
+div.product-content {
+    display: grid !important;
+    grid-template-columns: 37.3% 62.7% !important;
+    gap: 0 !important;
+    align-items: start !important;
+    overflow-y: visible !important; /* SET FIRST - prevents browser from computing "hidden auto" */
+    overflow-x: hidden !important;
+    overflow: visible !important; /* Set AFTER individual properties */
+    position: relative !important;
+    transform: none !important;
+    will-change: auto !important;
+    min-height: calc(100vh - 112px) !important;
+    height: auto !important;
+    max-height: none !important;
+}
+
+/* Product page main container - CRITICAL: Must have visible overflow */
+/* NUCLEAR: Override everything with maximum specificity */
+main.product-main,
+main.product-main.container,
+.product-main,
+.product-main.container,
+body main.product-main,
+body .product-main,
+html body main.product-main,
+html body .product-main {
+    overflow: visible !important;
+    overflow-x: hidden !important;
+    overflow-y: visible !important;
+    position: relative !important;
+    min-height: 100vh;
+    height: auto !important;
+    max-height: none !important;
+    transform: none !important;
+    will-change: auto !important;
+}
+
+/* All container divs - NO overflow restrictions - CRITICAL FIX */
+/* Use maximum specificity to override everything - MUST be last in cascade */
+main.product-main > .container,
+main.product-main .container,
+.product-main > .container,
+.product-main .container,
+.product-container,
+#productContainer,
+div.product-container,
+div#productContainer,
+.product-main div.container,
+main.product-main div.container,
+main.product-main div.product-container,
+main.product-main div#productContainer {
+    overflow: visible !important;
+    overflow-x: hidden !important;
+    overflow-y: visible !important;
+    position: relative !important;
+    transform: none !important;
+    will-change: auto !important;
+    height: auto !important;
+    max-height: none !important;
+}
+
+/* CRITICAL: Override any computed overflow values - MAXIMUM SPECIFICITY */
+main.product-main,
+main.product-main > div.container,
+main.product-main > div.container > div.product-container,
+main.product-main > div.container > div.product-container > div#productContent,
+main.product-main div.container,
+main.product-main div.product-container,
+main.product-main div#productContainer,
+main.product-main div#productContent,
+.product-main,
+.product-main > .container,
+.product-main .container,
+.product-container,
+#productContainer,
+#productContent,
+.product-content {
+    overflow: visible !important;
+    overflow-y: visible !important;
+    overflow-x: hidden !important;
+    height: auto !important;
+    max-height: none !important;
+}
+
+/* Product content grid - CRITICAL for sticky */
+#productContent,
+.product-content {
+    display: grid !important;
+    grid-template-columns: 37.3% 62.7% !important;
+    gap: 0 !important;
+    align-items: start !important;
+    overflow: visible !important;
+    overflow-x: hidden !important;
+    overflow-y: visible !important;
+    position: relative !important;
+    transform: none !important;
+    will-change: auto !important;
+    min-height: calc(100vh - 112px) !important;
+}
+
+/* STICKY LEFT SIDEBAR - This MUST work */
+.product-images-wrapper {
+    position: -webkit-sticky !important;
+    position: sticky !important;
+    top: 112px !important; /* Header (64px) + Breadcrumbs (48px) */
+    align-self: start !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    overflow: visible !important;
+    box-sizing: border-box !important;
+    z-index: 10 !important;
+    height: fit-content !important;
+    max-height: calc(100vh - 112px) !important;
+    background: white !important;
+    transform: none !important;
+    will-change: auto !important;
+    padding: 0 !important;
+    border-right: 1px solid #f0f0f0 !important;
+    margin: 0 !important;
+}
+
+/* Product images container */
+.product-images {
+    padding: 24px !important;
+    margin: 0 !important;
+    background: white !important;
+}
+
+/* Product actions (buttons) */
+.product-actions-left {
+    padding: 0 24px 24px 24px !important;
+    margin: 0 !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+/* Right column - scrolls normally */
+.product-right-column {
+    position: relative !important;
+    overflow: visible !important;
+    padding-left: 24px !important;
+    gap: 0 !important;
+}
+
+/* Override any conflicting styles */
+.product-info {
+    border-bottom: 1px solid #f0f0f0 !important;
+}
+
+/* Media queries - maintain sticky on larger screens */
+@media (min-width: 769px) {
+    .product-images-wrapper {
+        position: -webkit-sticky !important;
+        position: sticky !important;
+        top: 112px !important;
+    }
+    
+    .product-content,
+    #productContent {
+        grid-template-columns: 37.3% 62.7% !important;
+    }
+}
+
+/* Only break sticky on mobile */
+@media (max-width: 768px) {
+    .product-images-wrapper {
+        position: relative !important;
+        top: 0 !important;
+    }
+    
+    .product-content,
+    #productContent {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+/* FINAL OVERRIDE - Maximum specificity for sticky wrapper */
+html body main.product-main .product-container #productContainer #productContent .product-images-wrapper,
+html body .product-main .product-container #productContainer #productContent .product-images-wrapper,
+html body #productContent .product-images-wrapper,
+body main.product-main #productContent .product-images-wrapper,
+.product-content .product-images-wrapper,
+.product-images-wrapper {
+    position: -webkit-sticky !important;
+    position: sticky !important;
+    top: 112px !important;
+    align-self: start !important;
+    max-height: calc(100vh - 112px) !important;
+    will-change: auto !important;
+    transform: none !important;
+}

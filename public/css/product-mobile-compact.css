@@ -1,0 +1,465 @@
+/* ==========================================================================
+   PRODUCT PAGE MOBILE COMPACT LAYOUT - Flipkart Style
+   Removes all unnecessary gaps and creates a dense, compact layout
+   MUST load AFTER all other product CSS files
+   ========================================================================== */
+
+@media (max-width: 768px) {
+
+    /* ==========================================================================
+       PRODUCT INFO SECTION - Compact Spacing
+       ========================================================================== */
+
+    .product-info {
+        padding: 8px 12px !important;
+        margin-bottom: 0 !important;
+    }
+
+    /* Product Title - Minimal margin */
+    .product-title {
+        margin-bottom: 6px !important;
+        padding-bottom: 0 !important;
+    }
+
+    /* Rating - Compact */
+    .product-rating {
+        margin-top: 0 !important;
+        margin-bottom: 6px !important;
+        padding: 0 !important;
+    }
+
+    /* Price Section - Compact */
+    .product-price-section {
+        margin-bottom: 6px !important;
+        padding: 0 !important;
+    }
+
+    .price-current {
+        margin-bottom: 4px !important;
+    }
+
+    /* Protect Promise - Compact */
+    .protect-promise {
+        margin-bottom: 8px !important;
+        padding: 4px 0 !important;
+    }
+
+    /* Delivery Info - Compact */
+    .product-delivery {
+        margin-bottom: 8px !important;
+        padding: 6px 0 !important;
+    }
+
+    /* Available Offers - Compact */
+    .available-offers {
+        margin-bottom: 8px !important;
+        padding: 8px 0 !important;
+    }
+
+    .offers-title {
+        margin-bottom: 6px !important;
+        font-size: 14px !important;
+    }
+
+    .offers-list {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .offer-item {
+        margin-bottom: 4px !important;
+        padding: 4px 0 !important;
+    }
+
+    .offer-item:last-child {
+        margin-bottom: 0 !important;
+    }
+
+    /* Purchase Options - Compact */
+    .purchase-options {
+        margin-bottom: 0 !important;
+        padding: 0 !important;
+    }
+
+    .purchase-option {
+        margin-bottom: 6px !important;
+        padding: 8px 12px !important;
+    }
+
+    .purchase-option:last-child {
+        margin-bottom: 0 !important;
+    }
+
+    /* ==========================================================================
+       PRODUCT DETAILS SECTION - Compact Spacing
+       ========================================================================== */
+
+    .product-details-section {
+        padding: 8px 12px !important;
+        margin-bottom: 0 !important;
+    }
+
+    /* Detail Rows - Minimal spacing */
+    .detail-row {
+        margin-bottom: 12px !important;
+        padding: 8px 0 !important;
+        border-bottom: 1px solid #f0f0f0 !important;
+    }
+
+    .detail-row:last-child {
+        margin-bottom: 0 !important;
+        border-bottom: none !important;
+    }
+
+    .detail-label {
+        margin-bottom: 6px !important;
+        font-size: 13px !important;
+    }
+
+    .detail-content {
+        padding: 0 !important;
+    }
+
+    /* Warranty Row - Compact */
+    .warranty-row {
+        padding: 8px 12px !important;
+        margin-bottom: 8px !important;
+    }
+
+    .warranty-info {
+        padding: 0 !important;
+    }
+
+    /* ==========================================================================
+       VARIATIONS SECTION - Compact Spacing
+       ========================================================================== */
+
+    .variations-details-section {
+        margin-bottom: 12px !important;
+        padding: 0 !important;
+    }
+
+    .variation-row-top,
+    .variation-row-bottom {
+        margin-bottom: 8px !important;
+    }
+
+    .variation-row-top:last-child,
+    .variation-row-bottom:last-child {
+        margin-bottom: 0 !important;
+    }
+
+    .variation-item {
+        margin-bottom: 8px !important;
+    }
+
+    .variation-item:last-child {
+        margin-bottom: 0 !important;
+    }
+
+    .variation-label-details {
+        margin-bottom: 6px !important;
+        font-size: 13px !important;
+    }
+
+    .variation-options-details {
+        gap: 6px !important;
+    }
+
+    /* ==========================================================================
+       DELIVERY SECTION - Compact Spacing
+       ========================================================================== */
+
+    .delivery-input-group {
+        margin-bottom: 6px !important;
+    }
+
+    .delivery-info {
+        padding: 6px 0 !important;
+    }
+
+    .delivery-date-info,
+    .delivery-time,
+    .installation-info {
+        margin-bottom: 4px !important;
+    }
+
+    /* ==========================================================================
+       HIGHLIGHTS & PAYMENT - Compact Spacing
+       ========================================================================== */
+
+    .product-details-grid {
+        gap: 12px !important;
+    }
+
+    .highlights-list {
+        margin: 0 !important;
+        padding-left: 16px !important;
+    }
+
+    .highlights-list li {
+        margin-bottom: 4px !important;
+        padding: 2px 0 !important;
+    }
+
+    .highlights-list li:last-child {
+        margin-bottom: 0 !important;
+    }
+
+    .payment-options-list {
+        margin: 0 !important;
+        padding-left: 16px !important;
+    }
+
+    .payment-options-list li {
+        margin-bottom: 4px !important;
+        padding: 2px 0 !important;
+    }
+
+    .payment-options-list li:last-child {
+        margin-bottom: 0 !important;
+    }
+
+    /* Description - Compact */
+    .description-full-width {
+        padding: 8px 0 !important;
+    }
+
+    .product-description-text {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    /* ==========================================================================
+       PRODUCT DESCRIPTION SECTION - Compact Spacing
+       ========================================================================== */
+
+    .product-description-section {
+        padding: 12px !important;
+        margin-bottom: 8px !important;
+        border-top: 8px solid #f1f3f6 !important;
+    }
+
+    .product-description-title {
+        margin-bottom: 8px !important;
+        font-size: 16px !important;
+    }
+
+    .product-description-content {
+        padding: 0 !important;
+    }
+
+    .product-description-feature-block {
+        margin-bottom: 16px !important;
+    }
+
+    .product-description-feature-block:last-child {
+        margin-bottom: 0 !important;
+    }
+
+    /* ==========================================================================
+       SPECIFICATIONS SECTION - Compact Spacing
+       ========================================================================== */
+
+    .specifications-detail-section {
+        padding: 12px !important;
+        margin-bottom: 8px !important;
+        border-top: 8px solid #f1f3f6 !important;
+    }
+
+    .specifications-header {
+        margin-bottom: 8px !important;
+    }
+
+    .specifications-title {
+        margin-bottom: 0 !important;
+        font-size: 16px !important;
+    }
+
+    .specifications-subsection {
+        margin-bottom: 12px !important;
+    }
+
+    .specifications-subsection:last-child {
+        margin-bottom: 0 !important;
+    }
+
+    .specifications-subtitle {
+        margin-bottom: 6px !important;
+        font-size: 14px !important;
+    }
+
+    .specification-row {
+        padding: 6px 0 !important;
+        margin-bottom: 0 !important;
+    }
+
+    .specification-label,
+    .specification-value {
+        padding: 4px 0 !important;
+    }
+
+    /* ==========================================================================
+       FREQUENTLY BOUGHT TOGETHER - Compact Spacing
+       ========================================================================== */
+
+    .buy-together-section {
+        padding: 12px !important;
+        margin-bottom: 0 !important;
+        border-top: 8px solid #f1f3f6 !important;
+    }
+
+    .buy-together-header {
+        margin-bottom: 8px !important;
+    }
+
+    .buy-together-title {
+        margin-bottom: 0 !important;
+        font-size: 16px !important;
+    }
+
+    .buy-together-product-item {
+        padding: 10px !important;
+        margin-bottom: 0 !important;
+    }
+
+    .buy-together-footer {
+        padding-top: 12px !important;
+    }
+
+    /* ==========================================================================
+       RATINGS & REVIEWS SECTION - Compact Spacing
+       ========================================================================== */
+
+    .ratings-reviews-section {
+        padding: 12px !important;
+        margin-bottom: 8px !important;
+        border-top: 8px solid #f1f3f6 !important;
+    }
+
+    .ratings-reviews-header {
+        margin-bottom: 12px !important;
+    }
+
+    .ratings-reviews-title {
+        margin-bottom: 0 !important;
+        font-size: 16px !important;
+    }
+
+    .ratings-reviews-content {
+        margin-bottom: 12px !important;
+    }
+
+    .overall-rating-summary {
+        margin-bottom: 12px !important;
+    }
+
+    .star-rating-breakdown {
+        margin-bottom: 12px !important;
+    }
+
+    .star-rating-row {
+        margin-bottom: 4px !important;
+        padding: 2px 0 !important;
+    }
+
+    .category-ratings {
+        gap: 8px !important;
+    }
+
+    .review-images-gallery {
+        margin-bottom: 12px !important;
+    }
+
+    .reviews-list {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .review-item {
+        margin-bottom: 12px !important;
+        padding-bottom: 12px !important;
+        border-bottom: 1px solid #f0f0f0 !important;
+    }
+
+    .review-item:last-child {
+        margin-bottom: 0 !important;
+        border-bottom: none !important;
+    }
+
+    .review-rating {
+        margin-bottom: 6px !important;
+    }
+
+    .review-body {
+        margin-bottom: 6px !important;
+    }
+
+    .reviewer-info {
+        margin-top: 4px !important;
+    }
+
+    /* ==========================================================================
+       QUESTIONS & ANSWERS SECTION - Compact Spacing
+       ========================================================================== */
+
+    .questions-answers-section {
+        padding: 12px !important;
+        margin-bottom: 0 !important;
+        border-top: 8px solid #f1f3f6 !important;
+    }
+
+    .qa-header {
+        margin-bottom: 12px !important;
+    }
+
+    .qa-title {
+        margin-bottom: 0 !important;
+        font-size: 16px !important;
+    }
+
+    .qa-list {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .qa-item {
+        margin-bottom: 12px !important;
+        padding-bottom: 12px !important;
+        border-bottom: 1px solid #f0f0f0 !important;
+    }
+
+    .qa-item:last-child {
+        margin-bottom: 0 !important;
+        border-bottom: none !important;
+    }
+
+    .qa-question {
+        margin-bottom: 6px !important;
+    }
+
+    .qa-answer {
+        margin-bottom: 4px !important;
+    }
+
+    .qa-footer {
+        margin-top: 12px !important;
+        padding-top: 12px !important;
+    }
+
+    .qa-trust-badge {
+        margin-top: 12px !important;
+        padding: 8px !important;
+    }
+
+    /* ==========================================================================
+       BREADCRUMBS - Compact
+       ========================================================================== */
+
+    .breadcrumbs-inline,
+    .product-header-row {
+        margin-bottom: 8px !important;
+        padding: 0 !important;
+    }
+
+}

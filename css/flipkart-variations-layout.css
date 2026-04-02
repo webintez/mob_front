@@ -1,0 +1,198 @@
+/* ============================================
+   FLIPKART VARIATIONS LAYOUT
+   Match Flipkart's exact layout structure
+   ============================================ */
+
+/* Variations Details Section - Grid Layout */
+.variations-details-section {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 16px !important;
+    margin-bottom: 0 !important;
+    width: 100% !important;
+}
+
+/* Top Row: Color (left) and Storage (right) side by side */
+.variation-row-top {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 24px !important;
+    width: 100% !important;
+    margin-bottom: 16px !important;
+    align-items: start !important;
+}
+
+/* Ensure variation items in top row don't take full width */
+.variation-row-top .variation-item {
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+/* Bottom Row: RAM below Color (left side) */
+.variation-row-bottom {
+    display: flex !important;
+    flex-direction: row !important;
+    width: 100% !important;
+    margin-bottom: 0 !important;
+    align-items: start !important;
+}
+
+/* RAM item should only take left half (matching Color position) */
+.variation-row-bottom .variation-item {
+    width: 100% !important;
+    max-width: calc(50% - 12px) !important; /* Half width minus half gap */
+}
+
+/* Variation Item - Updated for Flipkart layout (horizontal) */
+.variation-item {
+    display: grid !important;
+    grid-template-columns: 85px 1fr !important;
+    gap: 16px !important;
+    align-items: center !important;
+    width: 100% !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+}
+
+/* Variation Label - Flipkart Style (beside options) */
+.variation-label-details {
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    color: #878787 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    min-width: 80px !important;
+    flex-shrink: 0 !important;
+    font-family: 'Roboto', sans-serif !important;
+    line-height: 1.5 !important;
+}
+
+/* Variation Options Container */
+.variation-options-details {
+    display: flex !important;
+    gap: 12px !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+    flex: 1 !important;
+}
+
+/* RAM options - always side by side, no wrapping */
+.variation-row-bottom .variation-options-details {
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    overflow-y: visible !important;
+}
+
+/* Detail Content - Flex container for label + options */
+.variation-item .detail-content {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: flex-start !important;
+    gap: 16px !important;
+    flex: 1 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Color Options - Product Images (Flipkart Style) */
+.color-option-item {
+    width: 60px !important;
+    height: 60px !important;
+    border: 2px solid #e0e0e0 !important;
+    border-radius: 4px !important;
+    overflow: hidden !important;
+    cursor: pointer !important;
+    transition: all 0.3s !important;
+    flex-shrink: 0 !important;
+    background: white !important;
+    position: relative !important;
+}
+
+.color-option-item:hover {
+    border-color: #0a4409 !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+}
+
+.color-option-item.selected {
+    border-color: #0a4409 !important;
+    border-width: 2px !important;
+    box-shadow: 0 0 0 2px rgba(40, 116, 240, 0.1) !important;
+}
+
+.color-option-item img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    display: block !important;
+}
+
+/* Color Swatch - Fallback for non-image colors */
+.color-swatch-detail {
+    width: 40px !important;
+    height: 40px !important;
+    border-radius: 4px !important;
+    border: 2px solid #e0e0e0 !important;
+    cursor: pointer !important;
+    transition: all 0.3s !important;
+    flex-shrink: 0 !important;
+}
+
+.color-swatch-detail:hover {
+    border-color: #0a4409 !important;
+}
+
+.color-swatch-detail.selected {
+    border-color: #0a4409 !important;
+    border-width: 2px !important;
+    box-shadow: 0 0 0 2px rgba(40, 116, 240, 0.1) !important;
+}
+
+/* Variation Option Buttons (Storage, RAM) - Flipkart Style */
+.variation-option-detail {
+    padding: 8px 16px !important;
+    border: 1px solid #c2c2c2 !important;
+    border-radius: 2px !important;
+    background: white !important;
+    cursor: pointer !important;
+    font-size: 14px !important;
+    transition: all 0.3s !important;
+    min-width: 70px !important;
+    text-align: center !important;
+    color: #212121 !important;
+    font-weight: 500 !important;
+    font-family: 'Roboto', sans-serif !important;
+    position: relative !important;
+}
+
+.variation-option-detail:hover {
+    border-color: #0a4409 !important;
+    color: #0a4409 !important;
+}
+
+.variation-option-detail.selected {
+    border-color: #0a4409 !important;
+    background-color: #e8f5e9 !important;
+    color: #0a4409 !important;
+    font-weight: 500 !important;
+    box-shadow: 0 0 0 1px #0a4409 !important;
+}
+
+/* Responsive - Mobile */
+@media (max-width: 768px) {
+    .variation-row-top {
+        grid-template-columns: 1fr !important;
+        gap: 16px !important;
+    }
+    
+    .color-option-item {
+        width: 50px !important;
+        height: 50px !important;
+    }
+    
+    .variation-option-detail {
+        padding: 6px 12px !important;
+        font-size: 13px !important;
+        min-width: 60px !important;
+    }
+}
+

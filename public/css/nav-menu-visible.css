@@ -1,0 +1,90 @@
+/* ============================================
+   NAV MENU VISIBILITY FIX
+   Ensure category navigation bar is always visible
+   ============================================ */
+
+/* Force nav-menu to be visible on all pages except homepage */
+.nav-menu:not(.homepage-hidden) {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    height: auto !important;
+    min-height: 56px !important;
+    overflow: visible !important;
+}
+
+/* Ensure nav-container is visible and has content */
+.nav-menu:not(.homepage-hidden) .nav-container {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    min-height: 56px !important;
+    padding: 0 40px !important;
+}
+
+/* Ensure nav-items are visible */
+.nav-menu:not(.homepage-hidden) .nav-item {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Ensure nav-links are visible */
+.nav-menu:not(.homepage-hidden) .nav-link {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* On product page and other non-homepage pages */
+body:not(.homepage) .nav-menu {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    height: auto !important;
+    min-height: 56px !important;
+}
+
+body:not(.homepage) .nav-menu .nav-container {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    min-height: 56px !important;
+}
+
+/* Loading state - show nav-menu even if empty */
+.nav-menu .nav-container:empty::before {
+    content: '';
+    display: block;
+    min-height: 56px;
+}
+
+/* Force nav-menu to always be visible on non-homepage pages */
+body:not(.homepage) .nav-menu {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    height: auto !important;
+    min-height: 56px !important;
+}
+
+/* Ensure nav-container always has content - show "All" at minimum */
+body:not(.homepage) .nav-menu .nav-container {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    min-height: 56px !important;
+}
+
+/* If nav-container is empty, ensure it still shows */
+body:not(.homepage) .nav-menu .nav-container:empty {
+    display: flex !important;
+    visibility: visible !important;
+}
+
+/* Ensure at least one nav-item is always visible */
+body:not(.homepage) .nav-menu .nav-item {
+    display: block !important;
+    visibility: visible !important;
+}
+

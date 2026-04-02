@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product - Mobitez</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/product.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <!-- Logo -->
+            <div class="logo">
+                <img src="/images/mobitez-logo.png" alt="Mobitez" class="logo-image">
+            </div>
+
+            <!-- Search Bar -->
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="Search for products, brands and more"
+                    id="searchInput" autocomplete="off">
+                <button class="search-btn" id="searchBtn">
+                    <i class="fas fa-search"></i>
+                </button>
+                <!-- Search Suggestions Dropdown -->
+                <div class="search-suggestions" id="searchSuggestions" style="display: none;">
+                    <div class="search-suggestions-content" id="searchSuggestionsContent">
+                        <!-- Suggestions will be populated here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side Menu -->
+            <div class="header-right">
+                <div class="header-item login-dropdown-wrapper">
+                    <a href="#" class="login-btn" id="loginBtn">
+                        Login
+                        <i class="fas fa-chevron-down"></i>
+                    </a>
+                    <div class="login-dropdown" id="loginDropdown">
+                        <a href="/login.html" class="dropdown-item">
+                            <i class="fas fa-sign-in-alt"></i>
+                            Login
+                        </a>
+                        <a href="/signup.html" class="dropdown-item">
+                            <i class="fas fa-user-plus"></i>
+                            Sign Up
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="/profile.html" class="dropdown-item">
+                            <i class="fas fa-user"></i>
+                            My Profile
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-star"></i>
+                            Mobitez Plus Zone
+                        </a>
+                        <a href="/orders.html" class="dropdown-item">
+                            <i class="fas fa-shopping-bag"></i>
+                            Orders
+                        </a>
+                        <a href="/wishlist.html" class="dropdown-item">
+                            <i class="fas fa-heart"></i>
+                            Wishlist
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-gift"></i>
+                            Rewards
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-credit-card"></i>
+                            Gift Cards
+                        </a>
+                    </div>
+                </div>
+                <div class="header-item">
+                    <a href="#" class="become-seller">Sell with Us</a>
+                </div>
+                <div class="header-item more-dropdown-wrapper">
+                    <a href="#" class="more-options">
+                        More
+                        <i class="fas fa-chevron-down"></i>
+                    </a>
+                    <div class="more-dropdown">
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-bell"></i>
+                            Notification Preferences
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-headset"></i>
+                            24x7 Customer Care
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-bullhorn"></i>
+                            Advertise
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-download"></i>
+                            Download App
+                        </a>
+                    </div>
+                </div>
+                <div class="header-item">
+                    <a href="/cart.html" class="cart">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-text">Cart</span>
+                        <span class="cart-count">0</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation Menu -->
+    <nav class="nav-menu">
+        <div class="nav-container" id="navContainer">
+            <!-- Categories will be loaded dynamically -->
+        </div>
+    </nav>
+
+    <!-- Breadcrumbs -->
+    <div class="breadcrumbs">
+        <div class="container">
+            <a href="/">Home</a>
+            <i class="fas fa-chevron-right"></i>
+            <span id="breadcrumbCategory">Category</span>
+            <i class="fas fa-chevron-right"></i>
+            <span id="breadcrumbProduct">Product</span>
+        </div>
+    </div>
+
+    <!-- Main Product Section -->
+    <main class="product-main">
+        <div class="container">
+            <div class="product-container" id="productContainer">
+                <!-- Loading State -->
+                <div class="loading-spinner" id="loadingSpinner">
+                    <div class="spinner"></div>
+                    <p>Loading product...</p>
+                </div>
+
+                <!-- Product Content (will be populated by JS) - Flipkart Style Layout -->
+                <div class="product-content flipkart-layout" id="productContent" style="display: none;">
+                    <!-- Left: Image Gallery (Flipkart Style) - Sticky - 5/12 columns -->
+                    <div class="product-images-wrapper flipkart-col-5">
+                        <div class="product-images">
+                            <!-- Thumbnails on far left -->
+                            <div class="thumbnail-gallery-vertical" id="thumbnailGallery">
+                                <!-- Thumbnails will be loaded here -->
+                            </div>
+                            <!-- Main image in center -->
+                            <div class="main-image-container">
+                                <img id="mainProductImage" src="" alt="Product" class="main-image">
+                                <div class="image-zoom" id="imageZoom"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Action Buttons (Moved to left side) -->
+                        <div class="product-actions-left">
+                            <button class="btn-add-cart" id="addToCartBtn">
+                                <i class="fas fa-shopping-cart"></i>
+                                ADD TO CART
+                            </button>
+                            <button class="btn-buy-now" id="buyNowBtn">
+                                <i class="fas fa-bolt"></i>
+                                BUY NOW
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Right: Product Info and Details (Flipkart Style) - 8/12 columns -->
+                    <div class="product-right-column flipkart-col-8">
+                        <!-- First Section: Product Info -->
+                        <div class="product-info">
+                            <!-- Top Right Actions -->
+                            <div class="product-top-actions">
+                                <label class="compare-checkbox">
+                                    <input type="checkbox" id="compareCheckbox">
+                                    <span>Compare</span>
+                                </label>
+                                <button class="share-btn" id="shareBtn" title="Share">
+                                    <i class="fas fa-share-alt"></i>
+                                </button>
+                            </div>
+
+                            <!-- Wishlist Icon -->
+                            <div class="product-wishlist">
+                                <button class="wishlist-btn" id="wishlistBtn" title="Add to Wishlist">
+                                    <i class="far fa-heart"></i>
+                                </button>
+                            </div>
+
+                            <!-- Product Title -->
+                            <h1 class="product-title" id="productTitle">Product Title</h1>
+                            
+                            <!-- Rating Section -->
+                            <div class="product-rating" id="productRating">
+                                <div class="rating-stars" id="ratingStars">
+                                    <!-- Stars will be generated dynamically -->
+                                </div>
+                                <span class="rating-value" id="ratingValue">4.3</span>
+                                <span class="rating-text" id="ratingText">(21,702 Ratings & 1,411 Reviews)</span>
+                            </div>
+
+                            <!-- Price Section -->
+                            <div class="product-price-section">
+                                <div class="price-current" id="currentPrice">₹16,999</div>
+                                <div class="price-original" id="originalPrice">₹19,999</div>
+                                <div class="discount-badge" id="discountBadge">15% off</div>
+                                <div class="extra-offer" id="extraOffer">Extra ₹1000 off</div>
+                            </div>
+
+                            <!-- Protect Promise Fee -->
+                            <div class="protect-promise">
+                                <span class="protect-fee">+ ₹79 Protect Promise Fee</span>
+                                <a href="#" class="learn-more-link">Learn more</a>
+                            </div>
+
+                            <!-- Delivery Info -->
+                            <div class="product-delivery">
+                                <i class="fas fa-truck"></i>
+                                <span id="deliveryText">Secure delivery by <span id="deliveryDate">4 Dec, Thursday</span></span>
+                            </div>
+
+                            <!-- Available Offers -->
+                            <div class="available-offers">
+                                <h3 class="offers-title">Available offers</h3>
+                                <ul class="offers-list" id="offersList">
+                                    <li class="offer-item">
+                                        <span>Bank Offer</span> 5% cashback on Mobitez SBI Credit Card upto ₹4,000 per calendar quarter <a href="#" class="offer-tc">T&C</a>
+                                    </li>
+                                    <li class="offer-item">
+                                        <span>Bank Offer</span> 5% cashback on Mobitez Axis Bank Credit Card upto ₹4,000 per statement quarter <a href="#" class="offer-tc">T&C</a>
+                                    </li>
+                                    <li class="offer-item">
+                                        <span>Bank Offer</span> Up To ₹50 Cashback on BHIM Payments App. Min Order Value ₹199. Offer Valid Once Per User <a href="#" class="offer-tc">T&C</a>
+                                    </li>
+                                    <li class="offer-item">
+                                        <span>Special Price</span> Get extra ₹1000 off <a href="#" class="offer-tc">T&C</a>
+                                    </li>
+                                    <li class="offer-item view-more-offers">
+                                        <a href="#" id="viewMoreOffers">View 6 more offers</a>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <!-- Purchase Options -->
+                            <div class="purchase-options">
+                                <div class="purchase-option active" id="buyWithoutExchange">
+                                    <input type="radio" name="purchaseType" id="purchaseWithoutExchange" checked>
+                                    <label for="purchaseWithoutExchange">
+                                        <span class="option-title">Buy without Exchange</span>
+                                        <span class="option-price" id="priceWithoutExchange">₹16,999</span>
+                                    </label>
+                                </div>
+                                <div class="purchase-option" id="buyWithExchange">
+                                    <input type="radio" name="purchaseType" id="purchaseWithExchange">
+                                    <label for="purchaseWithExchange">
+                                        <span class="option-title">Buy with Exchange</span>
+                                        <span class="option-discount">up to ₹13,850 off</span>
+                                        <span class="option-note">Enter pincode to check if exchange is available</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                        </div>
+                        
+                        <!-- Second Section: Product Details Section (Right Side) -->
+                        <div class="product-details-section" id="productDetailsSection">
+                        <!-- Warranty Information -->
+                        <div class="detail-row">
+                            <div class="detail-label"></div>
+                            <div class="detail-content warranty-info">
+                                <img src="/images/mobitez-logo.png" alt="Mobitez" class="warranty-logo" style="height: 20px; margin-right: 8px;">
+                                <span>1 year warranty for phone and 1 year warranty for in Box Accessories.</span>
+                                <a href="#" class="detail-link">Know More</a>
+                            </div>
+                        </div>
+
+                        <!-- Variations Section (Color, RAM, Storage, etc.) -->
+                        <div class="variations-details-section" id="variationsDetailsSection">
+                            <!-- Variations will be loaded here dynamically -->
+                        </div>
+
+                        <!-- Delivery Information -->
+                        <div class="detail-row">
+                            <div class="detail-label">Delivery</div>
+                            <div class="detail-content">
+                                <div class="delivery-input-group">
+                                    <input type="text" class="delivery-pincode-input" id="deliveryPincode" placeholder="Enter Delivery Pincode" maxlength="6">
+                                    <button class="delivery-check-btn" id="deliveryCheckBtn">Check</button>
+                                    <button class="delivery-enter-btn" id="deliveryEnterBtn">
+                                        <i class="fas fa-arrow-right"></i>
+                                        Enter pincode
+                                    </button>
+                                </div>
+                                <div class="delivery-info" id="deliveryInfo" style="display: none;">
+                                    <div class="delivery-date-info">
+                                        <span>Delivery by <span id="deliveryDateDetail">5 Dec, Friday</span></span>
+                                        <i class="fas fa-question-circle" style="color: #878787; font-size: 12px; margin-left: 4px;"></i>
+                                    </div>
+                                    <div class="delivery-time">if ordered before <span id="deliveryTime">12:49 PM</span></div>
+                                    <div class="installation-info">
+                                        Installation & Demo by <span id="installationDate">8 Dec, Monday</span> ₹399
+                                    </div>
+                                    <a href="#" class="detail-link">View Details</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Highlights -->
+                        <div class="detail-row">
+                            <div class="detail-label">Highlights</div>
+                            <div class="detail-content">
+                                <ul class="highlights-list" id="highlightsList">
+                                    <!-- Will be populated dynamically -->
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Seller Information -->
+                        <div class="detail-row">
+                            <div class="detail-label">Seller</div>
+                            <div class="detail-content">
+                                <div class="seller-info">
+                                    <span class="seller-name">NGIVR RETAILS</span>
+                                    <span class="seller-rating">4.7★</span>
+                                </div>
+                                <ul class="seller-features">
+                                    <li>7 Days Brand Support <i class="fas fa-question-circle" style="color: #878787; font-size: 12px; margin-left: 4px;"></i></li>
+                                    <li>GST invoice available <i class="fas fa-question-circle" style="color: #878787; font-size: 12px; margin-left: 4px;"></i></li>
+                                </ul>
+                                <a href="#" class="detail-link">See other sellers</a>
+                            </div>
+                        </div>
+
+                        <!-- Easy Payment Options -->
+                        <div class="detail-row">
+                            <div class="detail-label">Easy Payment Options</div>
+                            <div class="detail-content">
+                                <ul class="payment-options-list">
+                                    <li>EMI starting from <span id="emiAmount">₹2,458</span>/month</li>
+                                    <li>Cash on Delivery</li>
+                                    <li>Net banking & Credit/ Debit/ ATM card</li>
+                                </ul>
+                                <a href="#" class="detail-link">View Details</a>
+                            </div>
+                        </div>
+
+                        <!-- Description -->
+                        <div class="detail-row">
+                            <div class="detail-label">Description</div>
+                            <div class="detail-content">
+                                <p class="product-description-text" id="productDescriptionText">
+                                    <!-- Will be populated dynamically -->
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Specifications Section -->
+                        <div class="specifications-detail-section" id="specificationsDetailSection">
+                            <div class="specifications-header">
+                                <h3 class="specifications-title">Specifications</h3>
+                            </div>
+                            
+                            <!-- Other Details Subsection -->
+                            <div class="specifications-subsection">
+                                <h4 class="specifications-subtitle">Other Details</h4>
+                                <div class="specifications-table" id="specificationsTable">
+                                    <!-- Will be populated dynamically -->
+                                </div>
+                                <a href="#" class="read-more-link" id="readMoreSpecs" style="display: none;">
+                                    Read More
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Buy Together and Save Section -->
+                        <div class="buy-together-section" id="buyTogetherSection" style="display: none;">
+                            <div class="buy-together-header">
+                                <h3 class="buy-together-title">Buy together and save upto 10%</h3>
+                            </div>
+                            
+                            <div class="buy-together-products" id="buyTogetherProducts">
+                                <!-- Main product and add-on products will be loaded here -->
+                            </div>
+                            
+                            <div class="buy-together-footer">
+                                <div class="buy-together-message" id="buyTogetherMessage">
+                                    Please add at least 1 add-on item to proceed
+                                </div>
+                                <button class="buy-together-add-cart-btn" id="buyTogetherAddCartBtn" disabled onclick="handleBuyTogetherAddToCart()">
+                                    <i class="fas fa-shopping-cart"></i>
+                                    ADD TO CART
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Ratings & Reviews Section -->
+                        <div class="ratings-reviews-section" id="ratingsReviewsSection">
+                            <div class="ratings-reviews-header">
+                                <h3 class="ratings-reviews-title">Ratings & Reviews</h3>
+                                <button class="rate-product-btn" id="rateProductBtn">Rate Product</button>
+                            </div>
+
+                            <div class="ratings-reviews-content">
+                                <!-- Overall Rating Summary (Left) -->
+                                <div class="overall-rating-summary">
+                                    <div class="overall-rating-value" id="overallRatingValue">4.6</div>
+                                    <div class="overall-rating-star">★</div>
+                                    <div class="overall-rating-text" id="overallRatingText">1,85,471 Ratings & 5,881 Reviews</div>
+                                </div>
+
+                                <!-- Star Rating Breakdown (Middle-Left) -->
+                                <div class="star-rating-breakdown">
+                                    <div class="star-rating-row" data-star="5">
+                                        <span class="star-label">5★</span>
+                                        <div class="star-bar-container">
+                                            <div class="star-bar" style="width: 0%"></div>
+                                        </div>
+                                        <span class="star-count" id="starCount5">0</span>
+                                    </div>
+                                    <div class="star-rating-row" data-star="4">
+                                        <span class="star-label">4★</span>
+                                        <div class="star-bar-container">
+                                            <div class="star-bar" style="width: 0%"></div>
+                                        </div>
+                                        <span class="star-count" id="starCount4">0</span>
+                                    </div>
+                                    <div class="star-rating-row" data-star="3">
+                                        <span class="star-label">3★</span>
+                                        <div class="star-bar-container">
+                                            <div class="star-bar" style="width: 0%"></div>
+                                        </div>
+                                        <span class="star-count" id="starCount3">0</span>
+                                    </div>
+                                    <div class="star-rating-row" data-star="2">
+                                        <span class="star-label">2★</span>
+                                        <div class="star-bar-container">
+                                            <div class="star-bar" style="width: 0%"></div>
+                                        </div>
+                                        <span class="star-count" id="starCount2">0</span>
+                                    </div>
+                                    <div class="star-rating-row" data-star="1">
+                                        <span class="star-label">1★</span>
+                                        <div class="star-bar-container">
+                                            <div class="star-bar" style="width: 0%"></div>
+                                        </div>
+                                        <span class="star-count" id="starCount1">0</span>
+                                    </div>
+                                </div>
+
+                                <!-- Category-Specific Ratings (Middle-Right) -->
+                                <div class="category-ratings">
+                                    <div class="category-rating-item">
+                                        <div class="category-rating-circle" id="categoryRatingCamera">
+                                            <span class="category-rating-value">4.6</span>
+                                        </div>
+                                        <div class="category-rating-label">Camera</div>
+                                    </div>
+                                    <div class="category-rating-item">
+                                        <div class="category-rating-circle" id="categoryRatingBattery">
+                                            <span class="category-rating-value">4.3</span>
+                                        </div>
+                                        <div class="category-rating-label">Battery</div>
+                                    </div>
+                                    <div class="category-rating-item">
+                                        <div class="category-rating-circle" id="categoryRatingDisplay">
+                                            <span class="category-rating-value">4.6</span>
+                                        </div>
+                                        <div class="category-rating-label">Display</div>
+                                    </div>
+                                    <div class="category-rating-item">
+                                        <div class="category-rating-circle" id="categoryRatingDesign">
+                                            <span class="category-rating-value">4.6</span>
+                                        </div>
+                                        <div class="category-rating-label">Design</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- User-Submitted Images Gallery -->
+                            <div class="review-images-gallery" id="reviewImagesGallery">
+                                <!-- User-submitted images will be loaded here -->
+                            </div>
+
+                            <!-- Individual Reviews -->
+                            <div class="reviews-list" id="reviewsList">
+                                <!-- Individual reviews will be loaded here -->
+                            </div>
+                        </div>
+
+                        <!-- Questions and Answers Section -->
+                        <div class="questions-answers-section" id="questionsAnswersSection">
+                            <div class="qa-header">
+                                <h3 class="qa-title">Questions and Answers</h3>
+                                <button class="qa-search-btn" id="qaSearchBtn" title="Search questions">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+
+                            <div class="qa-list" id="qaList">
+                                <!-- Questions and answers will be loaded here -->
+                            </div>
+
+                            <div class="qa-footer">
+                                <a href="#" class="qa-all-questions-link" id="qaAllQuestionsLink">All questions</a>
+                                <button class="qa-add-question-btn" id="qaAddQuestionBtn" title="Add a question">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+
+                            <div class="qa-trust-badge">
+                                <i class="fas fa-shield-alt"></i>
+                                <span>Safe and Secure Payments. Easy returns. 100% Authentic products.</span>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Details Tabs -->
+            <div class="product-details-tabs" id="productDetailsTabs" style="display: none;">
+                <div class="tab-headers">
+                    <button class="tab-btn active" data-tab="description">Description</button>
+                    <button class="tab-btn" data-tab="specifications">Specifications</button>
+                    <button class="tab-btn" data-tab="reviews">Reviews & Ratings</button>
+                </div>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="descriptionTab">
+                        <div id="productDescription"></div>
+                    </div>
+                    <div class="tab-pane" id="specificationsTab">
+                        <div id="productSpecifications"></div>
+                    </div>
+                    <div class="tab-pane" id="reviewsTab">
+                        <div id="productReviews">Reviews coming soon...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Similar Products Section -->
+            <div class="similar-products-section" id="similarProductsSection" style="display: none;">
+                <h3 class="similar-products-title">Similar products</h3>
+                <div class="similar-products-carousel-wrapper">
+                    <button class="carousel-arrow left" onclick="scrollCarousel('similarProductsCarousel', 'left')">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <div class="similar-products-carousel" id="similarProductsCarousel">
+                        <!-- Similar products will be loaded here -->
+                    </div>
+                    <button class="carousel-arrow right" onclick="scrollCarousel('similarProductsCarousel', 'right')">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Frequently Bought Together -->
+            <div class="frequently-bought-section" id="frequentlyBoughtSection" style="display: none;">
+                <h2 class="section-title">Frequently Bought Together</h2>
+                <div class="category-tabs" id="boughtTogetherCategoryTabs">
+                    <!-- Category tabs will be loaded here -->
+                </div>
+                <div class="carousel-wrapper">
+                    <button class="carousel-arrow left" onclick="scrollCarousel('frequentlyBoughtCarousel', 'left')">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <div class="product-carousel" id="frequentlyBoughtCarousel">
+                        <!-- Products will be loaded here -->
+                    </div>
+                    <button class="carousel-arrow right" onclick="scrollCarousel('frequentlyBoughtCarousel', 'right')">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>About</h3>
+                <ul>
+                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Careers</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Help</h3>
+                <ul>
+                    <li><a href="#">FAQs</a></li>
+                    <li><a href="#">Shipping</a></li>
+                    <li><a href="#">Returns</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Policy</h3>
+                <ul>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Refund Policy</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Mobitez. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Setup login dropdown (reuse from app.js)
+        document.addEventListener('DOMContentLoaded', () => {
+            const loginBtn = document.getElementById('loginBtn');
+            const loginDropdown = document.getElementById('loginDropdown');
+            
+            if (loginBtn && loginDropdown) {
+                loginBtn.addEventListener('mouseenter', () => {
+                    loginDropdown.classList.add('show');
+                });
+                
+                loginBtn.addEventListener('mouseleave', () => {
+                    setTimeout(() => {
+                        if (!loginDropdown.matches(':hover')) {
+                            loginDropdown.classList.remove('show');
+                        }
+                    }, 200);
+                });
+                
+                loginDropdown.addEventListener('mouseleave', () => {
+                    loginDropdown.classList.remove('show');
+                });
+            }
+        });
+    </script>
+    <script src="/js/product.js?v=1769841025"></script>
+</body>
+</html>
+
+

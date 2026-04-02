@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <link rel="icon" href="/favicon.png" type="image/png">
+    <title>Mobitez - Online Shopping Site for Mobiles, Electronics, Furniture, Grocery, Lifestyle, Books & More. Best
+        Offers!</title>
+    <link rel="stylesheet" href="/css/style.css?v=nocache_1773128051">
+    <link rel="stylesheet" href="/css/videos.css?v=nocache_1773128051">
+    <link rel="stylesheet" href="/css/categories.css?v=nocache_1773128051">
+    <link rel="stylesheet" href="/css/homepage-categories.css?v=nocache_1773128051">
+    <link rel="stylesheet" href="/css/recently-viewed.css?v=nocache_1773128051">
+    <link rel="stylesheet" href="/css/mobile-responsive.css?v=nocache_1773128051">
+    <link rel="stylesheet" href="/css/flipkart-mobile-style.css?v=nocache_1773128051">
+    <!-- CRITICAL: Mobile header consistency - MUST load LAST -->
+    <link rel="stylesheet" href="/css/mobile-header-consistent.css?v=nocache_1773128051">
+    <!-- CRITICAL: Flipkart-style mobile header - MUST load AFTER mobile-header-consistent -->
+    <link rel="stylesheet" href="/css/flipkart-mobile-header.css?v=nocache_1773128051">
+    <!-- CRITICAL: Remove empty container under search bar - MUST load AFTER all header styles -->
+    <link rel="stylesheet" href="/css/remove-empty-container-search.css?v=nocache_1773128051">
+    <!-- CRITICAL: Mobile product buttons - side by side -->
+    <link rel="stylesheet" href="/css/mobile-product-buttons.css?v=nocache_1773128051">
+    <link rel="stylesheet" href="/css/flipkart-mobile-homepage.css?v=nocache_1773128051">
+    <!-- Dynamic Sections Styles -->
+    <link rel="stylesheet" href="/css/dynamic-sections.css?v=1773046328">
+
+    <!-- DESKTOP FULL WIDTH: Force 100% width on large screens -->
+    <link rel="stylesheet" href="/css/desktop-full-width.css?v=branding_fix_v11">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="/js/auth.js?v=1769841025"></script>
+    <script src="/js/cart-api.js?v=1769841025"></script>
+    <script src="/js/wishlist-api.js?v=1769841025"></script>
+    <script src="/js/search-common.js?v=1769841025"></script>
+    <!-- SEO Footer Styles -->
+    <link rel="stylesheet" href="/css/seo-footer.css">
+    <link rel="stylesheet" href="/css/flipkart-footer.css">
+    <script src="/js/components/product-card.js?v=1769841025"></script>
+    <script src="/js/components/section-renderer.js?v=1769841025"></script>
+    <script src="/js/header-common.js?v=1769841025"></script>
+    <script src="/js/seo-footer.js?v=1769841025" defer></script>
+</head>
+
+<body class="homepage">
+    <!-- Header -->
+    <header id="header-container"></header>
+
+    <!-- Navigation Menu (Hidden on Homepage) -->
+    <nav class="nav-menu homepage-hidden">
+        <div class="nav-container" id="navContainer">
+            <!-- Categories will be loaded dynamically -->
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Categories Navigation Bar (Homepage - Flipkart Style) -->
+        <section class="homepage-categories-nav">
+            <div class="homepage-categories-container" id="homepageCategoriesNav">
+                <div class="skeleton-category-slider">
+                    <div class="skeleton-category-item">
+                        <div class="skeleton-circle shimmer"></div>
+                        <div class="skeleton-text shimmer"></div>
+                    </div>
+                    <div class="skeleton-category-item">
+                        <div class="skeleton-circle shimmer"></div>
+                        <div class="skeleton-text shimmer"></div>
+                    </div>
+                    <div class="skeleton-category-item">
+                        <div class="skeleton-circle shimmer"></div>
+                        <div class="skeleton-text shimmer"></div>
+                    </div>
+                    <div class="skeleton-category-item">
+                        <div class="skeleton-circle shimmer"></div>
+                        <div class="skeleton-text shimmer"></div>
+                    </div>
+                    <div class="skeleton-category-item">
+                        <div class="skeleton-circle shimmer"></div>
+                        <div class="skeleton-text shimmer"></div>
+                    </div>
+                    <div class="skeleton-category-item">
+                        <div class="skeleton-circle shimmer"></div>
+                        <div class="skeleton-text shimmer"></div>
+                    </div>
+                    <div class="skeleton-category-item">
+                        <div class="skeleton-circle shimmer"></div>
+                        <div class="skeleton-text shimmer"></div>
+                    </div>
+                    <div class="skeleton-category-item">
+                        <div class="skeleton-circle shimmer"></div>
+                        <div class="skeleton-text shimmer"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Banner Carousel -->
+        <section class="banner-section">
+            <div class="banner-container" id="bannerContainer">
+                <div class="skeleton-banner shimmer"></div>
+            </div>
+        </section>
+
+        <!-- Dynamic Sections Container -->
+        <div id="dynamic-sections-container" class="dynamic-sections-container"></div>
+
+
+
+
+
+        <!-- Recently Viewed Section -->
+        <section class="recently-viewed-section" id="recentlyViewedSection" style="display: none;">
+            <div class="container">
+                <h2 class="section-title">For You</h2>
+                <div class="recently-viewed-container">
+                    <button class="scroll-btn scroll-btn-left" id="recentlyViewedScrollLeft" style="display: none;">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <div class="recently-viewed-scroll" id="recentlyViewedScroll">
+                        <div class="recently-viewed-products" id="recentlyViewedProducts">
+                            <!-- Recently viewed products will be loaded here -->
+                        </div>
+                    </div>
+                    <button class="scroll-btn scroll-btn-right" id="recentlyViewedScrollRight">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Mobile Bottom Navigation -->
+    <div class="mobile-bottom-nav">
+        <a href="/" class="nav-item active">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </a>
+        <a href="/all-categories.html" class="nav-item">
+            <i class="fas fa-th-large"></i>
+            <span>Categories</span>
+        </a>
+        <a href="/profile.html" class="nav-item">
+            <i class="fas fa-user"></i>
+            <span>Account</span>
+        </a>
+        <a href="/cart.html" class="nav-item">
+            <i class="fas fa-shopping-cart"></i>
+            <span>Cart</span>
+        </a>
+    </div>
+
+    <!-- Footer loaded dynamically -->
+    <script src="/js/footer-common.js?v=1769841025"></script>
+    <script src="/js/mobile-menu.js?v=1769841025"></script>
+    <script src="/js/flipkart-mobile-header.js?v=1769841025"></script>
+    <script src="/js/recently-viewed.js?v=1769841025"></script>
+    <!-- <script src="/js/videos.js?v=1769841025"></script> -->
+    <script src="/js/app.js?v=1769841025"></script>
+</body>
+
+</html>

@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/favicon.png" type="image/png">
+    <title>Frequently Asked Questions - Mobitez</title>
+    <!-- CSS Dependencies -->
+    <link rel="stylesheet" href="/css/style.css?v=branding_fix_v11">
+    <link rel="stylesheet" href="/css/nav-menu-visible.css?v=nocache_1773128051">
+    <link rel="stylesheet" href="/css/flipkart-dropdown.css?v=nocache_1773128051">
+    <link rel="stylesheet" href="/css/mobile-responsive.css?v=nocache_1773128051">
+    <link rel="stylesheet" href="/css/flipkart-mobile-style.css?v=branding_fix_v11">
+    <link rel="stylesheet" href="/css/mobile-header-consistent.css?v=branding_fix_v11">
+    <link rel="stylesheet" href="/css/flipkart-mobile-header.css?v=nocache_1773128051">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* Premium FAQ Styles - Matching contact.css */
+
+        /* Hero Banner */
+        section.faq-hero {
+            background: linear-gradient(135deg, #011C08 0%, #0a4409 60%, #1b5e20 100%) !important;
+            padding: 70px 20px 110px !important;
+            margin-top: 92px;
+            /* Header 56 + Nav 36 offset */
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        section.faq-hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(circle at 15% 60%, rgba(247, 162, 0, 0.07) 0%, transparent 45%),
+                radial-gradient(circle at 85% 25%, rgba(247, 162, 0, 0.05) 0%, transparent 38%);
+            pointer-events: none;
+        }
+
+        .faq-hero-inner {
+            position: relative;
+            z-index: 1;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .faq-hero-badge {
+            display: inline-block;
+            background: rgba(247, 162, 0, 0.15);
+            color: #f7a200;
+            border: 1px solid rgba(247, 162, 0, 0.45);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            padding: 6px 20px;
+            border-radius: 100px;
+            margin-bottom: 22px;
+        }
+
+        .faq-hero h1 {
+            font-size: 42px;
+            font-weight: 700;
+            color: #ffffff !important;
+            margin: 0 0 14px;
+            line-height: 1.15;
+        }
+
+        .faq-hero h1 span {
+            color: #f7a200;
+        }
+
+        .faq-hero p {
+            font-size: 17px;
+            color: rgba(255, 255, 255, 0.72) !important;
+            margin: 0;
+        }
+
+        /* Search Section (Overlapping) */
+        .faq-search-wrapper {
+            max-width: 600px;
+            margin: -35px auto 40px;
+            position: relative;
+            z-index: 20;
+            padding: 0 20px;
+        }
+
+        .faq-search-bar {
+            background: #fff;
+            padding: 8px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            border: 1px solid #e0e0e0;
+        }
+
+        .faq-search-bar i {
+            margin-left: 15px;
+            color: #0a4409;
+            font-size: 18px;
+        }
+
+        .faq-search-bar input {
+            border: none;
+            padding: 12px 15px;
+            width: 100%;
+            font-size: 16px;
+            outline: none;
+            color: #212121;
+        }
+
+        /* Main Content */
+        .faq-main {
+            max-width: 1000px;
+            margin: 0 auto 80px;
+            padding: 0 20px;
+            min-height: 300px;
+        }
+
+        .faq-section {
+            margin-bottom: 50px;
+        }
+
+        .faq-section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #f7a200;
+        }
+
+        .faq-section-header i {
+            font-size: 24px;
+            color: #0a4409;
+            background: rgba(10, 68, 9, 0.08);
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+        }
+
+        .faq-section-header h2 {
+            font-size: 22px;
+            font-weight: 700;
+            color: #011C08;
+            margin: 0;
+        }
+
+        /* FAQ Accordion */
+        .faq-item {
+            margin-bottom: 14px;
+            background-color: #ffffff;
+            border: 1px solid #e8e8e8;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.2s ease;
+        }
+
+        .faq-item:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border-color: #0a4409;
+        }
+
+        .faq-question {
+            padding: 20px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            font-weight: 600;
+            color: #212121;
+            font-size: 15px;
+            user-select: none;
+        }
+
+        .faq-item i {
+            font-size: 12px;
+            color: #f7a200;
+            transition: transform 0.3s ease;
+            background: rgba(247, 162, 0, 0.1);
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .faq-answer {
+            padding: 0 24px 24px;
+            color: #555;
+            font-size: 14px;
+            line-height: 1.6;
+            display: none;
+            border-top: none;
+        }
+
+        .faq-item.active {
+            border-color: #0a4409;
+            box-shadow: 0 4px 12px rgba(10, 68, 9, 0.08);
+        }
+
+        .faq-item.active .faq-question {
+            color: #0a4409;
+        }
+
+        .faq-item.active .faq-question i {
+            transform: rotate(180deg);
+        }
+
+        .faq-item.active .faq-answer {
+            display: block;
+        }
+
+        /* SunEditor Output Styles */
+        .faq-answer p {
+            margin-bottom: 1rem;
+        }
+
+        .faq-answer ul,
+        .faq-answer ol {
+            padding-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .faq-answer li {
+            margin-bottom: 0.5rem;
+        }
+
+        .faq-answer img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        /* Loading Spinner */
+        .loading-container {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .loading-spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #0a4409;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Error Message */
+        .error-message {
+            text-align: center;
+            padding: 40px;
+            background: #fff5f5;
+            border: 1px solid #ffcdd2;
+            border-radius: 12px;
+            color: #c62828;
+        }
+
+        /* Contact CTA */
+        .faq-cta {
+            background: #011C08;
+            border-radius: 16px;
+            padding: 40px;
+            text-align: center;
+            color: white;
+            margin-top: 60px;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 4px solid #f7a200;
+        }
+
+        .faq-cta h3 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: white !important;
+        }
+
+        .faq-cta p {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 25px;
+        }
+
+        .faq-cta-btn {
+            display: inline-block;
+            background: #f7a200;
+            color: #011C08;
+            padding: 14px 34px;
+            border-radius: 8px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.25s;
+        }
+
+        .faq-cta-btn:hover {
+            background: #fff;
+            transform: translateY(-2px);
+            color: #011C08;
+        }
+
+        @media (max-width: 768px) {
+            section.faq-hero {
+                padding: 60px 15px 100px !important;
+            }
+
+            .faq-hero h1 {
+                font-size: 32px;
+            }
+
+            .faq-section-header h2 {
+                font-size: 18px;
+            }
+        }
+    </style>
+    <script src="/js/auth.js?v=1769841025"></script>
+    <script src="/js/header-common.js?v=1769841025"></script>
+</head>
+
+<body>
+    <header id="header-container"></header>
+
+    <!-- Hero -->
+    <section class="faq-hero">
+        <div class="faq-hero-inner">
+            <div class="faq-hero-badge">Help Center</div>
+            <h1><span>FAQ</span> Questions</h1>
+            <p>Find answers to common questions or browse categories below.</p>
+        </div>
+    </section>
+
+    <!-- Search Bar -->
+    <div class="faq-search-wrapper">
+        <div class="faq-search-bar">
+            <i class="fas fa-search"></i>
+            <input type="text" id="faqSearch" placeholder="Search for your question here...">
+        </div>
+    </div>
+
+    <main class="faq-main" id="faqMain">
+        <!-- Loading Spinner -->
+        <div class="loading-container" id="faqLoader">
+            <div class="loading-spinner"></div>
+            <p>Loading Frequently Asked Questions...</p>
+        </div>
+
+        <div id="faqDynamicContent"></div>
+
+        <!-- CTA Section -->
+        <div class="faq-cta">
+            <h3>Still have questions?</h3>
+            <p>Our dedicated support team is ready to assist you with any further queries.</p>
+            <a href="/contact.html" class="faq-cta-btn">Contact Our Team</a>
+        </div>
+    </main>
+
+    <script src="/js/footer-common.js?v=1769841025"></script>
+    <script src="/js/category-nav-common.js?v=1769841025"></script>
+    <script src="/js/mobile-menu.js?v=1769841025"></script>
+    <script src="/js/flipkart-mobile-header.js?v=1769841025"></script>
+
+    <script>
+        // API Configuration - Using global AUTH_CONFIG from auth.js
+        const getFAQApiUrl = () => {
+            const baseUrl = (typeof AUTH_CONFIG !== 'undefined' && AUTH_CONFIG.baseUrl)
+                ? AUTH_CONFIG.baseUrl
+                : 'https://seller.mobitez.webintez.com/api';
+            return `${baseUrl}/faqs`;
+        };
+
+        // API Configuration
+        const API_CONFIG = {
+            baseUrl: '/api',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        };
+
+        const getApiHeaders = () => {
+            const headers = {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            };
+
+            if (typeof AUTH_CONFIG !== 'undefined' && AUTH_CONFIG.headers['X-API-Key']) {
+                headers['X-API-Key'] = AUTH_CONFIG.headers['X-API-Key'];
+            }
+
+            return headers;
+        };
+
+        // Define Icon Mapping for Categories (Lowercase match)
+        const iconMap = {
+            'general': 'fas fa-info-circle',
+            'orders': 'fas fa-truck',
+            'payments': 'fas fa-shield-alt',
+            'returns': 'fas fa-undo',
+            'shipping': 'fas fa-shipping-fast',
+            'account': 'fas fa-user-circle'
+        };
+
+        // Fetch FAQs on Load
+        document.addEventListener('DOMContentLoaded', fetchFAQs);
+
+        async function fetchFAQs() {
+            const loader = document.getElementById('faqLoader');
+            const contentContainer = document.getElementById('faqDynamicContent');
+            const apiUrl = getFAQApiUrl();
+            const headers = getApiHeaders();
+
+            try {
+                const response = await fetch(apiUrl, { headers });
+                if (!response.ok) throw new Error('Failed to fetch FAQs');
+
+                const result = await response.json();
+
+                if (result.status === 'success' && result.data) {
+                    renderFAQs(result.data);
+                } else {
+                    showError('No FAQs found at the moment.');
+                }
+            } catch (error) {
+                console.error('FAQ Fetch Error:', error);
+                showError('Unable to load questions. Please try again later.');
+            } finally {
+                loader.style.display = 'none';
+            }
+        }
+
+        function renderFAQs(faqs) {
+            const container = document.getElementById('faqDynamicContent');
+            container.innerHTML = ''; // Clear previous content
+
+            // Group FAQs by primary category
+            const grouped = {};
+            faqs.forEach(faq => {
+                const category = (faq.categories && faq.categories.length > 0)
+                    ? faq.categories[0].name
+                    : 'General';
+
+                if (!grouped[category]) grouped[category] = [];
+                grouped[category].push(faq);
+            });
+
+            // Iterate through categories and render sections
+            Object.keys(grouped).forEach(categoryName => {
+                const categoryFaqs = grouped[categoryName];
+                // Change "Mobitez" category name to "FAQ Questions"
+                const displayedCategoryName = categoryName === 'Mobitez' ? 'FAQ Questions' : categoryName;
+                const slug = categoryName.toLowerCase();
+                const iconClass = iconMap[slug] || 'fas fa-question-circle';
+
+                const section = document.createElement('div');
+                section.className = 'faq-section';
+
+                section.innerHTML = `
+                    <div class="faq-section-header">
+                        <i class="${iconClass}"></i>
+                        <h2>${displayedCategoryName}</h2>
+                    </div>
+                `;
+
+                const itemsContainer = document.createElement('div');
+
+                categoryFaqs.forEach(faq => {
+                    const faqItem = document.createElement('div');
+                    faqItem.className = 'faq-item';
+                    faqItem.innerHTML = `
+                        <div class="faq-question">
+                            ${faq.question}
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            ${faq.answer}
+                        </div>
+                    `;
+
+                    // Add Accordion Logic to this specific item
+                    faqItem.querySelector('.faq-question').addEventListener('click', () => {
+                        const isActive = faqItem.classList.contains('active');
+
+                        // Close all items
+                        document.querySelectorAll('.faq-item').forEach(item => {
+                            item.classList.remove('active');
+                        });
+
+                        // Open if not previously active
+                        if (!isActive) {
+                            faqItem.classList.add('active');
+                        }
+                    });
+
+                    itemsContainer.appendChild(faqItem);
+                });
+
+                section.appendChild(itemsContainer);
+                container.appendChild(section);
+            });
+
+            // Initialize Search Logic after rendering
+            initSearch();
+
+            // Generate Schema.org JSON-LD for SEO
+            generateFAQSchema(faqs);
+        }
+
+        function generateFAQSchema(faqs) {
+            const schema = {
+                "@context": "https://schema.org",
+                "@type": "FAQPage",
+                "mainEntity": faqs.map(faq => ({
+                    "@type": "Question",
+                    "name": faq.question,
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": faq.answer.replace(/<[^>]*>?/gm, '') // Strip HTML for plain text schema
+                    }
+                }))
+            };
+
+            const script = document.createElement('script');
+            script.type = 'application/ld+json';
+            script.text = JSON.stringify(schema);
+            document.head.appendChild(script);
+        }
+
+        function initSearch() {
+            const searchInput = document.getElementById('faqSearch');
+            searchInput.addEventListener('input', function (e) {
+                const term = e.target.value.toLowerCase();
+
+                document.querySelectorAll('.faq-section').forEach(section => {
+                    const items = section.querySelectorAll('.faq-item');
+                    let hasVisible = false;
+
+                    items.forEach(item => {
+                        const q = item.querySelector('.faq-question').innerText.toLowerCase();
+                        const a = item.querySelector('.faq-answer').innerText.toLowerCase();
+
+                        if (q.includes(term) || a.includes(term)) {
+                            item.style.display = 'block';
+                            hasVisible = true;
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+
+                    section.style.display = hasVisible ? 'block' : 'none';
+                });
+            });
+        }
+
+        function showError(msg) {
+            const container = document.getElementById('faqDynamicContent');
+            container.innerHTML = `
+                <div class="error-message">
+                    <i class="fas fa-exclamation-triangle" style="margin-bottom:10px; font-size:24px;"></i>
+                    <p>${msg}</p>
+                </div>
+            `;
+        }
+    </script>
+</body>
+
+</html>

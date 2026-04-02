@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/favicon.png" type="image/png">
+    <title>My Profile - Mobitez</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/profile.css">
+    <link rel="stylesheet" href="/css/nav-menu-visible.css">
+    <link rel="stylesheet" href="/css/flipkart-dropdown.css">
+    <link rel="stylesheet" href="/css/mobile-responsive.css">
+    <link rel="stylesheet" href="/css/flipkart-mobile-style.css">
+    <!-- CRITICAL: Mobile header consistency - MUST load LAST -->
+    <link rel="stylesheet" href="/css/mobile-header-consistent.css">
+    <link rel="stylesheet" href="/css/flipkart-mobile-header.css?v=nocache_1773128051">
+    <link rel="stylesheet" href="/css/mobile-gap-fixes.css">
+    <link rel="stylesheet" href="/css/profile-mobile.css">
+
+    <!-- DESKTOP FULL WIDTH: Force 100% width on large screens -->
+    <link rel="stylesheet" href="/css/desktop-full-width.css?v=branding_fix_v11">
+    <link rel="stylesheet" href="/css/secondary-menu.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="/js/auth.js?v=1769841025"></script>
+    <script src="/js/cart-api.js?v=1769841025"></script>
+    <script src="/js/order-api.js?v=1769841025"></script>
+    <script src="/js/wishlist-api.js?v=1769841025"></script>
+    <script src="/js/profile-api.js?v=1769841025"></script>
+    <script src="/js/search-common.js?v=1769841025"></script>
+    <script src="/js/header-common.js?v=1769841025"></script>
+    <script src="/js/secondary-menu.js?v=1769841025" defer></script>
+    <script>
+        // Prevent FOUC on mobile load
+        (function () {
+            if (window.innerWidth < 768) {
+                const params = new URLSearchParams(window.location.search);
+                const section = params.get('section');
+                const style = document.createElement('style');
+                if (!section || section === 'landing') {
+                    style.innerHTML = '.profile-sidebar-left { display: none !important; } .profile-content-section:not(#mobileLandingSection) { display: none !important; } #mobileLandingSection { display: flex !important; }';
+                } else {
+                    style.innerHTML = '.profile-sidebar-left { display: none !important; } .profile-content-section { display: none; }';
+                }
+                document.head.appendChild(style);
+            }
+        })();
+    </script>
+</head>
+
+<body>
+    <!-- Header -->
+    <header id="header-container"></header>
+
+    <!-- Navigation Menu -->
+    <nav class="nav-menu">
+        <div class="nav-container" id="navContainer">
+            <!-- Categories will be loaded dynamically -->
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container profile-container">
+            <div class="profile-layout">
+                <!-- Left Sidebar -->
+                <div class="profile-sidebar-left">
+                    <div class="sidebar-user-greeting">
+                        <div class="user-avatar-small">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="user-greeting-text">Hello</div>
+                    </div>
+
+                    <div class="sidebar-section">
+                        <a href="/orders.html" class="sidebar-link">
+                            <i class="fas fa-shopping-bag"></i>
+                            <span>MY ORDERS</span>
+                            <i class="fas fa-chevron-right"></i>
+                        </a>
+                    </div>
+
+                    <div class="sidebar-section">
+                        <div class="sidebar-section-title">
+                            <i class="fas fa-cog"></i>
+                            <span>ACCOUNT SETTINGS</span>
+                        </div>
+                        <div class="sidebar-submenu">
+                            <a href="/profile.html" class="sidebar-submenu-item active">
+                                Profile Information
+                            </a>
+                            <a href="/profile.html?section=addresses" class="sidebar-submenu-item">
+                                Manage Addresses
+                            </a>
+                            <a href="/profile.html?section=pan" class="sidebar-submenu-item">
+                                PAN Card Information
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="sidebar-section">
+                        <div class="sidebar-section-title">
+                            <i class="fas fa-credit-card"></i>
+                            <span>PAYMENTS</span>
+                        </div>
+                        <div class="sidebar-submenu">
+                            <a href="/profile.html?section=giftcards" class="sidebar-submenu-item">
+                                Gift Cards
+                            </a>
+                            <a href="/profile.html?section=upi" class="sidebar-submenu-item">
+                                Saved UPI
+                            </a>
+                            <a href="/coming-soon.html" class="sidebar-submenu-item">
+                                Saved Cards
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="sidebar-section">
+                        <div class="sidebar-section-title">
+                            <i class="fas fa-box"></i>
+                            <span>MY STUFF</span>
+                        </div>
+                        <div class="sidebar-submenu">
+                            <a href="/profile.html?section=coupons" class="sidebar-submenu-item">
+                                My Coupons
+                            </a>
+                            <a href="/profile.html?section=reviews" class="sidebar-submenu-item">
+                                My Reviews & Ratings
+                            </a>
+                            <a href="/profile.html?section=notifications" class="sidebar-submenu-item">
+                                All Notifications
+                            </a>
+                            <a href="/wishlist.html" class="sidebar-submenu-item">
+                                My Wishlist
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="sidebar-section">
+                        <button class="sidebar-logout-btn" onclick="logout()">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Logout</span>
+                        </button>
+                    </div>
+
+                    <div class="sidebar-section">
+                        <div class="sidebar-section-title">
+                            <span>Frequently Visited:</span>
+                        </div>
+                        <div class="sidebar-submenu">
+                            <a href="/orders.html" class="sidebar-submenu-item">
+                                Track Order
+                            </a>
+                            <a href="/faq.html" class="sidebar-submenu-item">
+                                Help Center
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Main Content -->
+                <div class="profile-main-content">
+                    <!-- Mobile Landing Section -->
+                    <div class="profile-content-section" id="mobileLandingSection" data-profile-section="landing"
+                        style="display: none;">
+                        <div class="mobile-profile-header">
+                            <div class="profile-header-top">
+                                <div class="profile-phone" id="mobileProfilePhone">Hi 👋 Customer</div>
+                                <div class="profile-coins">
+                                    <i class="fas fa-coins"></i> 0
+                                </div>
+                            </div>
+                            <div class="profile-header-banner">
+                                Explore <i class="fas fa-bolt" style="color:#ffa000;"></i> Plus Silver <i
+                                    class="fas fa-chevron-right"></i>
+                            </div>
+                        </div>
+
+                        <div class="profile-grid-dashboard">
+                            <a href="/orders.html" class="grid-item">
+                                <i class="fas fa-box-open"></i>
+                                <span>Orders</span>
+                            </a>
+                            <a href="/wishlist.html" class="grid-item">
+                                <i class="fas fa-heart"></i>
+                                <span>Wishlist</span>
+                            </a>
+                            <a href="/profile.html?section=coupons" class="grid-item">
+                                <i class="fas fa-ticket-alt"></i>
+                                <span>Coupons</span>
+                            </a>
+                            <a href="/faq.html" class="grid-item">
+                                <i class="fas fa-headset"></i>
+                                <span>Help Center</span>
+                            </a>
+                        </div>
+
+                        <div class="profile-action-banner">
+                            <div class="banner-left">
+                                <div class="icon-wrapper">
+                                    <i class="fas fa-envelope-open-text" style="color: #ffa000;"></i>
+                                </div>
+                                <div class="banner-text">
+                                    <h4>Add/Verify your Email</h4>
+                                    <p>Get latest updates of your orders</p>
+                                </div>
+                            </div>
+                            <div class="banner-right">
+                                <a href="/profile.html?section=personal" class="btn-update">Update</a>
+                            </div>
+                        </div>
+
+                        <div class="list-section-title">Finance Options</div>
+                        <div class="profile-list">
+                            <a href="/coming-soon.html" class="list-item">
+                                <div class="list-item-left">
+                                    <i class="fas fa-credit-card accent-icon"></i>
+                                    <div class="list-item-text">
+                                        <span class="item-title">EMI for Everyone</span>
+                                        <span class="item-desc">No Cost EMI | Instant Approval</span>
+                                    </div>
+                                </div>
+                                <i class="fas fa-chevron-right"></i>
+                            </a>
+                        </div>
+
+                        <div class="list-section-title">Account Settings</div>
+                        <div class="profile-list">
+                            <a href="/profile.html?section=personal" class="list-item">
+                                <div class="list-item-left">
+                                    <i class="fas fa-user-circle"></i>
+                                    <span class="item-title">Edit Profile</span>
+                                </div>
+                                <i class="fas fa-chevron-right"></i>
+                            </a>
+                            <a href="/profile.html?section=addresses" class="list-item">
+                                <div class="list-item-left">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span class="item-title">Saved Addresses</span>
+                                </div>
+                                <i class="fas fa-chevron-right"></i>
+                            </a>
+                            <a href="/coming-soon.html" class="list-item">
+                                <div class="list-item-left">
+                                    <i class="fas fa-credit-card"></i>
+                                    <span class="item-title">Saved Cards</span>
+                                </div>
+                                <i class="fas fa-chevron-right"></i>
+                            </a>
+                        </div>
+
+                        <div class="list-section-title">My Activity</div>
+                        <div class="profile-list">
+                            <a href="/profile.html?section=reviews" class="list-item">
+                                <div class="list-item-left">
+                                    <i class="fas fa-star"></i>
+                                    <span class="item-title">Reviews</span>
+                                </div>
+                                <i class="fas fa-chevron-right"></i>
+                            </a>
+                            <!-- <a href="#" class="list-item">
+                                <div class="list-item-left">
+                                    <i class="fas fa-comments"></i>
+                                    <span class="item-title">Questions & Answers</span>
+                                </div>
+                                <i class="fas fa-chevron-right"></i>
+                            </a> -->
+                        </div>
+
+                        <div class="list-section-title">Earn with Mobitez</div>
+                        <div class="profile-list">
+                            <a href="https://seller.mobitez.webintez.com/" class="list-item">
+                                <div class="list-item-left">
+                                    <i class="fas fa-store"></i>
+                                    <span class="item-title">Sell on Mobitez</span>
+                                </div>
+                                <i class="fas fa-chevron-right"></i>
+                            </a>
+                        </div>
+
+                        <div class="list-section-title">Feedback & Information</div>
+                        <div class="profile-list">
+                            <div class="list-item dropdown-trigger" id="termsPoliciesTrigger">
+                                <div class="list-item-left">
+                                    <i class="far fa-file-alt"></i>
+                                    <span class="item-title">Terms, Policies and Licenses</span>
+                                </div>
+                                <i class="fas fa-chevron-right toggle-icon"></i>
+                            </div>
+                            <div class="dropdown-content" id="termsPoliciesContent">
+                                <a href="/page.html?slug=terms-of-use" class="dropdown-item">
+                                    <span>Terms Of Use</span>
+                                    <i class="fas fa-chevron-right"></i>
+                                </a>
+                                <a href="/page.html?slug=privacy-policy" class="dropdown-item">
+                                    <span>Privacy Policy</span>
+                                    <i class="fas fa-chevron-right"></i>
+                                </a>
+                                <a href="/page.html?slug=return-policy" class="dropdown-item">
+                                    <span>Returns Policy</span>
+                                    <i class="fas fa-chevron-right"></i>
+                                </a>
+                                <a href="/page.html?slug=shipping" class="dropdown-item">
+                                    <span>Shipping Policy</span>
+                                    <i class="fas fa-chevron-right"></i>
+                                </a>
+                            </div>
+                            <a href="/faq.html" class="list-item">
+                                <div class="list-item-left">
+                                    <i class="far fa-question-circle"></i>
+                                    <span class="item-title">Browse FAQs</span>
+                                </div>
+                                <i class="fas fa-chevron-right"></i>
+                            </a>
+                        </div>
+
+                        <div class="list-section-title">Useful Links</div>
+                        <div class="profile-list">
+                            <a href="/contact.html" class="list-item">
+                                <div class="list-item-left">
+                                    <i class="fas fa-headset"></i>
+                                    <span class="item-title">Contact Us</span>
+                                </div>
+                                <i class="fas fa-chevron-right"></i>
+                            </a>
+                            <a href="/page.html?slug=about-us" class="list-item">
+                                <div class="list-item-left">
+                                    <i class="fas fa-info-circle"></i>
+                                    <span class="item-title">About Us</span>
+                                </div>
+                                <i class="fas fa-chevron-right"></i>
+                            </a>
+                            <a href="/page.html?slug=careers" class="list-item">
+                                <div class="list-item-left">
+                                    <i class="fas fa-briefcase"></i>
+                                    <span class="item-title">Careers</span>
+                                </div>
+                                <i class="fas fa-chevron-right"></i>
+                            </a>
+                            <a href="/page.html?slug=corporate" class="list-item">
+                                <div class="list-item-left">
+                                    <i class="fas fa-building"></i>
+                                    <span class="item-title">Corporate Information</span>
+                                </div>
+                                <i class="fas fa-chevron-right"></i>
+                            </a>
+                            <a href="/blog.html" class="list-item">
+                                <div class="list-item-left">
+                                    <i class="fas fa-blog"></i>
+                                    <span class="item-title">Blogs</span>
+                                </div>
+                                <i class="fas fa-chevron-right"></i>
+                            </a>
+                        </div>
+
+                        <div class="profile-logout-footer">
+                            <button class="btn-mobile-logout" onclick="logout()">Log Out</button>
+                        </div>
+                    </div>
+
+                    <!-- Personal Information Section -->
+                    <div class="profile-content-section" id="personalInfoSection" data-profile-section="personal">
+                        <div class="section-header-row">
+                            <h2 class="section-title">Personal Information</h2>
+                            <button class="btn-edit-section" id="editPersonalInfoBtn">
+                                Edit
+                            </button>
+                        </div>
+
+                        <form id="personalInfoForm" class="profile-form" style="display: none;">
+                            <div class="form-row-two">
+                                <div class="form-group">
+                                    <input type="text" id="firstNameInput" class="form-input" placeholder="First Name"
+                                        required>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" id="lastNameInput" class="form-input" placeholder="Last Name"
+                                        required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Your Gender</label>
+                                <div class="gender-options">
+                                    <label class="gender-option">
+                                        <input type="radio" name="gender" value="male" id="genderMale">
+                                        <span>Male</span>
+                                    </label>
+                                    <label class="gender-option">
+                                        <input type="radio" name="gender" value="female" id="genderFemale">
+                                        <span>Female</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <button type="button" class="btn-secondary" id="cancelPersonalInfoBtn">Cancel</button>
+                                <button type="submit" class="btn-primary">Save</button>
+                            </div>
+                        </form>
+
+                        <div class="info-display" id="personalInfoDisplay">
+                            <div class="form-row-two">
+                                <div class="form-group">
+                                    <input type="text" id="displayFirstName" class="form-input" disabled>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" id="displayLastName" class="form-input" disabled>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Your Gender</label>
+                                <div class="gender-options">
+                                    <label class="gender-option">
+                                        <input type="radio" name="displayGender" value="male" id="displayGenderMale"
+                                            disabled>
+                                        <span>Male</span>
+                                    </label>
+                                    <label class="gender-option">
+                                        <input type="radio" name="displayGender" value="female" id="displayGenderFemale"
+                                            disabled>
+                                        <span>Female</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Email Address Section -->
+                    <div class="profile-content-section" id="emailSection" data-profile-section="personal">
+                        <div class="section-header-row">
+                            <h3 class="section-subtitle">Email Address</h3>
+                            <a href="#" class="link-edit" id="editEmailBtn">Edit</a>
+                        </div>
+                        <div class="section-content">
+                            <input type="email" id="emailInput" class="form-input" disabled>
+                        </div>
+                    </div>
+
+                    <!-- Mobile Number Section -->
+                    <div class="profile-content-section" id="phoneSection" data-profile-section="personal">
+                        <div class="section-header-row">
+                            <h3 class="section-subtitle">Mobile Number</h3>
+                            <!-- <a href="#" class="link-edit" id="editPhoneBtn">Edit</a> -->
+                        </div>
+                        <div class="section-content">
+                            <input type="tel" id="phoneInput" class="form-input" disabled>
+                        </div>
+                    </div>
+
+                    <!-- FAQs Section -->
+                    <div class="profile-content-section" data-profile-section="personal">
+                        <h3 class="section-subtitle">FAQs</h3>
+                        <div class="faq-list">
+                            <div class="faq-item">
+                                <h4 class="faq-question">What happens when I update my email address ?</h4>
+                                <p class="faq-answer">Your login email id changes, likewise. You'll receive all your
+                                    account related communication on your updated email address .</p>
+                            </div>
+                            <div class="faq-item">
+                                <h4 class="faq-question">When will my Mobitez account be updated with the new email
+                                    address ?</h4>
+                                <p class="faq-answer">It happens as soon as you confirm the verification code sent to
+                                    your email and save the changes.</p>
+                            </div>
+                            <div class="faq-item">
+                                <h4 class="faq-question">What happens to my existing Mobitez account when I update my
+                                    email address ?</h4>
+                                <p class="faq-answer">Updating your email address doesn't invalidate your account. Your
+                                    account remains fully functional. You'll continue seeing your Order history, saved
+                                    information and personal details.</p>
+                            </div>
+                            <div class="faq-item">
+                                <h4 class="faq-question">Does my Seller account get affected when I update my email
+                                    address?</h4>
+                                <p class="faq-answer">Mobitez has a 'single sign-on' policy. Any changes will reflect in
+                                    your Seller account also.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Account Actions -->
+                    <div class="profile-content-section" data-profile-section="personal">
+                        <div class="account-actions">
+                            <button class="btn-danger" id="deactivateAccountBtn">Deactivate Account</button>
+                            <button class="btn-danger" id="deleteAccountBtn">Delete Account</button>
+                        </div>
+                    </div>
+                    <div class="profile-content-section addresses-section" id="addressesSection"
+                        data-profile-section="addresses" style="display: none;">
+                        <div class="section-header-row">
+                            <h2 class="section-title">Manage Addresses</h2>
+                            <button type="button" class="btn-primary btn-add-address" id="toggleAddAddressBtn">
+                                <i class="fas fa-plus"></i> ADD A NEW ADDRESS
+                            </button>
+                        </div>
+
+                        <div class="address-form-container" id="addressFormContainer" style="display: none;">
+                            <div class="address-form-header">
+                                <h3 class="section-subtitle" id="addressFormTitle">Add a new address</h3>
+                                <button type="button" class="btn-location" id="currentLocationBtn">
+                                    <i class="fas fa-location-arrow"></i> Use my current location
+                                </button>
+                            </div>
+                            <form id="addressForm" class="address-form">
+                                <div class="address-form-grid">
+                                    <div class="form-group">
+                                        <input type="text" id="formName" name="name" class="form-input"
+                                            placeholder="Name" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="tel" id="formPhone" name="phone" class="form-input"
+                                            placeholder="10-digit mobile number" maxlength="10" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" id="formPincode" name="postal_code" class="form-input"
+                                            placeholder="Pincode" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" id="formLocality" name="locality" class="form-input"
+                                            placeholder="Locality" required>
+                                    </div>
+                                    <div class="form-group full-width">
+                                        <textarea id="formAddress" name="address_line1" class="form-input" rows="2"
+                                            placeholder="Address (Area and Street)" required></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" id="formCity" name="city" class="form-input"
+                                            placeholder="City/District/Town" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <select id="formState" name="state" class="form-input" required>
+                                            <option value="">--Select State--</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" id="formLandmark" name="landmark" class="form-input"
+                                            placeholder="Landmark (Optional)">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="tel" id="formAlternatePhone" name="alternate_phone"
+                                            class="form-input" placeholder="Alternate Phone (Optional)">
+                                    </div>
+                                </div>
+                                <div class="form-group address-type-group">
+                                    <label>Address Type</label>
+                                    <div class="address-type-options">
+                                        <label>
+                                            <input type="radio" name="address_type" value="home" checked>
+                                            <span>Home</span>
+                                        </label>
+                                        <label>
+                                            <input type="radio" name="address_type" value="work">
+                                            <span>Work</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group form-checkbox">
+                                    <label>
+                                        <input type="checkbox" id="addressDefault" name="is_default">
+                                        <span>Make this my default address</span>
+                                    </label>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="button" class="btn-secondary" id="cancelAddressBtn">Cancel</button>
+                                    <button type="submit" class="btn-primary" id="saveAddressBtn">
+                                        <i class="fas fa-save"></i> Save Address
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="addresses-list" id="addressesList">
+                            <div class="addresses-empty">Loading addresses…</div>
+                        </div>
+                    </div>
+
+                    <div class="profile-content-section upi-section" id="upiSection" data-profile-section="upi"
+                        style="display: none;">
+                        <div class="section-header-row">
+                            <h2 class="section-title">Saved UPI</h2>
+                        </div>
+                        <form id="upiForm" class="upi-form">
+                            <div class="form-row-two">
+                                <div class="form-group">
+                                    <input type="text" id="upiIdInput" class="form-input"
+                                        placeholder="UPI ID (e.g., john@ybl)" required>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" id="upiNameInput" class="form-input"
+                                        placeholder="Account holder name">
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="btn-primary" id="upiSaveBtn">Save UPI</button>
+                            </div>
+                        </form>
+                        <div class="upi-status" id="upiStatus"></div>
+                        <div class="upi-list" id="upiList">
+                            <div class="upi-empty">Loading saved UPI handles…</div>
+                        </div>
+                    </div>
+
+                    <div class="profile-content-section pan-section" id="panSection" data-profile-section="pan"
+                        style="display: none;">
+                        <div class="section-header-row">
+                            <h2 class="section-title">PAN Card Information</h2>
+                        </div>
+                        <form id="panForm" class="pan-form">
+                            <div class="form-row-two">
+                                <div class="form-group">
+                                    <input type="text" id="panNumberInput" class="form-input pan-input"
+                                        placeholder="PAN Card Number" required>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" id="panNameInput" class="form-input pan-input"
+                                        placeholder="Full Name" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="panFileInput">Upload PAN Card (JPEG only, max
+                                    2MB)</label>
+                                <input type="file" id="panFileInput" class="form-input" accept="image/jpeg" required>
+                            </div>
+                            <div class="form-group declaration-group">
+                                <label>
+                                    <input type="checkbox" id="panDeclaration" required>
+                                    I hereby declare that PAN furnished/stated above is correct and belongs to me,
+                                    registered as an account holder. I shall solely be responsible for the consequences
+                                    in case of any false PAN declaration.
+                                </label>
+                            </div>
+                            <div class="pan-status" id="panStatus"></div>
+                            <div class="form-actions">
+                                <button type="submit" class="btn-primary" id="panSubmitBtn">Upload</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- My Reviews & Ratings Section -->
+                    <div class="profile-content-section reviews-section" id="reviewsSection"
+                        data-profile-section="reviews" style="display: none;">
+                        <div class="section-header-row">
+                            <h2 class="section-title">My Ratings & Reviews</h2>
+                        </div>
+                        <div class="reviews-container" id="reviewsContainer">
+                            <div class="reviews-loading">Loading your reviews...</div>
+                        </div>
+                    </div>
+
+                    <!-- Coming Soon Sections -->
+                    <div class="profile-content-section" id="cardsSection" data-profile-section="cards"
+                        style="display: none;">
+                        <div class="section-header-row">
+                            <h2 class="section-title">Saved Cards</h2>
+                        </div>
+                        <div class="coming-soon-mini">
+                            <i class="fas fa-tools"></i>
+                            <h3>Feature Coming Soon</h3>
+                            <p>We're working on bringing secure card storage to Mobitez. Stay tuned!</p>
+                        </div>
+                    </div>
+
+                    <div class="profile-content-section" id="giftcardsSection" data-profile-section="giftcards"
+                        style="display: none;">
+                        <div class="section-header-row">
+                            <h2 class="section-title">Gift Cards</h2>
+                        </div>
+                        <div class="coming-soon-mini">
+                            <i class="fas fa-gift"></i>
+                            <h3>Feature Coming Soon</h3>
+                            <p>Gift cards and wallets are under development. Thank you for your patience!</p>
+                        </div>
+                    </div>
+
+                    <div class="profile-content-section" id="couponsSection" data-profile-section="coupons"
+                        style="display: none;">
+                        <div class="section-header-row">
+                            <h2 class="section-title">My Coupons</h2>
+                        </div>
+                        <div class="coming-soon-mini">
+                            <i class="fas fa-ticket-alt"></i>
+                            <h3>Feature Coming Soon</h3>
+                            <p>Exciting deals and coupons are coming your way very soon!</p>
+                        </div>
+                    </div>
+
+                    <div class="profile-content-section" id="notificationsSection" data-profile-section="notifications"
+                        style="display: none;">
+                        <div class="section-header-row">
+                            <h2 class="section-title">All Notifications</h2>
+                        </div>
+                        <div class="coming-soon-mini">
+                            <i class="fas fa-bell"></i>
+                            <h3>Feature Coming Soon</h3>
+                            <p>We're building a new notification center to keep you updated on all your activities.</p>
+                        </div>
+                    </div>
+
+                    <style>
+                        .coming-soon-mini {
+                            padding: 60px 20px;
+                            text-align: center;
+                            background: #fff;
+                            border-radius: 2px;
+                            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .1);
+                        }
+
+                        .coming-soon-mini i {
+                            font-size: 48px;
+                            color: #fb641b;
+                            margin-bottom: 20px;
+                        }
+
+                        .coming-soon-mini h3 {
+                            font-size: 20px;
+                            margin-bottom: 10px;
+                            color: #212121;
+                        }
+
+                        .coming-soon-mini p {
+                            color: #666;
+                            font-size: 14px;
+                        }
+                    </style>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Mobile Bottom Navigation -->
+    <div class="mobile-bottom-nav">
+        <a href="/" class="nav-item">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </a>
+        <a href="/all-categories.html" class="nav-item">
+            <i class="fas fa-th-large"></i>
+            <span>Categories</span>
+        </a>
+        <a href="/profile.html" class="nav-item active">
+            <i class="fas fa-user-circle"></i>
+            <span>Account</span>
+        </a>
+        <a href="/cart.html" class="nav-item">
+            <i class="fas fa-shopping-cart"></i>
+            <span>Cart</span>
+        </a>
+    </div>
+
+    <!-- Footer loaded dynamically -->
+    <script src="/js/footer-common.js?v=1769841025"></script>
+
+    <script src="/js/profile.js?v=1769841025"></script>
+    <script src="/js/category-nav-common.js?v=1769841025"></script>
+    <script src="/js/mobile-menu.js?v=1769841025"></script>
+    <script src="/js/flipkart-mobile-header.js?v=1769841025"></script>
+</body>
+
+</html>

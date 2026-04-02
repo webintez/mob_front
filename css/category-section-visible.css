@@ -1,0 +1,141 @@
+/* ============================================
+   CATEGORY SECTION VISIBILITY FIX
+   Ensure breadcrumbs/category section displays
+   ============================================ */
+
+/* CRITICAL: Product header row - ensure it's visible */
+html body main.product-main .product-container .product-content .product-right-column .product-main-info-container .product-header-row,
+html body main.product-main .product-container #productContent .product-right-column .product-main-info-container .product-header-row,
+html body .product-main .product-container .product-content .product-right-column .product-main-info-container .product-header-row,
+html body .product-main .product-container #productContent .product-right-column .product-main-info-container .product-header-row,
+body main.product-main .product-container .product-content .product-right-column .product-main-info-container .product-header-row,
+body main.product-main .product-container #productContent .product-right-column .product-main-info-container .product-header-row,
+body .product-main .product-container .product-content .product-right-column .product-main-info-container .product-header-row,
+body .product-main .product-container #productContent .product-right-column .product-main-info-container .product-header-row,
+.product-main-info-container .product-header-row,
+.product-header-row {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    height: auto !important;
+    min-height: 24px !important; /* Ensure minimum height */
+    max-height: none !important;
+    margin: 0 !important;
+    margin-top: 0 !important;
+    margin-bottom: 8px !important;
+    padding: 0 !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    width: 100% !important;
+    position: relative !important; /* Ensure it's in normal flow */
+    z-index: 1 !important;
+}
+
+/* CRITICAL: Breadcrumbs inline - ensure it's visible */
+html body main.product-main .product-container .product-content .product-right-column .product-main-info-container .product-header-row .breadcrumbs-inline,
+html body main.product-main .product-container #productContent .product-right-column .product-main-info-container .product-header-row .breadcrumbs-inline,
+html body .product-main .product-container .product-content .product-right-column .product-main-info-container .product-header-row .breadcrumbs-inline,
+html body .product-main .product-container #productContent .product-right-column .product-main-info-container .product-header-row .breadcrumbs-inline,
+body main.product-main .product-container .product-content .product-right-column .product-main-info-container .product-header-row .breadcrumbs-inline,
+body main.product-main .product-container #productContent .product-right-column .product-main-info-container .product-header-row .breadcrumbs-inline,
+body .product-main .product-container .product-content .product-right-column .product-main-info-container .product-header-row .breadcrumbs-inline,
+body .product-main .product-container #productContent .product-right-column .product-main-info-container .product-header-row .breadcrumbs-inline,
+.product-header-row .breadcrumbs-inline,
+.breadcrumbs-inline {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    height: auto !important;
+    min-height: auto !important;
+    align-items: center !important;
+    gap: 8px !important;
+    font-size: 12px !important;
+    font-family: 'Roboto', sans-serif !important;
+    flex: 1 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* CRITICAL: Breadcrumbs inline links and spans - ensure visible */
+.breadcrumbs-inline a,
+.breadcrumbs-inline span,
+.breadcrumbs-inline i {
+    display: inline !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    color: inherit !important;
+}
+
+.breadcrumbs-inline a {
+    color: #878787 !important;
+    text-decoration: none !important;
+}
+
+.breadcrumbs-inline a:hover {
+    color: #0a4409 !important;
+}
+
+.breadcrumbs-inline i {
+    font-size: 8px !important;
+    color: #878787 !important;
+}
+
+.breadcrumbs-inline span {
+    color: #212121 !important;
+    font-weight: 500 !important;
+}
+
+/* CRITICAL: Product top actions - ensure visible */
+.product-header-row .product-top-actions {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    align-items: center !important;
+    gap: 16px !important;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    html body main.product-main .product-container .product-content .product-right-column .product-main-info-container .product-header-row,
+    html body main.product-main .product-container #productContent .product-right-column .product-main-info-container .product-header-row,
+    html body .product-main .product-container .product-content .product-right-column .product-main-info-container .product-header-row,
+    html body .product-main .product-container #productContent .product-right-column .product-main-info-container .product-header-row,
+    body main.product-main .product-container .product-content .product-right-column .product-main-info-container .product-header-row,
+    body main.product-main .product-container #productContent .product-right-column .product-main-info-container .product-header-row,
+    body .product-main .product-container .product-content .product-right-column .product-main-info-container .product-header-row,
+    body .product-main .product-container #productContent .product-right-column .product-main-info-container .product-header-row,
+    .product-main-info-container .product-header-row,
+    .product-header-row {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        justify-content: flex-start !important;
+        gap: 20px !important;
+    }
+    
+    html body main.product-main .product-container .product-content .product-right-column .product-main-info-container .product-header-row .breadcrumbs-inline,
+    html body main.product-main .product-container #productContent .product-right-column .product-main-info-container .product-header-row .breadcrumbs-inline,
+    html body .product-main .product-container .product-content .product-right-column .product-main-info-container .product-header-row .breadcrumbs-inline,
+    html body .product-main .product-container #productContent .product-right-column .product-main-info-container .product-header-row .breadcrumbs-inline,
+    body main.product-main .product-container .product-content .product-right-column .product-main-info-container .product-header-row .breadcrumbs-inline,
+    body main.product-main .product-container #productContent .product-right-column .product-main-info-container .product-header-row .breadcrumbs-inline,
+    body .product-main .product-container .product-content .product-right-column .product-main-info-container .product-header-row .breadcrumbs-inline,
+    body .product-main .product-container #productContent .product-right-column .product-main-info-container .product-header-row .breadcrumbs-inline,
+    .product-header-row .breadcrumbs-inline,
+    .breadcrumbs-inline {
+        width: 100% !important;
+        flex: 0 0 auto !important;
+        order: 1 !important;
+    }
+    
+    .product-header-row .product-top-actions {
+        width: 100% !important;
+        position: static !important;
+        top: auto !important;
+        right: auto !important;
+        order: 2 !important;
+        flex: 0 0 auto !important;
+    }
+}
+

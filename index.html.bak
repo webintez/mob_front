@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <link rel="icon" href="/favicon.png" type="image/png">
+    <title>Mobitez - Online Shopping Site for Mobiles, Electronics, Furniture, Grocery, Lifestyle, Books & More</title>
+
+    <!-- CSS Bundles (Keeping existing hierarchy) -->
+    <link rel="stylesheet" href="/css/style.css?v=branding_fix_v14">
+    <link rel="stylesheet" href="/css/videos.css?v=brand_v2">
+    <link rel="stylesheet" href="/css/categories.css?v=brand_v2">
+    <link rel="stylesheet" href="/css/homepage-categories.css?v=brand_v2">
+    <link rel="stylesheet" href="/css/recently-viewed.css?v=brand_v2">
+    <link rel="stylesheet" href="/css/mobile-responsive.css?v=brand_v2">
+    <link rel="stylesheet" href="/css/flipkart-mobile-style.css?v=branding_fix_v14">
+    <link rel="stylesheet" href="/css/mobile-header-consistent.css?v=branding_fix_v14">
+    <link rel="stylesheet" href="/css/flipkart-mobile-header.css?v=logo_scale_v7">
+    <link rel="stylesheet" href="/css/remove-empty-container-search.css?v=brand_v2">
+    <link rel="stylesheet" href="/css/mobile-product-buttons.css?v=brand_v2">
+    <link rel="stylesheet" href="/css/flipkart-mobile-homepage.css?v=mobile_arrows_resize">
+    <link rel="stylesheet" href="/css/desktop-full-width.css?v=branding_fix_v11">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/seo-footer.css">
+    <link rel="stylesheet" href="/css/flipkart-footer.css">
+
+    <!-- Core APIs -->
+    <script src="/js/auth.js?v=1769841025"></script>
+    <script src="/js/cart-api.js?v=1769841025"></script>
+    <script src="/js/wishlist-api.js?v=1769841025"></script>
+    <script src="/js/search-common.js?v=1769841025"></script>
+    <script src="/js/header-common.js?v=branding_fix_v14"></script> <!-- Legacy support during transition -->
+</head>
+
+<body class="homepage">
+    <!-- Header Placeholder -->
+    <header id="header-container"></header>
+
+    <!-- Navigation Menu -->
+    <nav class="nav-menu homepage-hidden">
+        <div class="nav-container" id="navContainer"></div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Categories Navigation Bar -->
+        <section class="homepage-categories-nav">
+            <div class="homepage-categories-container" id="homepageCategoriesNav">
+                <div class="loading-spinner">
+                    <div class="spinner"></div>
+                    <p>Loading categories...</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Banner Carousel -->
+        <section class="banner-section">
+            <div class="banner-container" id="bannerContainer">
+                <div class="banner-loading">Loading banners...</div>
+            </div>
+        </section>
+
+        <!-- Dynamic Sections Container -->
+        <div id="dynamic-sections-container" class="dynamic-sections-container"></div>
+
+        <!-- Featured Products -->
+        <section class="featured-section">
+            <div class="container">
+                <h2 class="section-title">Featured Products</h2>
+                <div class="carousel-container" id="featuredProducts">
+                    <div class="loading-spinner">
+                        <div class="spinner"></div>
+                        <p>Loading featured products...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- All Products -->
+        <section class="products-section">
+            <div class="container">
+                <h2 class="section-title">All Products</h2>
+                <div class="products-grid" id="allProducts"></div>
+                <div class="loading-more" id="loadingMore" style="display: none;">
+                    <div class="spinner"></div>
+                    <p>Loading more products...</p>
+                </div>
+                <div class="end-message" id="endMessage" style="display: none;"></div>
+            </div>
+        </section>
+
+        <!-- Recently Viewed -->
+        <section class="recently-viewed-section" id="recentlyViewedSection" style="display: none;">
+            <div class="container">
+                <h2 class="section-title">Recently Viewed</h2>
+                <div class="recently-viewed-container">
+                    <div class="recently-viewed-scroll" id="recentlyViewedScroll">
+                        <div class="recently-viewed-products" id="recentlyViewedProducts"></div>
+                    </div>
+                    <button class="scroll-btn scroll-btn-right" id="recentlyViewedScrollRight">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Page Initialization -->
+    <script type="module">
+        import { Layout } from './js/components/Layout.js';
+        import { HomePage } from './js/pages/HomePage.js';
+
+        const layout = new Layout();
+        layout.init(HomePage);
+    </script>
+
+    <!-- Helper Scripts -->
+    <script src="/js/mobile-menu.js?v=1769841025"></script>
+    <script src="/js/flipkart-mobile-header.js?v=logo_js_fix_v1"></script>
+    <script src="/js/recently-viewed.js?v=1769841025"></script>
+    <script src="/js/videos.js?v=1.0"></script>
+    <script src="/js/app.js?v=mobiles_pg_v1"></script>
+</body>
+
+</html>

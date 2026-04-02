@@ -1,0 +1,338 @@
+/* ============================================
+   FORCE STICKY IMAGE - ABSOLUTE FIX
+   This file MUST load LAST to override all other CSS
+   CRITICAL: All parent containers MUST have overflow-y: visible (NOT auto)
+   ============================================ */
+
+/* CRITICAL: Ensure body/html is the scrolling container - NOT any parent */
+html {
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    height: 100% !important;
+    position: relative !important;
+}
+
+/* CRITICAL: Body MUST be the scrolling container - MAXIMUM SPECIFICITY */
+html body,
+body,
+body[class],
+body:not([class]),
+html > body {
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    height: auto !important;
+    min-height: 100vh !important;
+    position: relative !important;
+    transform: none !important;
+    will-change: auto !important;
+    /* CRITICAL: Body must be the scrolling container for sticky to work */
+}
+
+/* Ensure body on product page specifically - even higher specificity */
+html body:has(.product-main),
+html body .product-main,
+body:has(.product-main),
+body .product-main {
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+}
+
+/* CRITICAL: Remove ALL properties that break sticky */
+.product-main,
+.product-main *,
+.product-main > .container,
+.product-main > .container *,
+.product-container,
+.product-container *,
+.product-content,
+.product-content * {
+    transform: none !important;
+    will-change: auto !important;
+    perspective: none !important;
+    filter: none !important;
+    backdrop-filter: none !important;
+    contain: none !important;
+}
+
+/* CRITICAL: Force overflow visible on ALL parents - NO scrolling containers between body and sticky element */
+.product-main {
+    overflow: visible !important;
+    overflow-x: hidden !important;
+    overflow-y: visible !important;
+    position: relative !important;
+    height: auto !important;
+    min-height: 100vh !important;
+    /* CRITICAL: Must NOT be a scrolling container */
+}
+
+/* NUCLEAR: Override ANY overflow on product-main with maximum specificity */
+main.product-main,
+main[class*="product-main"],
+.product-main[class],
+[class*="product-main"],
+html body main.product-main,
+html body .product-main,
+body main.product-main,
+body .product-main {
+    overflow: visible !important;
+    overflow-x: hidden !important;
+    overflow-y: visible !important;
+    /* CRITICAL: overflow-y MUST be visible, NOT auto */
+}
+
+/* CRITICAL: Fix the .container that's breaking sticky */
+/* CRITICAL: Must override overflow: hidden (shorthand) which sets both x and y */
+.product-main > .container,
+.product-main > .container[class],
+.product-main .container,
+.product-main .container[class],
+.product-container .container,
+.product-content .container,
+.product-main > div.container,
+.product-main div.container,
+div.container,
+html body main.product-main > .container,
+html body main.product-main .container,
+html body .product-main > .container,
+html body .product-main .container,
+body main.product-main > .container,
+body main.product-main .container,
+body .product-main > .container,
+body .product-main .container {
+    overflow: visible !important;
+    overflow-x: hidden !important;
+    overflow-y: visible !important;
+    position: relative !important;
+    height: auto !important;
+    max-height: none !important;
+    transform: none !important;
+    /* CRITICAL: Must NOT be a scrolling container - override any overflow: hidden */
+}
+
+/* Also fix base .container when inside product-main */
+.product-main .container,
+.product-main > .container {
+    overflow: visible !important;
+    overflow-x: hidden !important;
+    overflow-y: visible !important;
+}
+
+/* CRITICAL: Fix #productContainer specifically */
+#productContainer,
+div#productContainer,
+.product-container#productContainer {
+    overflow: visible !important;
+    overflow-x: hidden !important;
+    overflow-y: visible !important;
+    position: relative !important;
+    height: auto !important;
+    max-height: none !important;
+    transform: none !important;
+}
+
+.product-container {
+    overflow: visible !important;
+    overflow-x: hidden !important;
+    overflow-y: visible !important;
+    position: relative !important;
+    height: auto !important;
+    transform: none !important;
+    /* CRITICAL: Must NOT be a scrolling container */
+}
+
+/* NUCLEAR: Override ANY overflow on product-container */
+/* CRITICAL: Must override overflow: hidden (shorthand) which sets both x and y */
+div.product-container,
+div[class*="product-container"],
+.product-container[class],
+[class*="product-container"],
+html body .product-container,
+html body div.product-container,
+html body #productContainer,
+html body div#productContainer,
+body .product-container,
+body div.product-container,
+body #productContainer,
+body div#productContainer,
+.product-main .product-container,
+.product-main > .container .product-container,
+.product-main #productContainer,
+#productContainer,
+div#productContainer,
+.product-container#productContainer,
+html body main.product-main .product-container,
+html body main.product-main #productContainer,
+html body .product-main .product-container,
+html body .product-main #productContainer {
+    overflow: visible !important;
+    overflow-x: hidden !important;
+    overflow-y: visible !important;
+    /* CRITICAL: overflow-y MUST be visible, NOT auto - this breaks sticky! */
+}
+
+/* CRITICAL: Grid container must be tall enough for sticky to work */
+/* Sticky requires the container to be taller than viewport to actually stick */
+.product-content,
+#productContent {
+    display: grid !important;
+    grid-template-columns: 37.3% 62.7% !important;
+    align-items: start !important;
+    overflow: visible !important;
+    overflow-x: hidden !important;
+    overflow-y: visible !important;
+    position: relative !important;
+    min-height: 150vh !important; /* Must be taller than viewport for sticky to work */
+    height: auto !important;
+    transform: none !important;
+    /* CRITICAL: Must NOT be a scrolling container - body must scroll */
+}
+
+/* NUCLEAR: Override ANY overflow on product-content */
+/* CRITICAL: Must override overflow: hidden (shorthand) which sets both x and y */
+div.product-content,
+div[class*="product-content"],
+.product-content[class],
+[class*="product-content"],
+#productContent,
+html body .product-content,
+html body #productContent,
+html body div.product-content,
+html body div#productContent,
+body .product-content,
+body #productContent,
+body div.product-content,
+body div#productContent,
+.product-main .product-content,
+.product-main #productContent,
+.product-container .product-content,
+.product-container #productContent,
+#productContainer .product-content,
+#productContainer #productContent,
+html body main.product-main .product-content,
+html body main.product-main #productContent,
+html body .product-main .product-content,
+html body .product-main #productContent {
+    overflow: visible !important;
+    overflow-x: hidden !important;
+    overflow-y: visible !important;
+    /* CRITICAL: overflow-y MUST be visible, NOT auto - this is the key fix! */
+}
+
+/* NUCLEAR: Force sticky with maximum specificity */
+.product-content .product-images-wrapper,
+#productContent .product-images-wrapper,
+.product-images-wrapper,
+div.product-images-wrapper,
+[class*="product-images-wrapper"] {
+    position: -webkit-sticky !important;
+    position: sticky !important;
+    top: 136px !important; /* Header (56px) + Nav (56px) + Breadcrumbs (24px) = 136px */
+    align-self: start !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    overflow: visible !important;
+    box-sizing: border-box !important;
+    z-index: 100 !important;
+    height: fit-content !important;
+    max-height: calc(100vh - 112px) !important;
+    background: white !important;
+    transform: none !important;
+    will-change: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.product-right-column {
+    position: relative !important;
+    overflow-y: visible !important;
+    transform: none !important;
+}
+
+/* CRITICAL: Ensure buttons are properly positioned and clickable */
+.product-actions-left {
+    position: relative !important;
+    z-index: 101 !important;
+    background: white !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+.product-actions-left .btn-add-cart,
+.product-actions-left .btn-buy-now {
+    position: relative !important;
+    z-index: 102 !important;
+    cursor: pointer !important;
+    pointer-events: auto !important;
+}
+
+/* Override ALL media queries */
+@media (min-width: 769px) {
+    .product-content .product-images-wrapper,
+    #productContent .product-images-wrapper,
+    .product-images-wrapper {
+        position: -webkit-sticky !important;
+        position: sticky !important;
+        top: 136px !important; /* Header (56px) + Nav (56px) + Breadcrumbs (24px) = 136px */
+    }
+    
+    /* Ensure parent containers allow sticky */
+    .product-content,
+    #productContent {
+        overflow: visible !important;
+        overflow-y: visible !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .product-content .product-images-wrapper,
+    #productContent .product-images-wrapper,
+    .product-images-wrapper {
+        position: relative !important;
+        top: 0 !important;
+    }
+}
+
+/* ============================================
+   FINAL NUCLEAR OVERRIDE - ABSOLUTE LAST RESORT
+   This section uses the HIGHEST possible specificity
+   ============================================ */
+
+/* Override ANY rule that sets overflow-y: auto on these containers */
+html body main.product-main[class],
+html body main[class*="product-main"],
+html body .product-main[class],
+html body [class*="product-main"],
+html body main.product-main > .container[class],
+html body main.product-main .container[class],
+html body .product-main > .container[class],
+html body .product-main .container[class],
+html body .product-container[class],
+html body [class*="product-container"],
+html body #productContainer[id],
+html body [id*="productContainer"],
+html body .product-content[class],
+html body [class*="product-content"],
+html body #productContent[id],
+html body [id*="productContent"] {
+    overflow: visible !important;
+    overflow-x: hidden !important;
+    overflow-y: visible !important;
+}
+
+/* Also target by element type for maximum coverage */
+html body main.product-main,
+html body main[class*="product-main"],
+html body .product-main,
+html body [class*="product-main"],
+html body main.product-main > div.container,
+html body main.product-main div.container,
+html body .product-main > div.container,
+html body .product-main div.container,
+html body div.product-container,
+html body div#productContainer,
+html body div.product-content,
+html body div#productContent {
+    overflow: visible !important;
+    overflow-x: hidden !important;
+    overflow-y: visible !important;
+}

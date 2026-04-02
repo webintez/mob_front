@@ -1,0 +1,394 @@
+/* ============================================
+   FLIPKART EXACT SPACING - NO GAPS
+   Match Flipkart's tight spacing exactly
+   ============================================ */
+
+/* CRITICAL: Remove ALL gaps between header, nav, breadcrumbs, and content */
+
+/* Header - No margin/padding below */
+.header {
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+    border-bottom: none !important;
+}
+
+/* Nav Menu - Directly below header, no gap */
+.nav-menu {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    border-top: none !important;
+    border-bottom: 1px solid #e0e0e0 !important;
+}
+
+.nav-container {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+}
+
+/* Breadcrumbs - Directly below nav, no gap */
+/* CRITICAL: Must account for fixed header (56px) + nav (56px) = 112px */
+.breadcrumbs {
+    margin-top: 112px !important;
+    /* Header (56px) + Nav (56px) = 112px */
+    margin-bottom: 0 !important;
+    padding-top: 12px !important;
+    /* Keep padding for visual spacing */
+    padding-bottom: 12px !important;
+    border-top: none !important;
+    border-bottom: none !important;
+    box-shadow: none !important;
+    position: relative !important;
+    z-index: 1 !important;
+}
+
+.breadcrumbs .container {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+}
+
+/* Product Main - Starts immediately after breadcrumbs, no gap */
+.product-main {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+    border-top: none !important;
+}
+
+.product-main>.container {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+.product-container {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+.product-content {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+    gap: 0 !important;
+}
+
+/* Remove extra gaps under text elements - Match Flipkart's tight spacing */
+
+/* Product Title - No extra margin below */
+.product-title,
+.product-title h1,
+.product-title h2 {
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+    line-height: 1.3 !important;
+}
+
+/* Ratings - Tight spacing */
+.ratings-section,
+.ratings-box {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    line-height: 1.2 !important;
+}
+
+/* Price - No extra gap */
+.price-section,
+.price-container {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    line-height: 1.2 !important;
+}
+
+.price-current {
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+.price-original {
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+.discount-badge {
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+/* Delivery Info - Tight spacing */
+.delivery-info {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    line-height: 1.3 !important;
+}
+
+/* Offers Section - No extra gaps */
+.offers-section,
+.offer-item {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    line-height: 1.3 !important;
+}
+
+.offer-item {
+    margin-bottom: 4px !important;
+    /* Minimal gap like Flipkart */
+}
+
+/* Product Info Sections - Tight spacing */
+.product-info-section,
+.product-details-section {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+.product-info-section>*,
+.product-details-section>* {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    line-height: 1.4 !important;
+}
+
+/* Variants/Swatches - Tight spacing */
+.variants-section,
+.swatch-group {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    gap: 8px !important;
+    /* Minimal gap like Flipkart */
+}
+
+/* Action Buttons - No gap above */
+.product-actions-left {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+    border-top: none !important;
+}
+
+/* Product Images - No extra padding/margins */
+.product-images-wrapper {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+.product-images {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+/* Remove gap above main image container */
+.main-image-container {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+.main-image-wrapper {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+/* Remove gap above thumbnail gallery */
+.thumbnail-gallery-vertical {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+/* All paragraphs and text - Tight line-height */
+.product-right-column p,
+.product-info p,
+.product-details p,
+.product-description p {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    line-height: 1.4 !important;
+}
+
+/* Headings - Tight spacing */
+.product-right-column h1,
+.product-right-column h2,
+.product-right-column h3,
+.product-right-column h4,
+.product-info h1,
+.product-info h2,
+.product-info h3,
+.product-info h4 {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    line-height: 1.3 !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+/* Lists - Tight spacing */
+.product-right-column ul,
+.product-right-column ol,
+.product-info ul,
+.product-info ol {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+.product-right-column li,
+.product-info li {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    line-height: 1.4 !important;
+}
+
+/* Spacing between sections - Minimal like Flipkart */
+.product-info-section+.product-info-section,
+.product-details-section+.product-details-section {
+    margin-top: 16px !important;
+    /* Minimal gap between sections */
+}
+
+/* Remove all unnecessary gaps in product details tabs */
+.product-details-tabs {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+.tab-content {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+/* Specifications table - Tight spacing */
+.specifications-table,
+.specifications-table tr,
+.specifications-table td {
+    margin: 0 !important;
+    padding: 8px 0 !important;
+    /* Minimal padding like Flipkart */
+    line-height: 1.4 !important;
+}
+
+/* Reviews and Ratings - Tight spacing */
+.ratings-reviews-section,
+.review-item {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    line-height: 1.4 !important;
+}
+
+.review-item+.review-item {
+    margin-top: 16px !important;
+    /* Minimal gap between reviews */
+}
+
+/* Questions Section - Tight spacing */
+.questions-answers-section,
+.question-item {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    line-height: 1.4 !important;
+}
+
+.question-item+.question-item {
+    margin-top: 12px !important;
+    /* Minimal gap between questions */
+}
+
+/* Ensure breadcrumbs positioning accounts for fixed header+nav */
+/* Already set above, this is redundant but kept for clarity */
+
+/* Product content should start immediately after breadcrumbs */
+.product-main {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+/* Ensure product content doesn't get hidden behind fixed nav */
+.product-container {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+    position: relative !important;
+    z-index: 1 !important;
+}
+
+.product-content {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+    position: relative !important;
+    z-index: 1 !important;
+}
+
+/* CRITICAL: Ensure product-right-column and product-info start below breadcrumbs */
+.product-right-column {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+    position: relative !important;
+    z-index: 1 !important;
+}
+
+.product-info {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+    position: relative !important;
+    z-index: 1 !important;
+}
+
+.product-title {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+    position: relative !important;
+    z-index: 1 !important;
+}
+
+@media (min-width: 769px) {
+    .product-title {
+        padding-right: 120px !important;
+        /* Make room for top actions (Compare/Share) */
+    }
+}
+
+/* Ensure top actions don't overlap title */
+.product-top-actions {
+    top: 0 !important;
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+/* Remove any default margins from body/html that create gaps */
+body {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+html {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+/* Ensure no gaps in the overall layout flow */
+body>header+nav {
+    margin-top: 0 !important;
+}
+
+body>nav+.breadcrumbs {
+    margin-top: 0 !important;
+}
+
+body>.breadcrumbs+main {
+    margin-top: 0 !important;
+}

@@ -1,0 +1,327 @@
+/* Payment Page Specific Styles */
+
+.payment-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.payment-header-f {
+    background: white;
+    padding: 16px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+    margin-bottom: 16px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.payment-header-left {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.btn-back-f {
+    font-size: 20px;
+    color: var(--f-text-black);
+    cursor: pointer;
+}
+
+.payment-header-title {
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.payment-secure-badge {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--f-dark-grey);
+    font-size: 12px;
+}
+
+/* Three Column Layout for Payment */
+.payment-grid {
+    display: grid;
+    grid-template-columns: 280px 1fr 380px;
+    gap: 12px;
+    align-items: start;
+}
+
+/* Method Sidebar */
+.payment-methods-sidebar {
+    background: white;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    border-radius: 2px;
+}
+
+.pm-item {
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--f-light-grey);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--f-text-black);
+    transition: background 0.2s;
+}
+
+.pm-item:last-child {
+    border-bottom: none;
+}
+
+.pm-item.active {
+    background: #f1f3f6;
+    color: var(--f-blue);
+    border-left: 3px solid var(--f-blue);
+}
+
+.pm-item i {
+    font-size: 18px;
+    width: 20px;
+    text-align: center;
+}
+
+.pm-subtext {
+    display: block;
+    font-size: 11px;
+    color: var(--f-green);
+    font-weight: normal;
+}
+
+/* Method Content Area */
+.payment-method-details {
+    background: white;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    border-radius: 2px;
+    padding: 24px;
+    min-height: 400px;
+}
+
+.pm-content-section {
+    display: none;
+}
+
+.pm-content-section.active {
+    display: block;
+}
+
+/* UPI Section Specifics */
+.upi-option {
+    border: 1px solid var(--f-border-grey);
+    padding: 16px;
+    border-radius: 4px;
+    margin-bottom: 16px;
+}
+
+.upi-input-group {
+    display: flex;
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.upi-input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid var(--f-border-grey);
+    border-radius: 2px;
+}
+
+.btn-verify-f {
+    background: var(--f-blue);
+    color: white;
+    border: none;
+    padding: 0 24px;
+    border-radius: 2px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.btn-pay-f {
+    background: var(--f-orange);
+    color: white;
+    border: none;
+    padding: 14px 100px;
+    font-size: 16px;
+    font-weight: 500;
+    border-radius: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    margin-top: 24px;
+    width: 100%;
+}
+
+/* Discount Offer Box */
+.payment-offers {
+    background: #e9f2e9;
+    padding: 16px;
+    border-radius: 4px;
+    margin-top: 16px;
+}
+
+.offer-item-f {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.offer-icon {
+    font-size: 20px;
+    color: var(--f-blue);
+}
+
+.offer-text {
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+/* Focused Payment Header */
+.focused-payment-header {
+    background: white !important;
+    padding: 12px 16px !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08) !important;
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 10001 !important;
+    border-bottom: 1px solid #e0e0e0 !important;
+    height: auto !important;
+    min-height: 52px !important;
+}
+
+.focused-header-container {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    flex-wrap: nowrap !important;
+    width: 100% !important;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.payment-header-left {
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    flex-shrink: 0 !important;
+}
+
+.btn-back-f {
+    font-size: 18px !important;
+    color: #212121 !important;
+    text-decoration: none !important;
+    display: flex !important;
+    align-items: center !important;
+}
+
+.payment-header-title {
+    font-size: 16px !important;
+    font-weight: 500 !important;
+    color: #212121 !important;
+    white-space: nowrap !important;
+}
+
+.payment-secure-badge {
+    display: flex !important;
+    align-items: center !important;
+    gap: 4px !important;
+    color: #878787 !important;
+    font-size: 10px !important;
+    flex-shrink: 0 !important;
+}
+
+.payment-page-flow main {
+    padding-top: 10px !important;
+}
+
+/* Mobile Responsive */
+@media (max-width: 992px) {
+
+    /* Absolute guard against site-wide header interference */
+    .payment-page-flow .header,
+    .payment-page-flow #header,
+    .payment-page-flow .header-top-row,
+    .payment-page-flow .search-container,
+    .payment-page-flow .mobile-menu-toggle {
+        display: none !important;
+    }
+
+    .payment-grid {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+
+    .payment-methods-sidebar {
+        display: flex;
+        overflow-x: auto;
+        white-space: nowrap;
+        background: #f1f3f6;
+        padding: 8px;
+        gap: 8px;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+
+    .payment-methods-sidebar::-webkit-scrollbar {
+        display: none;
+    }
+
+    .pm-item {
+        border-bottom: none;
+        border-right: none;
+        flex: 1;
+        min-width: 150px;
+        background: white;
+        padding: 12px;
+        border-radius: 4px;
+        flex-direction: column;
+        text-align: center;
+        gap: 6px;
+        font-size: 13px;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        display: flex !important;
+        align-items: center !important;
+    }
+
+    .pm-item i {
+        font-size: 20px;
+        margin-bottom: 2px;
+        color: #0a4409;
+    }
+
+    .pm-item div {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .pm-item .pm-subtext {
+        font-size: 9px;
+        margin-top: 2px;
+        text-align: center;
+        white-space: normal;
+        line-height: 1.2;
+        color: #388e3c !important;
+    }
+
+    .pm-item.active {
+        background: white;
+        color: var(--f-blue);
+        border: 2px solid var(--f-blue);
+    }
+
+    .payment-method-details {
+        padding: 20px 16px;
+        min-height: auto;
+    }
+
+    .btn-pay-f {
+        padding: 14px 20px;
+        width: 100% !important;
+    }
+}

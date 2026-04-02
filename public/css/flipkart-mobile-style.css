@@ -1,0 +1,797 @@
+/* ============================================
+   FLIPKART-STYLE MOBILE ENHANCEMENTS
+   Based on Flipkart mobile design patterns
+   Desktop view is NOT affected - only mobile
+   ============================================ */
+
+/* Mobile - 768px and below */
+@media (max-width: 768px) {
+    /* ============================================
+       HEADER ENHANCEMENTS - Flipkart Style
+       ============================================ */
+
+    /* Compact header like Flipkart */
+    .header {
+        padding: 8px 0 !important;
+        height: auto !important;
+        min-height: 56px;
+    }
+
+    .header-container {
+        padding: 0 8px !important;
+        gap: 6px !important;
+        align-items: center !important;
+        height: 56px !important;
+        min-height: 56px !important;
+        max-height: 56px !important;
+        width: 100% !important;
+        max-width: 100vw !important;
+        overflow: visible !important;
+        display: flex !important;
+        flex-wrap: nowrap !important;
+        justify-content: space-between !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Logo - Compact */
+    .logo {
+        min-width: auto !important;
+        max-width: 80px !important;
+        flex-shrink: 0 !important;
+        overflow: visible !important;
+    }
+
+    .logo-image {
+        height: 28px !important;
+        max-height: 28px !important;
+        width: auto !important;
+        max-width: 100% !important;
+    }
+
+    /* Mobile Menu Toggle - More prominent */
+    .mobile-menu-toggle {
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        padding: 0 !important;
+        margin-right: 8px !important;
+        order: 0 !important;
+    }
+
+    .mobile-menu-toggle i {
+        font-size: 20px !important;
+    }
+
+    /* Search container - Flexible */
+    .search-container {
+        flex: 1 1 auto !important;
+        min-width: 0 !important;
+        max-width: none !important;
+        overflow: hidden !important;
+        display: flex !important;
+        align-items: center !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .search-input {
+        flex: 1 !important;
+        min-width: 0 !important;
+        padding: 6px 10px !important;
+        font-size: 12px !important;
+        height: 32px !important;
+    }
+
+    .search-btn {
+        flex-shrink: 0 !important;
+        width: 32px !important;
+        height: 32px !important;
+        padding: 0 !important;
+        min-width: 32px !important;
+    }
+
+    .search-btn i {
+        font-size: 12px !important;
+    }
+
+    /* Header Right - Icon-based like Flipkart */
+    .header-right {
+        gap: 4px !important;
+        order: 2 !important;
+        flex-shrink: 0 !important;
+        display: flex !important;
+        align-items: center !important;
+        overflow: visible !important;
+        min-width: auto !important;
+    }
+
+    /* Hide text labels, show only icons on mobile */
+    .header-item {
+        min-width: auto !important;
+        width: auto !important;
+        height: auto !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0 !important;
+        overflow: visible !important;
+    }
+
+    .header-item a {
+        padding: 0 !important;
+        font-size: 0 !important;
+        /* Hide text */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: auto !important;
+        height: auto !important;
+    }
+
+    /* Show icons only */
+    .header-item a i {
+        font-size: 14px !important;
+        display: block !important;
+    }
+
+    /* Hide login button completely on mobile */
+    .login-btn,
+    .login-dropdown-wrapper {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
+        width: 0 !important;
+        height: 0 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    /* Hide dropdown on mobile */
+    .login-dropdown,
+    .more-dropdown {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
+    }
+
+    /* Cart - Icon only with badge - Compact */
+    .cart {
+        width: 32px !important;
+        height: 32px !important;
+        padding: 0 !important;
+        min-width: 32px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    .cart i {
+        font-size: 14px !important;
+    }
+
+    .cart-text {
+        display: none !important;
+    }
+
+    .cart-count {
+        min-width: 14px !important;
+        height: 14px !important;
+        font-size: 9px !important;
+        top: 0 !important;
+        right: 0 !important;
+    }
+
+    /* Cart count badge - already defined above, this is override */
+    .cart-count {
+        position: absolute !important;
+        top: 0 !important;
+        right: 0 !important;
+        min-width: 14px !important;
+        height: 14px !important;
+        font-size: 9px !important;
+        padding: 0 2px !important;
+        box-shadow: 0 2px 4px rgba(255, 97, 97, 0.4), 0 0 0 1.5px white;
+        z-index: 100;
+        font-size: 10px !important;
+        padding: 0 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Hide "Sell with Us" and "More" on mobile - Icon only mode */
+    .become-seller {
+        display: none !important;
+    }
+
+    /* More options - can be shown as icon if needed */
+    .more-options {
+        display: none !important;
+    }
+
+    /* Login dropdown - Mobile friendly bottom sheet */
+    .login-dropdown {
+        position: fixed !important;
+        bottom: 0 !important;
+        top: auto !important;
+        left: 0 !important;
+        right: 0 !important;
+        width: 100% !important;
+        max-width: none !important;
+        border-radius: 16px 16px 0 0 !important;
+        box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15) !important;
+        transform: translateY(100%) !important;
+        transition: transform 0.3s ease-in-out !important;
+        max-height: 70vh;
+        overflow-y: auto;
+    }
+
+    .login-dropdown.show {
+        transform: translateY(0) !important;
+    }
+
+    .more-dropdown {
+        position: fixed !important;
+        bottom: 0 !important;
+        top: auto !important;
+        left: 0 !important;
+        right: 0 !important;
+        width: 100% !important;
+        max-width: none !important;
+        border-radius: 16px 16px 0 0 !important;
+        box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15) !important;
+        transform: translateY(100%) !important;
+        transition: transform 0.3s ease-in-out !important;
+        max-height: 70vh;
+        overflow-y: auto;
+    }
+
+    .more-dropdown.show {
+        transform: translateY(0) !important;
+    }
+
+    /* Search Bar - Full width below header */
+    .search-container {
+        order: 3 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 8px 0 0 0 !important;
+        padding: 0 12px !important;
+    }
+
+    .search-input {
+        font-size: 14px !important;
+        padding: 10px 16px !important;
+        height: 40px !important;
+        border-radius: 2px 0 0 2px;
+    }
+
+    .search-btn {
+        padding: 10px 20px !important;
+        height: 40px !important;
+        border-radius: 0 2px 2px 0;
+        min-width: 50px;
+    }
+
+    /* ============================================
+       HOMEPAGE CATEGORIES - Flipkart Style
+       ============================================ */
+
+    .homepage-categories-nav {
+        padding: 12px 0 !important;
+        margin-top: 16px !important;
+        /* Increased spacing below header to prevent hiding */
+        margin-bottom: 6px !important;
+        background: white;
+        border-bottom: 1px solid #e0e0e0;
+        position: relative !important;
+        z-index: 1 !important;
+        /* Ensure it's above other content */
+    }
+
+    .homepage-categories-container {
+        padding: 0 12px 0 16px !important;
+        /* Left padding to shift left, right padding for spacing */
+        gap: 12px !important;
+        /* Add gap between category items */
+        justify-content: flex-start !important;
+        overflow-x: auto;
+        overflow-y: hidden;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+
+    .homepage-categories-container::-webkit-scrollbar {
+        display: none;
+    }
+
+    .homepage-category-item {
+        min-width: 70px !important;
+        max-width: 70px;
+        padding: 8px 6px !important;
+        /* Increased horizontal padding for spacing */
+        margin-right: 0 !important;
+        /* Remove margin, use gap instead */
+        flex-shrink: 0;
+        text-align: center;
+    }
+
+    .homepage-category-icon-wrapper {
+        width: 64px !important;
+        height: 64px !important;
+        margin: 0 auto 6px auto !important;
+        border-radius: 12px;
+        background: #f8f8f8;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+    }
+
+    .homepage-category-icon-image {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover;
+        border-radius: 12px;
+    }
+
+    .homepage-category-icon-fallback {
+        font-size: 28px !important;
+        color: #2874f0;
+    }
+
+    .homepage-category-name {
+        font-size: 11px !important;
+        font-weight: 500;
+        color: #212121;
+        line-height: 1.2;
+        margin-top: 4px;
+        white-space: normal;
+        word-wrap: break-word;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-height: 2.4em;
+    }
+
+    /* Active category highlight */
+    .homepage-category-item.active {
+        background: transparent !important;
+        border-bottom: none !important;
+    }
+
+    .homepage-category-item.active .homepage-category-icon-wrapper {
+        background: #e8f0fe;
+    }
+
+    .homepage-category-item.active .homepage-category-icon-fallback {
+        color: #2874f0;
+    }
+
+    .homepage-category-item.active .homepage-category-name {
+        color: #2874f0;
+        font-weight: 600;
+    }
+
+    /* ============================================
+       MAIN CONTENT - Flipkart Style Spacing
+       ============================================ */
+
+    .main-content {
+        padding-top: 30px !important;
+        /* Mobile spacing */
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+    body.homepage .main-content {
+        padding-top: 30px !important;
+        /* Mobile homepage spacing */
+    }
+
+    /* Banner Section */
+    .banner-section {
+        margin-bottom: 6px;
+        padding: 0 8px;
+    }
+
+    .banner-container {
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    /* Featured Products Section */
+    .featured-section,
+    .products-section {
+        padding: 0 12px;
+        margin-bottom: 8px;
+    }
+
+    .section-title {
+        font-size: 18px !important;
+        font-weight: 600;
+        margin-bottom: 12px;
+        padding: 0 4px;
+    }
+
+    /* Products Grid - 2 columns like Flipkart Mobile (ZERO GAP) */
+    .products-grid,
+    .product-grid-container,
+    .product-carousel-scroll {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 0 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    /* specific override for carousel flex display */
+    .product-carousel-scroll {
+        display: flex !important;
+        background: white !important;
+        gap: 0 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        overflow-x: auto !important;
+        scroll-snap-type: x mandatory;
+    }
+
+    /* Wrap fix - ensure children have no margin/padding */
+    .product-carousel-scroll>div {
+        padding: 0 !important;
+        margin: 0 !important;
+        flex: 0 0 50% !important;
+        /* Force 2 items per view on mobile */
+        max-width: 50% !important;
+        scroll-snap-align: start;
+        border-right: 1px solid #f0f0f0 !important;
+        /* Add divider like visual */
+    }
+
+    /* Remove border from last item */
+    .product-carousel-scroll>div:last-child {
+        border-right: none !important;
+    }
+
+    .product-card {
+        background: white;
+        border-radius: 0;
+        overflow: hidden;
+        box-shadow: none;
+        border: 1px solid #E0E0E0;
+        transition: none;
+        position: relative;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    .product-card:active {
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+    }
+
+    .product-image {
+        aspect-ratio: 4 / 5 !important;
+        height: auto !important;
+        padding: 6px;
+        background: white;
+        position: relative;
+    }
+
+    .product-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+
+    .product-card .product-info {
+        padding: 6px !important;
+    }
+
+    .product-card .product-title {
+        font-size: 11px !important;
+        line-height: 1.3;
+        margin-bottom: 4px;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-height: 2.6em;
+    }
+
+    .product-card .price-section {
+        margin-bottom: 8px;
+    }
+
+    .product-card .price-current {
+        font-size: 16px !important;
+        font-weight: 600;
+    }
+
+    .product-card .price-original {
+        font-size: 12px;
+    }
+
+    .product-card .discount-badge {
+        font-size: 11px;
+        padding: 2px 6px;
+    }
+
+    .product-card .product-rating {
+        position: absolute !important;
+        top: 6px !important;
+        left: 6px !important;
+        font-size: 10px !important;
+        padding: 2px 5px !important;
+        background: #388E3C !important;
+        color: white !important;
+        border-radius: 3px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 2px !important;
+        z-index: 1 !important;
+        font-weight: 600 !important;
+    }
+
+    .product-rating i {
+        font-size: 8px !important;
+    }
+
+    /* Hide full-width rating banner */
+    .rating-banner,
+    .product-card .rating-banner {
+        display: none !important;
+    }
+
+    /* ============================================
+       NAVIGATION MENU - Hidden on Homepage Mobile
+       ============================================ */
+
+    body.homepage .nav-menu {
+        display: none !important;
+    }
+
+    /* ============================================
+       FOOTER - Flipkart Style
+       ============================================ */
+
+    .footer-container {
+        flex-direction: column;
+        padding: 24px 16px;
+        gap: 24px;
+    }
+
+    .footer-section {
+        width: 100%;
+    }
+
+    .footer-section h3 {
+        font-size: 14px;
+        margin-bottom: 12px;
+    }
+
+    .footer-section ul {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .footer-section ul li {
+        margin-bottom: 0;
+    }
+
+    .footer-section ul li a {
+        font-size: 12px;
+        padding: 4px 0;
+    }
+
+    .footer-bottom {
+        padding: 16px;
+        text-align: center;
+        font-size: 11px;
+    }
+}
+
+/* Small Mobile - 480px and below */
+@media (max-width: 480px) {
+    .header-container {
+        padding: 0 8px !important;
+    }
+
+    .logo-image {
+        height: 28px !important;
+    }
+
+    .mobile-menu-toggle {
+        width: 36px;
+        height: 36px;
+        margin-right: 6px !important;
+    }
+
+    .header-item {
+        min-width: 36px;
+        height: 36px;
+    }
+
+    .search-container {
+        padding: 0 8px !important;
+        margin: 6px 0 0 0 !important;
+    }
+
+    .search-input {
+        font-size: 13px !important;
+        padding: 9px 14px !important;
+        height: 38px !important;
+    }
+
+    .search-btn {
+        padding: 9px 18px !important;
+        height: 38px !important;
+    }
+
+    .homepage-category-item {
+        min-width: 65px !important;
+        max-width: 65px;
+        padding: 6px 2px !important;
+    }
+
+    .homepage-category-icon-wrapper {
+        width: 56px !important;
+        height: 56px !important;
+    }
+
+    .homepage-category-icon-fallback {
+        font-size: 24px !important;
+    }
+
+    .homepage-category-name {
+        font-size: 10px !important;
+    }
+
+    .main-content {
+        padding-top: 120px !important;
+    }
+
+    body.homepage .main-content {
+        padding-top: 120px !important;
+    }
+
+    .products-grid {
+        gap: 10px !important;
+    }
+
+    .product-image {
+        height: 140px !important;
+    }
+
+    .product-title {
+        font-size: 12px !important;
+    }
+
+    .price-current {
+        font-size: 15px !important;
+    }
+
+    .section-title {
+        font-size: 16px !important;
+    }
+}
+
+/* Extra Small Mobile - 360px and below */
+@media (max-width: 360px) {
+    .header-container {
+        padding: 0 6px !important;
+        gap: 6px !important;
+    }
+
+    .logo-image {
+        height: 26px !important;
+    }
+
+    .mobile-menu-toggle {
+        width: 32px;
+        height: 32px;
+        margin-right: 4px !important;
+    }
+
+    .header-item {
+        min-width: 32px;
+        height: 32px;
+    }
+
+    .header-item a i,
+    .login-btn i,
+    .cart i {
+        font-size: 16px !important;
+    }
+
+    .search-input {
+        font-size: 12px !important;
+        padding: 8px 12px !important;
+        height: 36px !important;
+    }
+
+    .search-btn {
+        padding: 8px 16px !important;
+        height: 36px !important;
+        min-width: 45px;
+    }
+
+    .homepage-category-item {
+        min-width: 60px !important;
+        max-width: 60px;
+        padding: 6px 2px !important;
+    }
+
+    .homepage-category-icon-wrapper {
+        width: 52px !important;
+        height: 52px !important;
+    }
+
+    .homepage-category-icon-fallback {
+        font-size: 22px !important;
+    }
+
+    .homepage-category-name {
+        font-size: 9px !important;
+    }
+
+    .product-image {
+        height: 130px !important;
+    }
+
+    .product-title {
+        font-size: 11px !important;
+    }
+
+    .price-current {
+        font-size: 14px !important;
+    }
+}
+
+/* ============================================
+   FLIPKART-STYLE TOUCH INTERACTIONS
+   ============================================ */
+
+@media (max-width: 768px) {
+
+    /* Touch-friendly tap targets */
+    a,
+    button,
+    .btn,
+    .product-card,
+    .homepage-category-item {
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+        touch-action: manipulation;
+    }
+
+    /* Active state for touch */
+    .homepage-category-item:active,
+    .product-card:active {
+        transform: scale(0.98);
+        transition: transform 0.1s;
+    }
+
+    /* Smooth scrolling */
+    * {
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* Prevent text selection on tap */
+    .homepage-category-item,
+    .nav-link,
+    .header-item a {
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+}

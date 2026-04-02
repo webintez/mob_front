@@ -1,0 +1,880 @@
+/* ============================================
+   FLIPKART-STYLE MOBILE HEADER
+   Mobile-only header layout matching Flipkart
+   Desktop view is NOT affected
+   
+   CRITICAL: This file MUST load AFTER mobile-header-consistent.css
+   to override conflicting styles
+   ============================================ */
+
+/* Mobile - 768px and below */
+@media (max-width: 768px) {
+
+    /* CRITICAL OVERRIDE: Force column layout for header-container */
+    /* This must override mobile-header-consistent.css which sets row layout */
+    html body header .header-container,
+    html body .header-container,
+    body header .header-container,
+    body .header-container,
+    header .header-container,
+    .header-container {
+        flex-direction: column !important;
+        flex-wrap: nowrap !important;
+        align-items: stretch !important;
+        justify-content: flex-start !important;
+        height: auto !important;
+        min-height: auto !important;
+        max-height: none !important;
+    }
+
+    /* CRITICAL: Override mobile-responsive.css flex-wrap */
+    html body header .header-container,
+    html body .header-container {
+        flex-wrap: nowrap !important;
+    }
+
+    /* ============================================
+       HEADER STRUCTURE - Flipkart Style
+       ============================================ */
+
+    /* Header - Fixed, with proper height for two rows */
+    html body .header,
+    body .header,
+    html body header,
+    body header,
+    .header {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        width: 100% !important;
+        max-width: 100vw !important;
+        z-index: 10000 !important;
+        overflow-x: visible !important;
+        overflow-y: visible !important;
+        overflow: visible !important;
+        height: auto !important;
+        min-height: auto !important;
+        max-height: none !important;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+        transform: translateY(0) !important;
+        transition: transform 0.3s ease-in-out !important;
+    }
+
+    /* Variable Backgrounds per User Request - Using high specificity to override mobile-header-consistent.css */
+    html body.homepage .header,
+    body.homepage .header {
+        background: white !important;
+    }
+
+    html body:not(.homepage) .header,
+    body:not(.homepage) .header {
+        background: var(--mobitez-purple) !important;
+    }
+
+    /* Adjust Hamburger Color for Green Background */
+    html body:not(.homepage) .mobile-menu-toggle,
+    body:not(.homepage) .mobile-menu-toggle {
+        color: white !important;
+    }
+
+    /* Header hidden state - when scrolling down */
+    html body .header.header-hidden,
+    body .header.header-hidden,
+    .header.header-hidden {
+        transform: translateY(-100%) !important;
+        transition: transform 0.3s ease-in-out !important;
+    }
+
+    /* Header container - Two row layout using flexbox */
+    /* CRITICAL: Override all conflicting styles */
+    html body .header-container,
+    body .header-container,
+    html body header .header-container,
+    body header .header-container,
+    .header-container {
+        width: 100% !important;
+        max-width: 100vw !important;
+        overflow-x: visible !important;
+        overflow-y: visible !important;
+        overflow: visible !important;
+        display: flex !important;
+        flex-direction: column !important;
+        flex-wrap: nowrap !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        gap: 0 !important;
+        align-items: stretch !important;
+        justify-content: flex-start !important;
+        height: auto !important;
+        min-height: auto !important;
+    }
+
+    /* ============================================
+       ROW 1: Hamburger, Logo, Action Buttons
+       ============================================ */
+
+    /* Top row wrapper - group hamburger, logo, and buttons */
+    html body .header-top-row,
+    body .header-top-row,
+    html body .header-container .header-top-row,
+    body .header-container .header-top-row,
+    .header-top-row {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        flex-wrap: nowrap !important;
+        /* Balanced distribution of Hamburger, Logo, and Action Buttons */
+        padding: 12px 8px !important;
+        /* Reduced horizontal padding to give more room for elements */
+        gap: 0 !important;
+        /* Use space-between layout instead of fixed gap for row */
+        width: 100% !important;
+        max-width: 100% !important;
+        /* Prevent overflow */
+        box-sizing: border-box !important;
+        min-height: 64px !important;
+        /* Increased from 56px to accommodate buttons better with extra top space */
+        height: auto !important;
+        order: 1 !important;
+        flex: 0 0 auto !important;
+        flex-shrink: 0 !important;
+        overflow-x: visible !important;
+        /* Allow horizontal overflow for badges */
+        overflow-y: visible !important;
+        /* Allow vertical overflow if needed */
+        overflow: visible !important;
+        margin-bottom: 0 !important;
+        /* Ensure no margin below */
+        margin-top: 0 !important;
+        /* Ensure no margin above */
+        transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out !important;
+    }
+
+    /* Top row hidden state - when scrolling down */
+    html body .header-top-row.header-top-row-hidden,
+    body .header-top-row.header-top-row-hidden,
+    .header-top-row.header-top-row-hidden {
+        display: none !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        height: 0 !important;
+        min-height: 0 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    /* If top row doesn't exist, ensure logo and header-right are in first row */
+    html body .header-container>.logo:not(.header-top-row .logo),
+    body .header-container>.logo:not(.header-top-row .logo),
+    html body .header-container>.header-right:not(.header-top-row .header-right),
+    body .header-container>.header-right:not(.header-top-row .header-right),
+    html body .header-container>.mobile-menu-toggle:not(.header-top-row .mobile-menu-toggle),
+    body .header-container>.mobile-menu-toggle:not(.header-top-row .mobile-menu-toggle) {
+        order: 1 !important;
+    }
+
+    /* Hamburger Menu Toggle - Left side */
+    html body .mobile-menu-toggle,
+    body .mobile-menu-toggle,
+    .mobile-menu-toggle {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        background: none !important;
+        border: none !important;
+        color: #212121 !important;
+        font-size: 18px !important;
+        /* Reduced from 20px */
+        cursor: pointer !important;
+        padding: 6px !important;
+        /* Reduced from 8px */
+        margin: 0 !important;
+        width: 36px !important;
+        /* Reduced from 40px */
+        height: 36px !important;
+        /* Reduced from 40px */
+        min-width: 36px !important;
+        min-height: 36px !important;
+        flex-shrink: 0 !important;
+        order: 1 !important;
+        /* CRITICAL: Must be first element */
+        z-index: 10002 !important;
+        /* Higher than header to stay visible */
+        position: relative !important;
+    }
+
+    /* When header is hidden, make hamburger toggle float */
+    html body .header.header-hidden .mobile-menu-toggle,
+    body .header.header-hidden .mobile-menu-toggle,
+    .header.header-hidden .mobile-menu-toggle {
+        position: fixed !important;
+        top: 12px !important;
+        left: 12px !important;
+        z-index: 10002 !important;
+        background: white !important;
+        border-radius: 4px !important;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+        width: 40px !important;
+        height: 40px !important;
+        min-width: 40px !important;
+        min-height: 40px !important;
+    }
+
+    html body .mobile-menu-toggle i,
+    body .mobile-menu-toggle i,
+    .mobile-menu-toggle i {
+        font-size: 18px !important;
+        /* Reduced from 20px */
+        line-height: 1 !important;
+    }
+
+    /* Logo - Override mobile-header-consistent.css max-width */
+    html body .logo,
+    body .logo,
+    .logo {
+        max-width: none !important;
+        /* Remove max-width constraint to let image scale naturally */
+        width: auto !important;
+        flex: 1 1 auto !important;
+        /* Allow it to grow and take available space */
+        display: flex !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
+        margin-top: -4px !important;
+        /* Slight upward nudge to perfectly center with other icons if needed, or 0. I will start with 0 */
+        margin: 0 !important;
+        padding: 0 !important;
+        order: 2 !important;
+        /* CRITICAL: Must be second element, after hamburger */
+    }
+
+    html body .logo-image,
+    body .logo-image,
+    .logo-image {
+        width: 128.61px !important;
+        height: 50px !important;
+        object-fit: contain !important;
+        display: block !important;
+    }
+
+    /* CRITICAL FIX: The white logo (Y+W) used on subpages has different internal transparent padding than the green homepage logo (Y+G).
+       This specific rule scales and shifts the white logo so it visually matches the exact size and alignment of the homepage logo. */
+    html body .logo,
+    body .logo {
+        margin-left: 0 !important;
+        justify-content: flex-start !important;
+    }
+
+    html body .logo-image,
+    body .logo-image {
+        margin-left: -10px !important;
+        /* Pull image to the left to overcome transparent bounding box */
+        transform: scale(1.65) translateY(-2px) !important;
+        transform-origin: left center !important;
+    }
+
+    /* Ensure icons/text are white on green header - using high specificity */
+    html body:not(.homepage) .header .header-right a,
+    html body:not(.homepage) .header .header-right .cart-text,
+    html body:not(.homepage) .header .header-right i,
+    body:not(.homepage) .header .header-right a,
+    body:not(.homepage) .header .header-right .cart-text,
+    body:not(.homepage) .header .header-right i {
+        color: white !important;
+    }
+
+    html body:not(.homepage) .header .header-right .login-btn,
+    body:not(.homepage) .header .header-right .login-btn {
+        background: transparent !important;
+        color: white !important;
+        border: none !important;
+    }
+
+
+    /* Override any hidden overflow from mobile-header-consistent */
+    html body .logo,
+    body .logo {
+        overflow: visible !important;
+    }
+
+    /* Action buttons container - Right side */
+    html body .header-right,
+    body .header-right,
+    .header-right {
+        display: flex !important;
+        align-items: center !important;
+        flex-wrap: nowrap !important;
+        /* Prevent wrapping to next line */
+        gap: 8px !important;
+        /* Standardized gap for all visible icons */
+        flex-shrink: 0 !important;
+        /* Don't shrink */
+        order: 3 !important;
+        margin-left: auto !important;
+        /* Push action buttons to the right */
+        margin-right: 0 !important;
+        padding: 0 !important;
+        overflow: visible !important;
+        min-width: 0 !important;
+        max-width: none !important;
+        /* Remove width limit */
+        width: auto !important;
+        /* Allow natural width */
+        box-sizing: border-box !important;
+    }
+
+    /* Header item - ensure no clipping */
+    html body .header-right .header-item,
+    body .header-right .header-item,
+    .header-right .header-item {
+        overflow: visible !important;
+        min-width: auto !important;
+        max-width: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    /* Download App Button - Show on mobile */
+    html body .download-app-btn,
+    body .download-app-btn,
+    .download-app-btn {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        background: none !important;
+        border: none !important;
+        color: #212121 !important;
+        font-size: 16px !important;
+        cursor: pointer !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        width: 28px !important;
+        height: 28px !important;
+        min-width: 28px !important;
+        min-height: 28px !important;
+        text-decoration: none !important;
+        flex-shrink: 0 !important;
+        overflow: visible !important;
+        /* Ensure full visibility */
+    }
+
+    html body .download-app-btn i,
+    body .download-app-btn i,
+    .download-app-btn i {
+        font-size: 16px !important;
+        /* Reduced from 18px */
+        line-height: 1 !important;
+    }
+
+    /* Login Button - Show on mobile, simplified - OVERRIDE mobile-responsive.css */
+    html body .login-btn,
+    body .login-btn,
+    .login-btn,
+    html body .login-dropdown-wrapper,
+    body .login-dropdown-wrapper,
+    .login-dropdown-wrapper {
+        display: flex !important;
+        /* CRITICAL: Override mobile-responsive.css display: none */
+        visibility: visible !important;
+        /* CRITICAL: Override mobile-responsive.css visibility: hidden */
+        opacity: 1 !important;
+        /* CRITICAL: Override mobile-responsive.css opacity: 0 */
+        pointer-events: auto !important;
+        /* CRITICAL: Override mobile-responsive.css pointer-events: none */
+        width: auto !important;
+        /* CRITICAL: Override mobile-responsive.css width: 0 */
+        height: auto !important;
+        /* CRITICAL: Override mobile-responsive.css height: 0 */
+        align-items: center !important;
+        justify-content: center !important;
+        background: none !important;
+        border: none !important;
+        color: #212121 !important;
+        font-size: 11px !important;
+        /* Slightly reduced to fit better */
+        font-weight: 500 !important;
+        cursor: pointer !important;
+        padding: 0 6px !important;
+        /* Reduced padding slightly to prevent overflow */
+        margin: 0 !important;
+        margin-top: 0 !important;
+        /* Ensure no top margin */
+        text-decoration: none !important;
+        flex-shrink: 0 !important;
+        gap: 3px !important;
+        /* Reduced gap slightly */
+        white-space: nowrap !important;
+        overflow: visible !important;
+        min-width: auto !important;
+        max-width: none !important;
+        /* Remove width limit to prevent cutting off text */
+        box-sizing: border-box !important;
+        position: relative !important;
+        z-index: 10001 !important;
+        /* Ensure it's above hamburger menu overlay */
+    }
+
+    /* Hide user name text on very small screens */
+    @media (max-width: 400px) {
+
+        .login-btn-text,
+        .login-btn span:not(.cart-count) {
+            display: none !important;
+        }
+    }
+
+    /* Ensure login wrapper doesn't clip content */
+    html body .login-dropdown-wrapper,
+    body .login-dropdown-wrapper {
+        overflow: visible !important;
+        min-width: auto !important;
+        max-width: none !important;
+        width: auto !important;
+    }
+
+    html body .login-btn i,
+    body .login-btn i,
+    .login-btn i {
+        font-size: 14px !important;
+        /* Increased from 12px for better visibility */
+        margin: 0 !important;
+        flex-shrink: 0 !important;
+    }
+
+    /* Hide login dropdown on mobile */
+    html body .login-dropdown,
+    body .login-dropdown,
+    .login-dropdown {
+        display: none !important;
+    }
+
+    /* Hide chevron on login button for mobile */
+    html body .login-btn .fa-chevron-down,
+    body .login-btn .fa-chevron-down,
+    html body .login-btn i.fa-chevron-down,
+    body .login-btn i.fa-chevron-down,
+    .login-btn .fa-chevron-down,
+    .login-btn i.fa-chevron-down {
+        display: none !important;
+    }
+
+    /* Ensure login text is visible */
+    html body .login-btn,
+    body .login-btn {
+        white-space: nowrap !important;
+    }
+
+    /* Add user icon before login text if missing */
+    html body .login-btn:not(:has(.fa-user))::before,
+    body .login-btn:not(:has(.fa-user))::before {
+        content: '\f007' !important;
+        /* FontAwesome user icon */
+        font-family: 'Font Awesome 6 Free' !important;
+        font-weight: 900 !important;
+        margin-right: 4px !important;
+        display: inline-block !important;
+    }
+
+    /* Cart Button - Show on mobile */
+    html body .cart,
+    body .cart,
+    .cart {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 28px !important;
+        height: 28px !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        min-width: 28px !important;
+        position: relative !important;
+        text-decoration: none !important;
+        color: #212121 !important;
+        flex-shrink: 0 !important;
+        overflow: visible !important;
+        position: relative !important;
+        /* Ensure full visibility including badge */
+    }
+
+    html body .cart i,
+    body .cart i,
+    .cart i {
+        font-size: 16px !important;
+        /* Reduced from 18px */
+        display: block !important;
+    }
+
+    html body .cart-text,
+    body .cart-text,
+    .cart-text {
+        display: none !important;
+    }
+
+    html body .cart-count,
+    body .cart-count,
+    .cart-count {
+        position: absolute !important;
+        top: -4px !important;
+        right: -4px !important;
+        min-width: 16px !important;
+        height: 16px !important;
+        font-size: 10px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        padding: 0 4px !important;
+        background: #ff3f6c !important;
+        color: white !important;
+        border-radius: 10px !important;
+        font-weight: 600 !important;
+        /* box-shadow: 0 0 0 1px #011C08 !important; */
+        /* Match green background to stand out */
+        z-index: 2 !important;
+    }
+
+    /* Hide other header items on mobile */
+    html body .header-right>.become-seller,
+    body .header-right>.become-seller,
+    .become-seller,
+    html body .header-right>.more-options,
+    body .header-right>.more-options,
+    .more-options,
+    html body .header-right>.more-dropdown-wrapper,
+    body .header-right>.more-dropdown-wrapper,
+    .more-dropdown-wrapper,
+    html body .header-right>.header-item:not(:has(.login-btn, .cart, .download-app-btn)),
+    body .header-right>.header-item:not(:has(.login-btn, .cart, .download-app-btn)) {
+        display: none !important;
+    }
+
+    /* ============================================
+       ROW 2: Search Bar (Below header)
+       ============================================ */
+
+    /* Search container - Full width below header */
+    /* CRITICAL: Override all conflicting styles to ensure it's in second row */
+    html body .search-container,
+    body .search-container,
+    html body .header-container .search-container,
+    body .header-container .search-container,
+    html body header .search-container,
+    body header .search-container,
+    .search-container {
+        order: 2 !important;
+        width: calc(100% - 24px) !important;
+        max-width: calc(100% - 24px) !important;
+        flex: 0 0 auto !important;
+        flex-basis: auto !important;
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        /* padding: 0 4px 0 12px !important; */
+        margin: 4px 12px 12px 12px !important;
+        border: 1.6px solid #0A4409 !important;
+        border-radius: 12px !important;
+        background-color: #FFFFFF !important;
+        height: 48px !important;
+        min-height: 48px !important;
+        box-sizing: border-box !important;
+        position: relative !important;
+        z-index: 1 !important;
+        transition: margin-top 0.3s ease-in-out, padding-top 0.3s ease-in-out !important;
+    }
+
+    /* When top row is hidden, adjust search bar position */
+    html body .header-top-row-hidden~.search-container,
+    html body .header-container:has(.header-top-row-hidden) .search-container,
+    body .header-top-row-hidden~.search-container,
+    body .header-container:has(.header-top-row-hidden) .search-container {
+        margin-top: 8px !important;
+        margin-bottom: 8px !important;
+        padding-top: 0 !important;
+    }
+
+    html body .search-input,
+    body .search-input,
+    .search-input {
+        flex: 1 !important;
+        min-width: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        padding: 0 8px !important;
+        font-size: 14px !important;
+        height: 100% !important;
+        border: none !important;
+        border-radius: 0 !important;
+        background: transparent !important;
+        color: #212121 !important;
+        outline: none !important;
+        margin: 0 !important;
+    }
+
+    html body .search-btn,
+    body .search-btn,
+    .search-btn {
+        flex-shrink: 0 !important;
+        width: auto !important;
+        height: 100% !important;
+        padding: 0 4px !important;
+        min-width: unset !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        border: none !important;
+        background: transparent !important;
+        box-shadow: none !important;
+        color: #0A4409 !important;
+        font-size: 18px !important;
+        cursor: pointer !important;
+        margin: 0 !important;
+    }
+
+    html body .search-btn i,
+    body .search-btn i,
+    .search-btn i {
+        font-size: 18px !important;
+        color: #0A4409 !important;
+        line-height: 1 !important;
+    }
+
+    /* Adjust main content padding for new header height */
+    html body .main-content,
+    body .main-content,
+    .main-content,
+    html body main,
+    body main,
+    main {
+        padding-top: 64px;
+        /* Safe fallback, will be overridden by JS ResizeObserver */
+    }
+
+    /* Homepage main content - ensure categories menu is visible */
+    html body.homepage .main-content,
+    body.homepage .main-content,
+    body.homepage main,
+    html body.homepage main {
+        padding-top: 64px;
+        /* Safe fallback, will be overridden by JS ResizeObserver */
+    }
+
+    /* Homepage categories container - Flipkart-exact scroll row */
+    html body.homepage .homepage-categories-container,
+    body.homepage .homepage-categories-container {
+        gap: 0 !important;
+        padding-left: 8px !important;
+        padding-top: 2px !important;
+        padding-bottom: 0 !important;
+        justify-content: flex-start !important;
+    }
+
+    /* Homepage category items - Flipkart-exact 82px fixed width */
+    html body.homepage .homepage-category-item,
+    body.homepage .homepage-category-item {
+        flex: 0 0 82px !important;
+        width: 82px !important;
+        min-width: 82px !important;
+        max-width: 82px !important;
+        padding: 4px 0 18px 0 !important;
+        margin: 0 !important;
+        position: relative !important;
+    }
+
+
+    /* Product main - adjust padding to account for header + nav-menu */
+    html body:not(.homepage) .product-main,
+    body:not(.homepage) .product-main,
+    html body .product-main:not(.homepage),
+    body .product-main:not(.homepage),
+    html body:not(.homepage) .product-main {
+        padding-top: 60px !important;
+        /* Mobile product page spacing */
+    }
+
+    /* Homepage product main - only header */
+    html body.homepage .product-main,
+    body.homepage .product-main {
+        padding-top: 60px !important;
+        /* Mobile homepage product spacing */
+    }
+
+    /* Search main - padding now handled by main element via JS ResizeObserver */
+    /*
+    html body .search-main,
+    body .search-main,
+    .search-main {
+        padding-top: 114px !important;
+    }
+    */
+
+    /* Navigation Menu - Ensure it's visible and positioned correctly below header */
+    html body .nav-menu,
+    body .nav-menu,
+    .nav-menu,
+    html body nav .nav-menu,
+    body nav .nav-menu {
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        position: fixed !important;
+        top: 128px !important;
+        /* 64px (top row) + 48px (search row) + 8px (spacing) */
+        left: 0 !important;
+        right: 0 !important;
+        width: 100% !important;
+        max-width: 100vw !important;
+        z-index: 10001 !important;
+        /* HIGHER than header (10000) to ensure it's always visible */
+        background: white !important;
+        border-bottom: 1px solid #f0f0f0 !important;
+        height: 48px !important;
+        min-height: 48px !important;
+        max-height: 48px !important;
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+        -webkit-overflow-scrolling: touch !important;
+        scrollbar-width: none !important;
+        -ms-overflow-style: none !important;
+        transform: translateY(0) !important;
+        /* Ensure it's not hidden by transform */
+        transition: top 0.3s ease-in-out !important;
+        /* Smooth transition when position changes */
+        pointer-events: auto !important;
+        /* Ensure it's clickable */
+    }
+
+    /* Ensure nav-menu itself can scroll */
+    html body .nav-menu::-webkit-scrollbar,
+    body .nav-menu::-webkit-scrollbar,
+    .nav-menu::-webkit-scrollbar {
+        display: none !important;
+        width: 0 !important;
+        height: 0 !important;
+    }
+
+    html body .nav-menu::-webkit-scrollbar,
+    body .nav-menu::-webkit-scrollbar,
+    .nav-menu::-webkit-scrollbar {
+        display: none !important;
+        width: 0 !important;
+        height: 0 !important;
+    }
+
+    html body .nav-container,
+    body .nav-container,
+    .nav-container,
+    html body .nav-menu .nav-container,
+    body .nav-menu .nav-container {
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        flex-wrap: nowrap !important;
+        justify-content: flex-start !important;
+        align-items: center !important;
+        gap: 8px !important;
+        padding: 0 12px !important;
+        height: 48px !important;
+        min-height: 48px !important;
+        max-height: 48px !important;
+        overflow-x: visible !important;
+        /* Let nav-menu handle scrolling */
+        overflow-y: hidden !important;
+        -webkit-overflow-scrolling: touch !important;
+        width: max-content !important;
+        /* Allow container to expand beyond viewport */
+        min-width: 100% !important;
+        max-width: none !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Hide scrollbar but keep scrolling functionality */
+    html body .nav-container::-webkit-scrollbar,
+    body .nav-container::-webkit-scrollbar,
+    .nav-container::-webkit-scrollbar {
+        display: none !important;
+        width: 0 !important;
+        height: 0 !important;
+    }
+
+    html body .nav-menu .nav-item,
+    body .nav-menu .nav-item,
+    .nav-menu .nav-item {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        flex-shrink: 0 !important;
+        flex-grow: 0 !important;
+        min-width: auto !important;
+        max-width: none !important;
+        width: auto !important;
+    }
+
+    html body .nav-menu .nav-link,
+    body .nav-menu .nav-link,
+    .nav-menu .nav-link {
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        white-space: nowrap !important;
+        flex-shrink: 0 !important;
+        flex-grow: 0 !important;
+        padding: 8px 12px !important;
+        font-size: 13px !important;
+        color: #212121 !important;
+        text-decoration: none !important;
+        align-items: center !important;
+        gap: 6px !important;
+        width: auto !important;
+        min-width: auto !important;
+        max-width: none !important;
+    }
+
+    /* Hide nav-menu only on homepage */
+    html body.homepage .nav-menu,
+    body.homepage .nav-menu {
+        display: none !important;
+    }
+
+    /* CRITICAL: Force nav-menu to ALWAYS be visible on non-homepage pages, regardless of scroll state */
+    html body:not(.homepage) .nav-menu,
+    body:not(.homepage) .nav-menu,
+    html body:not(.homepage) nav .nav-menu,
+    body:not(.homepage) nav .nav-menu {
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        transform: translateY(0) !important;
+        position: fixed !important;
+        pointer-events: auto !important;
+        z-index: 10001 !important;
+        /* HIGHER than header (10000) to ensure it's always visible */
+    }
+
+    /* When top row is hidden, nav-menu should be below search bar */
+    html body:not(.homepage) .header-top-row-hidden~.nav-menu,
+    html body:not(.homepage) .header-container:has(.header-top-row-hidden)~.nav-menu,
+    body:not(.homepage) .header-top-row-hidden~.nav-menu,
+    body:not(.homepage) .header-container:has(.header-top-row-hidden)~.nav-menu,
+    html body:not(.homepage) .header-top-row-hidden+.search-container~.nav-menu,
+    body:not(.homepage) .header-top-row-hidden+.search-container~.nav-menu {
+        top: 56px !important;
+        /* 48px (search bar height) + 8px (spacing) */
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        transform: translateY(0) !important;
+        z-index: 10001 !important;
+        /* Higher than header */
+        pointer-events: auto !important;
+    }
+
+    /* Adjust main content padding to account for nav-menu */
+    html body:not(.homepage) .main-content,
+    body:not(.homepage) .main-content,
+    html body:not(.homepage) main,
+    body:not(.homepage) main {
+        padding-top: 64px !important;
+        /* Mobile non-homepage spacing */
+    }
+}

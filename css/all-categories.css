@@ -1,0 +1,321 @@
+/* All Categories Page - Flipkart Mobile Style */
+
+body.all-categories-page {
+    background-color: #f1f3f6;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    /* Prevent body scroll, use panel scroll instead */
+}
+
+/* Header Spacer */
+.all-categories-page .main-content,
+.all-categories-page .all-categories-main {
+    padding-top: 52px;
+    /* Basic mobile header height */
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+}
+
+/* Specific fix for Flipkart mobile header presence */
+@media (max-width: 768px) {
+    .all-categories-page .all-categories-main {
+        padding-top: 80px !important;
+        /* Adjust if header+search is taller */
+        padding-bottom: 60px !important;
+        /* Bottom nav height */
+    }
+}
+
+.categories-explorer {
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+
+/* Left Sidebar - Root Categories (L0) */
+.categories-sidebar {
+    flex: 0 0 85px;
+    /* Fixed width for icons + labels */
+    background-color: #f1f3f6;
+    border-right: 1px solid #e0e0e0;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.sidebar-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 4px;
+    text-align: center;
+    cursor: pointer;
+    border-left: 4px solid transparent;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    color: #212121;
+}
+
+.sidebar-item.active {
+    background-color: #ffffff;
+    border-left-color: #1C471F;
+    /* Theme Green */
+    color: #1C471F;
+    font-weight: 600;
+}
+
+.sidebar-icon-wrapper {
+    width: 44px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 6px;
+}
+
+.sidebar-icon-image {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+}
+
+.sidebar-icon-fallback {
+    font-size: 20px;
+}
+
+.sidebar-name {
+    font-size: 11px;
+    line-height: 1.2;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Right Content Panel - Subcategories (L1, L2) */
+.categories-content {
+    flex: 1;
+    background-color: #ffffff;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 16px;
+}
+
+.content-section {
+    margin-bottom: 24px;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+}
+
+.section-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #212121;
+    letter-spacing: 0.5px;
+}
+
+.view-all-link {
+    font-size: 12px;
+    font-weight: 600;
+    color: #2874f0;
+    text-decoration: none;
+    padding: 4px 8px;
+    background-color: #f0f5ff;
+    border-radius: 4px;
+}
+
+/* 3-Column Grid for children */
+.subcategory-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+.subcategory-children.subcategory-grid {
+    gap: 4px; /* decreased gap specifically for nested subcategories */
+}
+
+.subcategory-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    text-decoration: none;
+    color: #212121;
+}
+
+.subcategory-image-wrapper {
+    width: 75px;
+    height: 75px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 8px auto;
+    overflow: hidden;
+    border: 1px solid #ebebeb;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.subcategory-item:active .subcategory-image-wrapper {
+    background-color: #f1f3f6;
+    border-color: #d0d0d0;
+}
+
+.subcategory-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.subcategory-name {
+    font-size: 11px;
+    line-height: 1.2;
+    max-height: 1.2em;
+    overflow: hidden;
+    min-width: 0;
+    /* Allow flex container to shrink correctly */
+    width: 100%;
+}
+
+.subcategory-name span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+    text-align: center;
+}
+
+/* Loading/Empty States */
+.sidebar-loading,
+.content-loading {
+    display: flex;
+    justify-content: center;
+    padding: 40px 0;
+}
+
+.spinner {
+    width: 30px;
+    height: 30px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid #1C471F;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.content-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 40px 20px;
+    color: #878787;
+    text-align: center;
+}
+
+.content-placeholder i {
+    font-size: 48px;
+    margin-bottom: 16px;
+    color: #f1f3f6;
+}
+
+.explore-btn {
+    margin-top: 20px;
+    padding: 10px 24px;
+    background-color: #1C471F;
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.all-categories-page .mobile-nav-menu,
+.all-categories-page .mobile-nav-overlay {
+    display: none !important;
+}
+
+/* Hide scrollbars for sidebar and content to remove visual lines */
+.categories-sidebar::-webkit-scrollbar,
+.categories-content::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+}
+
+.categories-sidebar,
+.categories-content {
+    -ms-overflow-style: none !important;
+    /* IE and Edge */
+    scrollbar-width: none !important;
+    /* Firefox */
+}
+
+/* Recursive Subcategories (Level 3+) Accordion Style */
+.subcategory-item {
+    background: #ffffff;
+    border: 1px solid #ebebeb !important;
+    border-radius: 8px;
+    /* padding: 10px; */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.subcategory-trigger {
+    cursor: pointer;
+    width: 100%;
+}
+
+.subcategory-item.expanded {
+    grid-column: 1 / -1;
+    /* Pushes list downward naturally in grid auto, span full width */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+    border-color: #1C471F !important;
+    /* Highlight expansion to green theme */
+}
+
+/* sub-list containers */
+.sub-list-item {
+    width: 100%;
+}
+
+.sub-list-trigger {
+    transition: background-color 0.2s;
+    border-radius: 4px;
+}
+
+.sub-list-trigger:hover {
+    background-color: #f7f7f7 !important;
+}
+
+.sub-list-item.expanded>.sub-list-trigger {
+    font-weight: 600;
+    color: #1C471F !important;
+}
+
+.subcategory-children {
+    transition: all 0.2s ease-out;
+}

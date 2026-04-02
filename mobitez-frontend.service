@@ -1,0 +1,19 @@
+[Unit]
+Description=Mobitez Frontend Node.js Application
+After=network.target
+
+[Service]
+Type=simple
+User=webintez
+WorkingDirectory=/home/u934861248/domains/mobitez.com/public_html
+ExecStart=/opt/alt/alt-nodejs20/root/usr/bin/node /home/u934861248/domains/mobitez.com/public_html/server.js
+Restart=always
+RestartSec=10
+StandardOutput=append:/home/u934861248/domains/mobitez.com/public_html/server.log
+StandardError=append:/home/u934861248/domains/mobitez.com/public_html/server.log
+Environment=NODE_ENV=production
+Environment=PORT=3055
+
+[Install]
+WantedBy=multi-user.target
+

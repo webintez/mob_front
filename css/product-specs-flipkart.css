@@ -1,0 +1,130 @@
+/* Flipkart-style Product Specifications */
+
+.specifications-subsection {
+    margin-bottom: 0;
+    background: #fff;
+    /* padding: 16px; */
+    border-radius: 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.specifications-subtitle {
+    font-size: 16px;
+    font-weight: 500;
+    color: #212121;
+    margin-bottom: 12px;
+    line-height: normal;
+}
+
+.specifications-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px 24px;
+}
+
+.specification-item {
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+}
+
+.specification-item.full-width {
+    flex: 1 1 100%;
+}
+
+.specification-label {
+    font-size: 13px;
+    color: #212121;
+    margin-bottom: 4px;
+    font-weight: 500;
+}
+
+.specification-value {
+    font-size: 14px;
+    color: #212121;
+    font-weight: 400;
+    line-height: 1.4;
+    padding-right: 8px;
+}
+
+.specifications-separator {
+    display: none;
+}
+
+/* All Details Header */
+.all-details-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    background: #fff;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.all-details-title {
+    font-size: 18px;
+    font-weight: 500;
+    color: #212121;
+    margin: 0;
+}
+
+.all-details-toggle {
+    background: #f0f0f0;
+    border: none;
+    border-radius: 4px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #878787;
+}
+
+/* For multi-column on larger mobile/tablet if needed */
+/* Grid is already defined as 2-column globally above */
+
+.read-more-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    color: #212121;
+    font-size: 14px;
+    font-weight: 500;
+    margin: 24px auto;
+    text-decoration: none;
+    padding: 10px 32px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    width: 250px;
+    background: #fff;
+}
+
+.read-more-link i {
+    font-size: 12px;
+    transition: transform 0.3s ease;
+}
+
+.read-more-link.expanded i {
+    transform: rotate(180deg);
+}
+
+.specifications-table.collapsed {
+    max-height: 400px;
+    overflow: hidden;
+    position: relative;
+}
+
+.specifications-table.collapsed::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    background: linear-gradient(transparent, #fff);
+}
+
+.specifications-table.expanded {
+    max-height: none;
+}

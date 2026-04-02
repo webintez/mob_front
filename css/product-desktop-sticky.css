@@ -1,0 +1,153 @@
+/* ==========================================================================
+   PRODUCT DESKTOP STICKY - THE NUCLEAR OPTION
+   This file MUST be loaded absolutely LAST in the <head>
+   It overrides ALL previous attempts to set overflow, ensuring sticky works.
+   ========================================================================== */
+
+@media (min-width: 769px) {
+    /* 1. Unlock the Chain: Force visible overflow on all ancestors */
+    /* Using extremely high specificity to defeat all other files */
+
+    html,
+    body {
+        /* We attempt to reset body, though typically body has overflow-x: hidden for global layout.
+           Ideally sticky works if body is the SCROLL CONTAINER.
+           If body is overflow: hidden, then sticky relative to viewport fails. */
+        overflow-x: visible !important;
+        overflow-y: visible !important;
+    }
+
+    /* Main wrappers */
+    html body main.product-main,
+    html body .product-main,
+    body .product-main,
+    .product-main {
+        overflow: visible !important;
+        overflow-x: visible !important;
+        overflow-y: visible !important;
+        height: auto !important;
+        contain: none !important;
+        transform: none !important;
+        /* Transform creates a new stacking context */
+    }
+
+    /* Containers */
+    html body main.product-main>.container,
+    html body .product-main>.container,
+    html body .container,
+    .container {
+        overflow: visible !important;
+        overflow-x: visible !important;
+        overflow-y: visible !important;
+        height: auto !important;
+        contain: none !important;
+        transform: none !important;
+    }
+
+    /* Product Page Specifics */
+    html body .product-container,
+    html body #productContainer,
+    .product-container,
+    #productContainer {
+        overflow: visible !important;
+        overflow-x: visible !important;
+        overflow-y: visible !important;
+        height: auto !important;
+        contain: none !important;
+        transform: none !important;
+    }
+
+    html body .product-content,
+    html body #productContent,
+    .product-content,
+    #productContent {
+        overflow: visible !important;
+        overflow-x: visible !important;
+        overflow-y: visible !important;
+        height: auto !important;
+        contain: none !important;
+        transform: none !important;
+        /* Ensure Grid */
+        display: grid !important;
+        grid-template-columns: 37.3% 62.7% !important;
+        align-items: start !important;
+    }
+
+    /* 2. The Sticky Element */
+    html body .product-images-wrapper,
+    .product-images-wrapper {
+        position: -webkit-sticky !important;
+        position: sticky !important;
+        top: 112px !important;
+        align-self: start !important;
+        z-index: 100 !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+        height: auto !important;
+        max-height: calc(100vh - 112px) !important;
+        width: 100% !important;
+        margin-top: 0 !important;
+        padding-top: 14px !important;
+        transform: none !important;
+    }
+}
+
+/* ==========================================================================
+   MOBILE GAP FIX - Added 2026-01-16
+   Removes the large gap above product image on mobile
+   ========================================================================== */
+@media (max-width: 768px) {
+
+    /* Reset sticky top override that might be bleeding in from other files */
+    html body .product-images-wrapper,
+    .product-images-wrapper {
+        top: 0 !important;
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+    }
+
+    /* Reduce main padding which was pushing content down too far */
+    html body main.product-main,
+    .product-main {
+        padding-top: 10px !important;
+        /* Minimal padding */
+    }
+
+    /* Ensure container doesn't add extra gap */
+    html body main.product-main>.container,
+    .container {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+    }
+}
+
+/* ==========================================================================
+   VARIATION UI ALIGNMENT FIX - Added 2026-01-16
+   Ensures variation options (Color/RAM) are aligned horizontally (one line)
+   ========================================================================== */
+.variation-options-details {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+}
+
+.color-variation-box,
+.variation-option-detail,
+.color-swatch-detail {
+    display: inline-flex !important;
+    width: auto !important;
+    margin-right: 0 !important;
+    margin-bottom: 0 !important;
+    flex-shrink: 0 !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+/* Ensure images inside color boxes don't force block layout */
+.color-variation-box img {
+    max-height: 40px !important;
+    /* Limit height to standard size */
+    width: auto !important;
+    display: block !important;
+}

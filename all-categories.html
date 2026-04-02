@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/favicon.png" type="image/png">
+    <title>All Categories - Mobitez</title>
+    
+    <!-- Base Styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/flipkart-mobile-style.css">
+    
+    <!-- Header/Nav Styles -->
+    <link rel="stylesheet" href="/css/mobile-header-consistent.css">
+    <link rel="stylesheet" href="/css/flipkart-mobile-header.css">
+    <link rel="stylesheet" href="/css/flipkart-mobile-homepage.css">
+    <link rel="stylesheet" href="/css/nav-menu-visible.css">
+    <link rel="stylesheet" href="/css/flipkart-dropdown.css">
+    
+    <!-- Page Specific Styles -->
+    <link rel="stylesheet" href="/css/all-categories.css">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Base Scripts -->
+</head>
+<body class="all-categories-page">
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <!-- Logo -->
+            <div class="logo">
+                <a href="/">
+                    <img src="/PNG/logo-yw.png?v=2" alt="Mobitez" class="logo-image">
+                </a>
+            </div>
+
+
+
+            <!-- Right Side Menu -->
+            <div class="header-right">
+                <div class="header-item login-dropdown-wrapper">
+                    <a href="#" class="login-btn" id="loginBtn">
+                        Login
+                        <i class="fas fa-chevron-down"></i>
+                    </a>
+                    <div class="login-dropdown" id="loginDropdown">
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-sign-in-alt"></i>
+                            Login
+                        </a>
+                        <a href="/signup.html" class="dropdown-item">
+                            <i class="fas fa-user-plus"></i>
+                            Sign Up
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="/profile.html" class="dropdown-item">
+                            <i class="fas fa-user"></i>
+                            My Profile
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-star"></i>
+                            Mobitez Plus Zone
+                        </a>
+                        <a href="/orders.html" class="dropdown-item">
+                            <i class="fas fa-shopping-bag"></i>
+                            Orders
+                        </a>
+                        <a href="/wishlist.html" class="dropdown-item">
+                            <i class="fas fa-heart"></i>
+                            Wishlist
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-gift"></i>
+                            Rewards
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-credit-card"></i>
+                            Gift Cards
+                        </a>
+                    </div>
+                </div>
+                <div class="header-item">
+                    <a href="#" class="become-seller">Sell with Us</a>
+                </div>
+                <div class="header-item more-dropdown-wrapper">
+                    <a href="#" class="more-options">
+                        More
+                        <i class="fas fa-chevron-down"></i>
+                    </a>
+                    <div class="more-dropdown">
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-bell"></i>
+                            Notification Preferences
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-headset"></i>
+                            24x7 Customer Care
+                        </a>
+
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-download"></i>
+                            Download App
+                        </a>
+                    </div>
+                </div>
+                <div class="header-item">
+                    <a href="/cart.html" class="cart">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-text">Cart</span>
+                        <span class="cart-count">0</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation Menu (Desktop) -->
+    <nav class="nav-menu">
+        <div class="nav-container" id="navContainer">
+            <!-- Categories will be loaded dynamically -->
+        </div>
+    </nav>
+
+    <main class="all-categories-main">
+        <!-- Dual Panel Container -->
+        <div class="categories-explorer">
+            <!-- Left Sidebar: Root Categories -->
+            <aside class="categories-sidebar" id="categoriesSidebar">
+                <div class="sidebar-loading">
+                    <div class="spinner"></div>
+                </div>
+            </aside>
+
+            <!-- Right Panel: Sub-categories -->
+            <section class="categories-content" id="categoriesContent">
+                <div class="content-placeholder">
+                    <p>Select a category to view sub-categories</p>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Mobile Bottom Navigation (added by antigravity) -->
+    <div class="mobile-bottom-nav">
+        <a href="/" class="nav-item">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </a>
+        <a href="/all-categories.html" class="nav-item active">
+            <i class="fas fa-th-large"></i>
+            <span>Categories</span>
+        </a>
+        <a href="/profile.html" class="nav-item">
+            <i class="fas fa-user"></i>
+            <span>Account</span>
+        </a>
+        <a href="/cart.html" class="nav-item">
+            <i class="fas fa-shopping-cart"></i>
+            <span>Cart</span>
+        </a>
+    </div>
+
+    <!-- Essential Scripts -->
+    <script src="/js/auth.js"></script>
+    <script src="/js/cart-api.js"></script>
+    <script src="/js/search-common.js"></script>
+    <script src="/js/category-nav-common.js"></script>
+    <script src="/js/mobile-menu.js"></script>
+    <script src="/js/flipkart-mobile-header.js"></script>
+    
+    <!-- Page Specific Script -->
+    <script src="/js/all-categories.js"></script>
+
+    <script>
+        // Setup login dropdown (consistent with product.html)
+        document.addEventListener('DOMContentLoaded', () => {
+            const loginBtn = document.getElementById('loginBtn');
+            const loginDropdown = document.getElementById('loginDropdown');
+
+            if (loginBtn && loginDropdown) {
+                loginBtn.addEventListener('mouseenter', () => {
+                    loginDropdown.classList.add('show');
+                });
+
+                loginBtn.addEventListener('mouseleave', () => {
+                    setTimeout(() => {
+                        if (!loginDropdown.matches(':hover')) {
+                            loginDropdown.classList.remove('show');
+                        }
+                    }, 200);
+                });
+
+                loginDropdown.addEventListener('mouseleave', () => {
+                    loginDropdown.classList.remove('show');
+                });
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,587 @@
+/* Hide search container only on profile page */
+.search-container {
+    display: none !important;
+}
+
+/* Profile Mobile Landing Page Styles */
+
+@media (max-width: 768px) {
+
+    /* Container adjustments */
+    html body:not(.homepage) main.main-content,
+    html body main.main-content {
+        padding-top: 70px !important;
+        /* Adjusted for taller header with scaled logo */
+    }
+
+    .profile-container {
+        padding: 0;
+        /* Remove padding for edge-to-edge look */
+        background: #f1f3f6;
+        /* Light gray background like Flipkart */
+        border-radius: 0 !important;
+        /* User requested to remove border radius */
+    }
+
+    .profile-main-content {
+        padding: 0 !important;
+        /* Remove padding */
+        background: transparent !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+        /* Ensure no rounding */
+    }
+
+    /* Landing Section */
+    #mobileLandingSection {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        /* Gap between sections */
+    }
+
+    /* 1. Header Section */
+    .mobile-profile-header {
+        background: #004700;
+        /* User requested color */
+        background: linear-gradient(135deg, #004700 0%, #002200 100%);
+        padding: 16px;
+        color: white;
+        position: relative;
+        border-radius: 0 !important;
+        /* Remove any inherited or default rounding */
+    }
+
+    .profile-header-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8px;
+    }
+
+    .profile-phone {
+        font-size: 18px;
+        font-weight: 500;
+        letter-spacing: 0.5px;
+    }
+
+    .profile-coins {
+        display: none !important;
+    }
+
+    .profile-header-banner {
+        display: none !important;
+    }
+
+    /* 2. Grid Dashboard (4 Items) */
+    .profile-grid-dashboard {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+        padding: 8px;
+        background: white;
+    }
+
+    .grid-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 16px;
+        border: 1px solid #f0f0f0;
+        border-radius: 4px;
+        text-decoration: none;
+        color: #212121;
+        transition: background-color 0.2s;
+    }
+
+    .grid-item:hover {
+        background-color: #f9f9f9;
+    }
+
+    .grid-item i {
+        font-size: 20px;
+        color: #004700;
+        /* Accent color */
+        width: 24px;
+        text-align: center;
+    }
+
+    .grid-item span {
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+    /* 3. Action Banner (Email Verify) */
+    .profile-action-banner {
+        background: white;
+        padding: 12px 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-top: 1px solid #f0f0f0;
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    .banner-left {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .banner-left .icon-wrapper {
+        font-size: 24px;
+        color: #ffa000;
+    }
+
+    .banner-text h4 {
+        font-size: 14px;
+        color: #212121;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .banner-text h4::after {
+        content: '';
+        display: inline-block;
+        width: 6px;
+        height: 6px;
+        background-color: #d32f2f;
+        /* Red dot */
+        border-radius: 50%;
+    }
+
+    .banner-text p {
+        font-size: 12px;
+        color: #878787;
+        margin: 2px 0 0;
+    }
+
+    .btn-update {
+        background: #2874f0;
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 4px;
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        display: inline-block;
+        text-decoration: none;
+    }
+
+    /* 4. List Sections */
+    .profile-list-section {
+        background: white;
+        padding: 8px 0;
+    }
+
+    .list-section-title {
+        font-size: 16px;
+        font-weight: 600;
+        color: #212121;
+        padding: 16px 16px 8px 16px;
+        border-bottom: none;
+        margin-top: 8px;
+        background: white;
+    }
+
+    .profile-list {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .list-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 16px;
+        border-bottom: none;
+        text-decoration: none;
+        color: #212121;
+    }
+
+    .list-item:last-child {
+        border-bottom: none;
+    }
+
+    .list-item-left {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        flex: 1;
+    }
+
+    .list-item-left i {
+        font-size: 18px;
+        color: #004700;
+        /* Standard accent color */
+        width: 20px;
+        text-align: center;
+    }
+
+    .list-item-text {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .item-title {
+        font-size: 14px;
+        color: #212121;
+    }
+
+    .item-desc {
+        font-size: 12px;
+        color: #878787;
+        margin-top: 2px;
+    }
+
+    .list-item i.fa-chevron-right {
+        font-size: 12px;
+        color: #878787;
+        transition: transform 0.3s ease;
+    }
+
+    .dropdown-trigger {
+        cursor: pointer;
+    }
+
+    .dropdown-trigger.active .toggle-icon {
+        transform: rotate(90deg);
+    }
+
+    .dropdown-content {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease-out;
+        background: #fafafa;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .dropdown-content.open {
+        max-height: 1000px;
+        /* Sufficiently large height for animation */
+        transition: max-height 0.5s ease-in;
+    }
+
+    .dropdown-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 14px 16px 14px 32px;
+        text-decoration: none;
+        color: #212121;
+        border-bottom: 1px solid #f0f0f0;
+        font-size: 14px;
+        transition: background-color 0.2s;
+    }
+
+    .dropdown-item:active {
+        background-color: #f1f1f1;
+    }
+
+    .dropdown-item span {
+        flex: 1;
+    }
+
+    .dropdown-item i.fa-chevron-right {
+        font-size: 10px;
+        color: #878787;
+    }
+
+    .dropdown-item:last-child {
+        border-bottom: none;
+    }
+
+    /* Language Grid inside List */
+    .language-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
+        padding: 12px 16px;
+        background: white;
+    }
+
+    .lang-item {
+        text-align: center;
+        padding: 6px;
+        border: 1px solid #e0e0e0;
+        border-radius: 20px;
+        font-size: 13px;
+        color: #212121;
+        background: #f9f9f9;
+        cursor: pointer;
+    }
+
+    .lang-item.active {
+        background: #e3f2fd;
+        border-color: #2874f0;
+        color: #2874f0;
+    }
+
+    /* Logout Area */
+    .profile-logout-footer {
+        padding: 16px;
+        background: #ffffff;
+    }
+
+    .btn-mobile-logout {
+        width: 100%;
+        padding: 12px;
+        background: white;
+        border: 1px solid #e0e0e0;
+        border-radius: 4px;
+        color: #004700;
+        font-size: 15px;
+        font-weight: 600;
+        text-align: center;
+        cursor: pointer;
+    }
+
+    /* Bottom Navigation Bar (reused model) */
+    .mobile-bottom-nav {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background: white;
+        display: flex;
+        justify-content: space-around;
+        padding: 8px 0;
+        border-top: 1px solid #e0e0e0;
+        box-shadow: 0 -1px 4px rgba(0, 0, 0, 0.05);
+        z-index: 1000;
+    }
+
+    .mobile-bottom-nav .nav-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-decoration: none;
+        color: #878787;
+        font-size: 11px;
+    }
+
+    .mobile-bottom-nav .nav-item i {
+        font-size: 18px;
+        margin-bottom: 4px;
+    }
+
+    .mobile-bottom-nav .nav-item.active {
+        color: #004700;
+        /* Accent */
+    }
+
+    /* Padding for bottom nav to prevent content cut off */
+    body {
+        padding-bottom: 60px !important;
+    }
+}
+
+@media (max-width: 768px) {
+    html body main.main-content.section-coupons {
+        padding-top: 80px !important;
+    }
+
+    /* Personal Information Section Mobile Overrides */
+    .section-personal .profile-main-content {
+        padding: 0 !important;
+        background: #f1f3f6 !important;
+    }
+
+    .section-personal .profile-content-section {
+        background: white;
+        margin-bottom: 8px;
+        padding: 16px;
+        border-bottom: none;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    }
+
+    .section-personal .section-header-row {
+        margin-bottom: 16px;
+    }
+
+    .section-personal .section-title {
+        font-size: 16px;
+        font-weight: 600;
+    }
+
+    .section-personal .form-row-two {
+        grid-template-columns: 1fr !important;
+        gap: 12px;
+    }
+
+    .section-personal .form-input {
+        padding: 12px;
+        font-size: 14px;
+        border-radius: 4px;
+        background: #fafafa;
+        border: 1px solid #e0e0e0;
+    }
+
+    .section-personal .form-label {
+        font-size: 13px;
+        color: #878787;
+        margin-bottom: 8px;
+    }
+
+    .section-personal .gender-options {
+        gap: 32px;
+    }
+
+    .section-personal .btn-edit-section,
+    .section-personal .link-edit {
+        color: #004700 !important;
+        border-color: #004700 !important;
+        font-weight: 600;
+    }
+
+    .section-personal .btn-primary {
+        background: #004700 !important;
+        width: 100%;
+        padding: 12px;
+        border-radius: 4px;
+        font-weight: 600;
+    }
+
+    .section-personal .btn-secondary {
+        width: 100%;
+        padding: 12px;
+        border-radius: 4px;
+    }
+
+    .section-personal .account-actions {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .section-personal .btn-danger {
+        width: 100%;
+        margin-right: 0;
+        padding: 12px;
+        text-align: center;
+    }
+
+    .section-personal .faq-item {
+        border-bottom: 1px solid #f0f0f0;
+        padding: 12px 0;
+    }
+
+    .section-personal .faq-question {
+        font-size: 14px;
+        font-weight: 600;
+        color: #212121;
+    }
+
+    .section-personal .faq-answer {
+        font-size: 13px;
+    }
+
+    /* Address Section Mobile Overrides */
+    .section-addresses .profile-main-content {
+        padding: 0 !important;
+        background: #f1f3f6 !important;
+    }
+
+    .section-addresses .section-header-row {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 12px !important;
+        padding: 16px !important;
+        background: white !important;
+        margin-bottom: 8px !important;
+        border-bottom: 1px solid #f0f0f0 !important;
+    }
+
+    .section-addresses .section-title {
+        font-size: 16px !important;
+        font-weight: 600 !important;
+    }
+
+    .section-addresses .btn-add-address {
+        width: 100% !important;
+        margin-left: 0 !important;
+        text-align: center !important;
+        background: white !important;
+        color: #004700 !important;
+        border: 1px solid #004700 !important;
+        padding: 10px !important;
+        font-size: 13px !important;
+        display: block !important;
+    }
+
+    .section-addresses .addresses-empty,
+    .section-addresses .addresses-loading {
+        background: white !important;
+        margin: 12px !important;
+        padding: 40px 16px !important;
+        border: none !important;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
+        border-radius: 4px !important;
+        font-size: 14px !important;
+    }
+
+    .section-addresses .address-card {
+        padding: 16px !important;
+        margin-bottom: 8px !important;
+        border: none !important;
+        border-radius: 0 !important;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
+        background: white !important;
+    }
+
+    .section-addresses .address-title-row {
+        gap: 8px !important;
+        margin-bottom: 8px !important;
+    }
+
+    .section-addresses .address-card h4 {
+        font-size: 15px !important;
+    }
+
+    .section-addresses .address-card-actions {
+        margin-top: 12px !important;
+        padding-top: 12px !important;
+        border-top: 1px solid #f0f0f0 !important;
+        display: flex !important;
+        justify-content: space-around !important;
+    }
+
+    .section-addresses .address-card-actions button {
+        flex: 1 !important;
+        text-align: center !important;
+        font-weight: 600 !important;
+        color: #004700 !important;
+    }
+
+    /* Address Form on Mobile */
+    .section-addresses .address-form-container {
+        padding: 16px !important;
+        margin: 0 0 8px 0 !important;
+        border: none !important;
+        border-radius: 0 !important;
+        background: white !important;
+    }
+
+    .section-addresses .address-form-header {
+        margin-bottom: 16px !important;
+    }
+
+    .section-addresses .address-form-grid {
+        grid-template-columns: 1fr !important;
+        gap: 12px !important;
+    }
+
+    .section-addresses .form-actions {
+        flex-direction: column !important;
+        gap: 8px !important;
+        margin-top: 20px !important;
+    }
+
+    .section-addresses .form-actions button {
+        width: 100% !important;
+        padding: 12px !important;
+    }
+}

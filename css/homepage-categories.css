@@ -1,0 +1,224 @@
+/* ================================================
+   HOMEPAGE CATEGORIES NAV - Flipkart Style
+   Matches m.flipkart.com mobile category bar
+   ================================================ */
+
+/* ---- CSS Variables ---- */
+:root {
+    --cat-item-width: 82px;
+    --cat-item-height: 75px;     /* 59px icon area + 16px label */
+    --cat-icon-box-w: 44px;
+    --cat-icon-box-h: 38px;
+    --cat-icon-size: 36px;
+    --cat-label-size: 12px;
+    --cat-label-line: 16px;
+    --cat-active-color: #1C471F;
+    --cat-text-color: #212121;
+    --cat-border: rgba(0, 0, 0, 0.16);
+}
+
+/* ---- Nav wrapper ---- */
+.homepage-categories-nav {
+    background: #fff;
+    border-bottom: 1px solid var(--cat-border);
+    padding: 0;
+    position: sticky;
+    top: 0;
+    z-index: 999;
+    overflow: hidden;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* When inside fixed header container on mobile — disable sticky */
+.header-container .homepage-categories-nav {
+    position: static !important;
+    top: unset !important;
+    z-index: inherit !important;
+}
+
+/* ---- Scrollable row ---- */
+.homepage-categories-container {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;          /* Firefox */
+    -ms-overflow-style: none;       /* IE */
+    -webkit-overflow-scrolling: touch;
+    padding-left: 8px;
+    padding-top: 2px;
+    padding-bottom: 0;
+    gap: 0;
+    max-width: 100%;
+    position: relative;             /* For the active indicator */
+    background: #fff;
+}
+
+.homepage-categories-container::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+}
+
+/* ---- Each category item ---- */
+.homepage-category-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    text-decoration: none;
+    color: var(--cat-text-color);
+    position: relative;
+    flex: 0 0 var(--cat-item-width);
+    width: var(--cat-item-width);
+    min-width: var(--cat-item-width);
+    max-width: var(--cat-item-width);
+    padding: 4px 0 16px 0;          /* top + bottom space for label */
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    border-bottom: none;
+    transition: none;
+    box-sizing: border-box;
+    user-select: none;
+}
+
+.homepage-category-item.active {
+    background-color: transparent;
+}
+
+.homepage-category-item.active::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 4px;
+    right: 4px;
+    height: 4px;
+    background-color: var(--cat-active-color);
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
+
+.homepage-category-item:active {
+    opacity: 0.7;
+}
+
+/* ---- Icon box (44 × 38, mirrors Flipkart's size) ---- */
+.homepage-category-icon-wrapper {
+    width: var(--cat-icon-box-w);
+    height: var(--cat-icon-box-h);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border-radius: 8px;
+    background-color: transparent;
+    margin: 0 auto 12px auto;
+    flex-shrink: 0;
+    overflow: hidden;
+    position: relative;
+    transition: transform 0.1s ease-in;
+}
+
+.homepage-category-item.active .homepage-category-icon-wrapper {
+    background: linear-gradient(to bottom, rgba(28, 71, 31, 0.15), rgba(255, 255, 255, 1));
+}
+
+/* ---- Image inside icon box — object-fit contain for logos/icons ---- */
+.homepage-category-icon-image {
+    width: var(--cat-icon-size);
+    height: var(--cat-icon-size);
+    object-fit: contain;
+    object-position: center;
+    border-radius: 4px;
+    display: block;
+    flex-shrink: 0;
+}
+
+/* ---- Fallback icon (FontAwesome) ---- */
+.homepage-category-icon-fallback {
+    font-size: 24px;
+    color: #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.homepage-category-item.active .homepage-category-icon-fallback {
+    color: var(--cat-active-color);
+}
+
+/* ---- Label — absolutely positioned at bottom, Flipkart style ---- */
+.homepage-category-name {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    font-size: var(--cat-label-size);
+    line-height: var(--cat-label-line);
+    font-family: inter_regular, Arial, sans-serif;
+    font-weight: 400;
+    color: var(--cat-text-color);
+    text-align: center;
+    padding: 2px 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: color 0.2s;
+}
+
+.homepage-category-item.active .homepage-category-name {
+    font-family: inter_bold, Arial, sans-serif;
+    font-weight: 700;
+    color: #1a1a1a;
+}
+
+/* ---- Hide nav menu on homepage pages ---- */
+.homepage-hidden {
+    display: none !important;
+}
+
+/* ================================================
+   DESKTOP (> 768px) — wider items, bigger icons
+   ================================================ */
+@media (min-width: 769px) {
+    :root {
+        --cat-item-width: 110px;
+        --cat-icon-box-w: 64px;
+        --cat-icon-box-h: 64px;
+        --cat-icon-size: 52px;
+        --cat-label-size: 13px;
+    }
+
+    .homepage-categories-container {
+        justify-content: center;
+        padding-left: 0;
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+
+    .homepage-category-item {
+        padding: 12px 0 20px 0;
+    }
+
+    .homepage-category-icon-wrapper {
+        margin-bottom: 8px;
+    }
+
+    .homepage-category-name {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .homepage-category-item:hover .homepage-category-icon-wrapper {
+        background: rgba(28, 71, 31, 0.08); /* Light green hover instead of blue */
+    }
+
+    .homepage-category-item:hover .homepage-category-name {
+        color: var(--cat-active-color);
+    }
+}

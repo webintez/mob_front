@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/favicon.png" type="image/png">
+    <title>Tags - Mobitez</title>
+    <link rel="stylesheet" href="/css/secondary-menu.css">
+    <script src="/js/secondary-menu.js?v=1769841025" defer></script>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/categories.css">
+    <link rel="stylesheet" href="/css/category-filters.css">
+    <link rel="stylesheet" href="/css/search.css">
+    <link rel="stylesheet" href="/css/desktop-search-fixes.css">
+    <link rel="stylesheet" href="/css/nav-menu-visible.css">
+    <link rel="stylesheet" href="/css/flipkart-dropdown.css">
+    <link rel="stylesheet" href="/css/mobile-responsive.css">
+    <link rel="stylesheet" href="/css/flipkart-mobile-style.css">
+    <!-- CRITICAL: Mobile header consistency - MUST load LAST -->
+    <link rel="stylesheet" href="/css/mobile-header-consistent.css">
+    <link rel="stylesheet" href="/css/flipkart-mobile-header.css?v=nocache_1773128051">
+    <!-- CRITICAL: Mobile product buttons - side by side -->
+    <link rel="stylesheet" href="/css/mobile-product-buttons.css">
+    <link rel="stylesheet" href="/css/mobile-search-fixes.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="/js/auth.js?v=1769841025"></script>
+    <script src="/js/cart-api.js?v=1769841025"></script>
+    <script src="/js/wishlist-api.js?v=1769841025"></script>
+    <script src="/js/search-common.js?v=1769841025"></script>
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <!-- Logo -->
+            <div class="logo">
+                <a href="/">
+                    <img src="/PNG/logo-yw.png?v=2" alt="Mobitez" class="logo-image">
+                </a>
+            </div>
+
+            <!-- Search Bar -->
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="Search for products, tags and more"
+                    id="searchInput" autocomplete="off">
+                <button class="search-btn" id="searchBtn">
+                    <i class="fas fa-search"></i>
+                </button>
+                <!-- Search Suggestions Dropdown -->
+                <div class="search-suggestions" id="searchSuggestions" style="display: none;">
+                    <div class="search-suggestions-content" id="searchSuggestionsContent">
+                        <!-- Suggestions will be populated here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side Menu -->
+            <div class="header-right">
+                <div class="header-item login-dropdown-wrapper">
+                    <a href="#" class="login-btn" id="loginBtn">
+                        Login
+                        <i class="fas fa-chevron-down"></i>
+                    </a>
+                    <div class="login-dropdown" id="loginDropdown">
+                        <a href="/login.html" class="dropdown-item">
+                            <i class="fas fa-sign-in-alt"></i>
+                            Login
+                        </a>
+                        <a href="/signup.html" class="dropdown-item">
+                            <i class="fas fa-user-plus"></i>
+                            Sign Up
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="/profile.html" class="dropdown-item">
+                            <i class="fas fa-user"></i>
+                            My Profile
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-star"></i>
+                            Mobitez Plus Zone
+                        </a>
+                        <a href="/orders.html" class="dropdown-item">
+                            <i class="fas fa-shopping-bag"></i>
+                            Orders
+                        </a>
+                        <a href="/wishlist.html" class="dropdown-item">
+                            <i class="fas fa-heart"></i>
+                            Wishlist
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-gift"></i>
+                            Rewards
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-credit-card"></i>
+                            Gift Cards
+                        </a>
+                    </div>
+                </div>
+                <div class="header-item">
+                    <a href="#" class="become-seller">Sell with Us</a>
+                </div>
+                <div class="header-item more-dropdown-wrapper">
+                    <a href="#" class="more-options">
+                        More
+                        <i class="fas fa-chevron-down"></i>
+                    </a>
+                    <div class="more-dropdown">
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-bell"></i>
+                            Notification Preferences
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-headset"></i>
+                            24x7 Customer Care
+                        </a>
+
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-download"></i>
+                            Download App
+                        </a>
+                    </div>
+                </div>
+                <div class="header-item">
+                    <a href="/cart.html" class="cart">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-text">Cart</span>
+                        <span class="cart-count">0</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation Menu -->
+    <nav class="nav-menu">
+        <div class="nav-container" id="navContainer">
+            <!-- Categories will be loaded here -->
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Tags Display Section -->
+        <br>
+        <section class="categories-display-section" id="tagsDisplaySection">
+            <h2 class="section-title" style="margin-bottom: 30px;">Shop by Tag</h2>
+            <div class="categories-display-container" id="tagsDisplay">
+                <div class="loading-spinner">
+                    <div class="spinner"></div>
+                    <p>Loading tags...</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Products Section (shown when tag is selected) -->
+        <section class="products-section search-main" id="productsSection"
+            style="display: none; padding-top: 20px; margin-top: 0;">
+            <div class="search-container-wrapper">
+                <!-- Mobile Sort/Filter Sticky Bar -->
+                <div class="mobile-search-actions">
+                    <button class="mobile-action-btn" id="mobileSortBtn">
+                        <i class="fas fa-sort"></i> Sort
+                    </button>
+                    <button class="mobile-action-btn" id="mobileFilterBtn">
+                        <i class="fas fa-filter"></i> Filter
+                    </button>
+                </div>
+                <aside class="filter-sidebar" id="filterSidebar">
+                    <!-- Mobile Filter Header (Back Button) -->
+                    <div class="mobile-filter-header">
+                        <button class="mobile-filter-back" id="closeFilterBtn">
+                            <i class="fas fa-arrow-left"></i> Back
+                        </button>
+                        <span class="mobile-filter-title">Filters</span>
+                    </div>
+
+                    <div class="filter-header desktop-only">
+                        <h3>FILTERS</h3>
+                    </div>
+
+                    <!-- Categories Filter -->
+                    <div class="filter-group">
+                        <div class="filter-group-header">
+                            <span>CATEGORIES</span>
+                            <i class="fas fa-chevron-down toggle-icon"></i>
+                        </div>
+                        <div class="filter-group-content" id="categoryFilters">
+                            <!-- Categories will be loaded dynamically -->
+                        </div>
+                    </div>
+
+                    <!-- Brand Filter -->
+                    <div class="filter-group">
+                        <div class="filter-group-header">
+                            <span>BRAND</span>
+                            <i class="fas fa-chevron-down toggle-icon"></i>
+                        </div>
+                        <div class="filter-group-content">
+                            <div class="filter-search">
+                                <input type="text" placeholder="Search Brand" id="brandSearch">
+                            </div>
+                            <div class="filter-options" id="brandFilters">
+                                <!-- Brands will be loaded dynamically -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Price Filter -->
+                    <div class="filter-group">
+                        <div class="filter-group-header">
+                            <span>PRICE</span>
+                            <i class="fas fa-chevron-down toggle-icon"></i>
+                        </div>
+                        <div class="filter-group-content">
+                            <div class="price-range">
+                                <div class="price-inputs">
+                                    <input type="number" id="minPrice" placeholder="Min" min="0">
+                                    <span>-</span>
+                                    <input type="number" id="maxPrice" placeholder="Max" min="0">
+                                </div>
+                                <div class="price-slider-container">
+                                    <input type="range" id="priceRange" min="0" max="200000" step="1000" value="200000">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Customer Ratings Filter -->
+                    <div class="filter-group">
+                        <div class="filter-group-header">
+                            <span>CUSTOMER RATINGS</span>
+                            <i class="fas fa-chevron-down toggle-icon"></i>
+                        </div>
+                        <div class="filter-group-content">
+                            <label class="filter-checkbox">
+                                <input type="checkbox" value="4" class="rating-filter">
+                                <span>4★ & above</span>
+                            </label>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" value="3" class="rating-filter">
+                                <span>3★ & above</span>
+                            </label>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" value="2" class="rating-filter">
+                                <span>2★ & above</span>
+                            </label>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" value="1" class="rating-filter">
+                                <span>1★ & above</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Discount Filter -->
+                    <div class="filter-group">
+                        <div class="filter-group-header">
+                            <span>DISCOUNT</span>
+                            <i class="fas fa-chevron-down toggle-icon"></i>
+                        </div>
+                        <div class="filter-group-content">
+                            <label class="filter-checkbox">
+                                <input type="checkbox" value="70" class="discount-filter">
+                                <span>70% or more</span>
+                            </label>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" value="60" class="discount-filter">
+                                <span>60% or more</span>
+                            </label>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" value="50" class="discount-filter">
+                                <span>50% or more</span>
+                            </label>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" value="40" class="discount-filter">
+                                <span>40% or more</span>
+                            </label>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" value="30" class="discount-filter">
+                                <span>30% or more</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Availability Filter -->
+                    <div class="filter-group">
+                        <div class="filter-group-header">
+                            <span>AVAILABILITY</span>
+                            <i class="fas fa-chevron-down toggle-icon"></i>
+                        </div>
+                        <div class="filter-group-content">
+                            <label class="filter-checkbox">
+                                <input type="checkbox" id="includeOutOfStock" class="availability-filter">
+                                <span>Include Out of Stock</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Clear Filters Button -->
+                    <div class="filter-actions">
+                        <button class="clear-filters-btn" id="clearFilters">Clear All Filters</button>
+                    </div>
+                </aside>
+
+                <!-- Right Content Area -->
+                <div class="search-results">
+                    <!-- Breadcrumbs -->
+                    <div class="search-breadcrumbs">
+                        <a href="/">Home</a>
+                        <i class="fas fa-chevron-right"></i>
+                        <span id="tagBreadcrumb">Tags</span>
+                    </div>
+
+                    <!-- Results Header -->
+                    <div class="results-header">
+                        <div class="results-info" style="display: flex; flex-direction: column; gap: 4px;">
+                            <h2 class="section-title" id="productsSectionTitle"
+                                style="margin: 0; border: none; padding: 0; font-size: 18px;">Products</h2>
+                            <span id="resultsCount" style="font-size: 12px; color: #878787;"></span>
+                        </div>
+                        <div class="sort-options">
+                            <span class="sort-label">Sort By</span>
+                            <select id="sortProducts" class="sort-select">
+                                <option value="relevance">Relevance</option>
+                                <option value="popularity">Popularity</option>
+                                <option value="price_low">Price: Low to High</option>
+                                <option value="price_high">Price: High to Low</option>
+                                <option value="newest">Newest First</option>
+                                <option value="rating">Customer Rating</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="products-grid" id="allProducts">
+                        <!-- Products will be loaded here -->
+                    </div>
+                    <div class="loading-more" id="loadingMore" style="display: none;">
+                        <div class="spinner"></div>
+                        <p>Loading more products...</p>
+                    </div>
+                    <div class="end-message" id="endMessage" style="display: none;">
+                        <p>You've reached the end! 🎉</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Mobile Bottom Navigation -->
+    <div class="mobile-bottom-nav">
+        <a href="/" class="nav-item">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </a>
+        <a href="/all-categories.html" class="nav-item">
+            <i class="fas fa-th-large"></i>
+            <span>Categories</span>
+        </a>
+        <a href="/profile.html" class="nav-item">
+            <i class="fas fa-user"></i>
+            <span>Account</span>
+        </a>
+        <a href="/cart.html" class="nav-item">
+            <i class="fas fa-shopping-cart"></i>
+            <span>Cart</span>
+        </a>
+    </div>
+
+    <script src="/js/app.js?v=1769841025"></script>
+    <script src="/js/tags.js?v=1769841025"></script>
+    <script src="/js/category-filters.js?v=1769841025"></script>
+    <script src="/js/category-nav-common.js?v=1769841025"></script>
+    <script src="/js/mobile-menu.js?v=1769841025"></script>
+    <script src="/js/flipkart-mobile-header.js?v=1769841025"></script>
+
+    <!-- Footer loaded dynamically -->
+    <script src="/js/footer-common.js?v=1769841025"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Mobile Filter Logic
+            const mobileFilterBtn = document.getElementById('mobileFilterBtn');
+            const closeFilterBtn = document.getElementById('closeFilterBtn');
+            const filterSidebar = document.getElementById('filterSidebar');
+
+            if (mobileFilterBtn && filterSidebar) {
+                mobileFilterBtn.addEventListener('click', () => {
+                    filterSidebar.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                });
+            }
+
+            if (closeFilterBtn && filterSidebar) {
+                closeFilterBtn.addEventListener('click', () => {
+                    filterSidebar.classList.remove('active');
+                    document.body.style.overflow = '';
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>

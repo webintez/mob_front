@@ -1,0 +1,13 @@
+/* Page refined styles */
+
+/* Hide search container on Terms of Use page on mobile to reduce header clutter */
+@media (max-width: 768px) {
+    .page-terms-of-use .search-container,
+    .page-security .search-container,
+    .page-open-box .search-container,
+    .page-terms-of-use #page-header,
+    .page-security #page-header,
+    .page-open-box #page-header {
+        display: none !important;
+    }
+}

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/favicon.png" type="image/png">
+    <title>Blogs - Mobitez</title>
+    <link rel="stylesheet" href="/css/style.css?v=padding_fix_final">
+    <link rel="stylesheet" href="/css/blog.css?v=2">
+    <link rel="stylesheet" href="/css/desktop-full-width.css?v=branding_fix_v11?v=2">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/mobile-responsive.css">
+    <link rel="stylesheet" href="/css/flipkart-mobile-style.css">
+    <!-- CRITICAL: Mobile header consistency - MUST load LAST -->
+    <link rel="stylesheet" href="/css/mobile-header-consistent.css">
+    <link rel="stylesheet" href="/css/flipkart-mobile-header.css?v=nocache_1773128051">
+    <script src="/js/auth.js?v=1769841025"></script>
+    <script src="/js/cart-api.js?v=1769841025"></script>
+</head>
+
+<body>
+    <!-- Header -->
+    <!-- Header Container -->
+    <header id="header-container"></header>
+
+    <main style="padding-top: 80px;">
+        <section class="blog-section">
+            <div class="container">
+                <h1 class="section-title">Mobitez Blogs</h1>
+
+                <!-- Category Filters -->
+                <div id="blogCategories" class="blog-categories">
+                    <button class="category-btn active" data-slug="all">All</button>
+                    <!-- Categories will be loaded here -->
+                </div>
+
+                <!-- Blog List -->
+                <div id="blogList" class="blog-grid">
+                    <div class="loading-message">Loading blogs...</div>
+                </div>
+
+                <!-- Pagination -->
+                <div id="pagination" class="pagination" style="margin-top: 40px; text-align: center; display: none;">
+                    <!-- Pagination buttons -->
+                </div>
+
+
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer loaded dynamically -->
+    <script src="/js/footer-common.js?v=1769841025"></script>
+    <script src="/js/header-common.js?v=1769841025"></script>
+    <script src="/js/mobile-menu.js?v=1769841025"></script>
+    <script src="/js/flipkart-mobile-header.js?v=1769841025"></script>
+    <script src="/js/blog.js?v=1769841025"></script>
+</body>
+
+</html>

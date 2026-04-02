@@ -1,0 +1,49 @@
+Field	Type	Null	Key	Default	Extra
+id	bigint(20) unsigned	NO	PRI	NULL	auto_increment
+seller_id	bigint(20) unsigned	YES	MUL	NULL	
+product_type	enum('online','offline','wholesale')	YES	MUL	NULL	
+location	varchar(255)	YES		NULL	
+seller_product_status	enum('pending','approved','rejected')	NO	MUL	pending	
+rejection_reason	text	YES		NULL	
+name	text	YES		NULL	
+slug	text	YES	UNI	NULL	
+sku	varchar(255)	YES	UNI	NULL	
+description	text	NO		NULL	
+description_sections	longtext	YES		NULL	
+long_description	longtext	YES		NULL	
+specifications	text	YES		NULL	
+highlights	text	YES		NULL	
+easy_payment_options	text	YES		NULL	
+price	decimal(10,2)	NO		NULL	
+wholesale_price	decimal(15,2)	YES		NULL	
+original_price	decimal(10,2)	YES		NULL	
+discount_percentage	int(11)	NO		0	
+image_url	varchar(255)	NO		NULL	
+gallery_images	longtext	YES		NULL	
+category_slug	varchar(255)	NO		NULL	
+subcategory	varchar(255)	YES		NULL	
+product_condition	enum('new','used','refurbished')	YES	MUL	NULL	
+gtin	varchar(50)	YES	MUL	NULL	
+mpn	varchar(100)	YES	MUL	NULL	
+weight_g	decimal(10,2)	YES		NULL	
+length_cm	decimal(10,2)	YES		NULL	
+breadth_cm	decimal(10,2)	YES		NULL	
+height_cm	decimal(10,2)	YES		NULL	
+additional_shipping_charge	decimal(10,2)	YES		NULL	
+tax_group	varchar(100)	YES		NULL	
+stock_quantity	int(11)	NO		0	
+min_order_qty	int(10) unsigned	YES		NULL	
+max_order_qty	int(10) unsigned	YES		NULL	
+is_featured	tinyint(1)	NO		0	
+is_active	tinyint(1)	NO		1	
+is_cod_allowed	tinyint(1)	NO		1	
+is_returnable	tinyint(1)	NO		1	
+is_cancelable	tinyint(1)	NO		1	
+is_restocking	tinyint(1)	NO		0	
+is_pre_bookable	tinyint(1)	NO		0	
+booking_fee	decimal(8,2)	NO		0.00	
+max_pre_bookings	int(11)	YES		NULL	
+rating	decimal(3,2)	NO		0.00	
+review_count	int(11)	NO		0	
+created_at	timestamp	YES		NULL	
+updated_at	timestamp	YES		NULL	

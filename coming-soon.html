@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/favicon.png" type="image/png">
+    <title>Coming Soon - Mobitez</title>
+    <meta name="description" content="This feature is coming soon. Stay tuned for exciting updates from Mobitez.">
+    <!-- Core CSS -->
+    <link rel="stylesheet" href="/css/style.css?v=nocache_1773128051">
+    <link rel="stylesheet" href="/css/informational-pages.css">
+    <!-- Mobile & Responsive CSS (required for correct mobile/desktop breakpoints) -->
+    <link rel="stylesheet" href="/css/nav-menu-visible.css?v=nocache_1773128051">
+    <link rel="stylesheet" href="/css/flipkart-dropdown.css?v=nocache_1773128051">
+    <link rel="stylesheet" href="/css/mobile-responsive.css?v=nocache_1773128051">
+    <link rel="stylesheet" href="/css/flipkart-mobile-style.css?v=nocache_1773128051">
+    <link rel="stylesheet" href="/css/mobile-header-consistent.css?v=nocache_1773128051">
+    <link rel="stylesheet" href="/css/flipkart-mobile-header.css?v=nocache_1773128051">
+    <link rel="stylesheet" href="/css/secondary-menu.css?v=nocache_1773128051">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Auth/Cart scripts needed for header state -->
+    <script src="/js/auth.js?v=1769841025"></script>
+    <script src="/js/cart-api.js?v=1769841025"></script>
+    <script src="/js/search-common.js?v=1769841025"></script>
+    <script src="/js/header-common.js?v=1769841025"></script>
+    <style>
+        .coming-soon-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 60vh;
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .coming-soon-icon {
+            font-size: 80px;
+            color: #fb641b;
+            margin-bottom: 24px;
+            animation: pulse 2s infinite ease-in-out;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .coming-soon-title {
+            font-size: 36px;
+            font-weight: 600;
+            color: #212121;
+            margin-bottom: 16px;
+        }
+
+        .coming-soon-text {
+            font-size: 18px;
+            color: #666;
+            max-width: 600px;
+            line-height: 1.6;
+            margin-bottom: 32px;
+        }
+
+        .back-home-btn {
+            background-color: #2874f0;
+            color: #fff;
+            padding: 12px 32px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+
+        .back-home-btn:hover {
+            background-color: #1259c7;
+        }
+
+        /* Mobile specific styles */
+        @media screen and (max-width: 768px) {
+            .back-home-btn {
+                background-color: #0a4409 !important;
+            }
+
+            .back-home-btn:hover {
+                background-color: #083407 !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header id="header-container"></header>
+
+
+
+    <div class="coming-soon-container" style="margin-top: 110px;">
+        <i class="fas fa-tools coming-soon-icon"></i>
+        <h1 class="coming-soon-title">Exciting Features Coming Soon!</h1>
+        <p class="coming-soon-text">
+            We're working hard to bring you the best shopping experience.
+            This feature is currently under development and will be available very soon.
+            Thank you for your patience!
+        </p>
+        <a href="/" class="back-home-btn">Continue Shopping</a>
+    </div>
+
+    <!-- Footer & Mobile Scripts -->
+    <script src="/js/footer-common.js?v=1769841025"></script>
+    <script src="/js/category-nav-common.js?v=1769841025"></script>
+    <script src="/js/mobile-menu.js?v=1769841025"></script>
+    <script src="/js/flipkart-mobile-header.js?v=1769841025"></script>
+</body>
+
+</html>

@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/favicon.png" type="image/png">
+    <title>API Test - Mobitez</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+            background: #2196F3;
+            color: white;
+            border: none;
+            border-radius: 4px;
+        }
+
+        button:hover {
+            background: #1976D2;
+        }
+
+        pre {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 4px;
+            overflow-x: auto;
+            font-size: 12px;
+        }
+
+        .success {
+            color: #4CAF50;
+        }
+
+        .error {
+            color: #f44336;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Mobitez API Test</h1>
+
+    <div class="test-section">
+        <h2>Test API Endpoints</h2>
+        <button onclick="testProducts()">Test Products API</button>
+        <button onclick="testCategories()">Test Categories API</button>
+        <button onclick="testFeatured()">Test Featured Products</button>
+        <button onclick="testBrands()">Test Brands API</button>
+        <button onclick="testPage()">Test Page API (Terms)</button>
+        <button onclick="testBlogs()">Test Blogs API</button>
+        <button onclick="testVideos()">Test Videos API</button>
+        <button onclick="testBlogCategories()">Test Blog Categories</button>
+        <button onclick="testVideoCategories()">Test Video Categories</button>
+    </div>
+
+    <div class="test-section">
+        <h2>Results:</h2>
+        <div id="results"></div>
+    </div>
+
+    <script>
+        const API_CONFIG = {
+            baseUrl: 'https://seller.mobitez.webintez.com/api',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'X-API-Key': 'mHRT3jvUD7tqSVy+iPIn3DE+wyuJXcBeLaPIjBGVHMo='
+            }
+        };
+
+        function showResult(title, data, isError = false) {
+            const resultsDiv = document.getElementById('results');
+            const resultClass = isError ? 'error' : 'success';
+            resultsDiv.innerHTML = `
+                <h3 class="${resultClass}">${title}</h3>
+                <pre>${JSON.stringify(data, null, 2)}</pre>
+            ` + resultsDiv.innerHTML;
+        }
+
+        async function testProducts() {
+            try {
+                const response = await fetch(`${API_CONFIG.baseUrl}/products?page=1&per_page=5`, {
+                    headers: API_CONFIG.headers
+                });
+                const data = await response.json();
+
+                if (response.ok) {
+                    showResult('✅ Products API Success', {
+                        status: response.status,
+                        success: data.success,
+                        count: data.data?.data?.length || data.data?.length || 0,
+                        sample: data.data?.data?.[0] || data.data?.[0]
+                    });
+                } else {
+                    showResult('❌ Products API Failed', {
+                        status: response.status,
+                        error: data
+                    }, true);
+                }
+            } catch (error) {
+                showResult('❌ Products API Error', {
+                    error: error.message
+                }, true);
+            }
+        }
+
+        async function testCategories() {
+            try {
+                const response = await fetch(`${API_CONFIG.baseUrl}/categories/index`, {
+                    headers: API_CONFIG.headers
+                });
+                const data = await response.json();
+
+                if (response.ok) {
+                    showResult('✅ Categories API Success', {
+                        status: response.status,
+                        success: data.success,
+                        count: data.data?.length || 0
+                    });
+                } else {
+                    showResult('❌ Categories API Failed', {
+                        status: response.status,
+                        error: data
+                    }, true);
+                }
+            } catch (error) {
+                showResult('❌ Categories API Error', {
+                    error: error.message
+                }, true);
+            }
+        }
+
+        async function testFeatured() {
+            try {
+                const response = await fetch(`${API_CONFIG.baseUrl}/products/featured`, {
+                    headers: API_CONFIG.headers
+                });
+                const data = await response.json();
+
+                if (response.ok) {
+                    showResult('✅ Featured Products API Success', {
+                        status: response.status,
+                        success: data.success,
+                        count: data.data?.length || 0
+                    });
+                } else {
+                    showResult('❌ Featured Products API Failed', {
+                        status: response.status,
+                        error: data
+                    }, true);
+                }
+            } catch (error) {
+                showResult('❌ Featured Products API Error', {
+                    error: error.message
+                }, true);
+            }
+        }
+
+        async function testBrands() {
+            try {
+                const response = await fetch(`${API_CONFIG.baseUrl}/brands`, {
+                    headers: API_CONFIG.headers
+                });
+                const data = await response.json();
+
+                if (response.ok) {
+                    showResult('✅ Brands API Success', {
+                        status: response.status,
+                        success: data.success,
+                        count: data.data?.length || 0
+                    });
+                } else {
+                    showResult('❌ Brands API Failed', {
+                        status: response.status,
+                        error: data
+                    }, true);
+                }
+            } catch (error) {
+                showResult('❌ Brands API Error', {
+                    error: error.message
+                }, true);
+            }
+        }
+
+        async function testPage() {
+            const slug = 'terms-of-use'; // Slug provided by user
+            try {
+                // Try with headers first
+                const response = await fetch(`${API_CONFIG.baseUrl}/pages/${slug}`, {
+                    headers: API_CONFIG.headers
+                });
+                const data = await response.json();
+
+                if (response.ok) {
+                    showResult('✅ Page API (With Headers) Success', {
+                        status: response.status,
+                        slug: slug,
+                        success: data.success,
+                        title: data.data?.title || data.data?.name
+                    });
+                } else {
+                    showResult('❌ Page API (With Headers) Failed', {
+                        status: response.status,
+                        error: data
+                    }, true);
+
+                    // Try without headers to see if that's the issue (public endpoint?)
+                    try {
+                        const response2 = await fetch(`${API_CONFIG.baseUrl}/pages/${slug}`);
+                        const data2 = await response.json();
+                        showResult('ℹ️ Page API (No Headers) Result', {
+                            status: response2.status,
+                            success: data2.success
+                        }, !response2.ok);
+                    } catch (e) {
+                        showResult('❌ Page API (No Headers) Error', { error: e.message }, true);
+                    }
+                }
+            } catch (error) {
+                showResult('❌ Page API Error', {
+                    error: error.message
+                }, true);
+            }
+        }
+
+        async function testBlogs() {
+            try {
+                const response = await fetch(`${API_CONFIG.baseUrl}/blogs`, {
+                    headers: API_CONFIG.headers
+                });
+                const data = await response.json();
+                showResult('Blog API Result', {
+                    status: response.status,
+                    data: data
+                }, !response.ok);
+            } catch (error) {
+                showResult('Blog API Error', { error: error.message }, true);
+            }
+        }
+
+        async function testVideos() {
+            try {
+                const response = await fetch(`${API_CONFIG.baseUrl}/videos`, {
+                    headers: API_CONFIG.headers
+                });
+                const data = await response.json();
+                showResult('Video API Result', {
+                    status: response.status,
+                    data: data
+                }, !response.ok);
+            } catch (error) {
+                showResult('Video API Error', { error: error.message }, true);
+            }
+        }
+
+        async function testBlogCategories() {
+            try {
+                const response = await fetch(`${API_CONFIG.baseUrl}/blog-categories`, {
+                    headers: API_CONFIG.headers
+                });
+                const data = await response.json();
+                showResult('Blog Categories Result', {
+                    status: response.status,
+                    data: data
+                }, !response.ok);
+            } catch (error) {
+                showResult('Blog Categories Error', { error: error.message }, true);
+            }
+        }
+
+        async function testVideoCategories() {
+            try {
+                const response = await fetch(`${API_CONFIG.baseUrl}/video-categories`, {
+                    headers: API_CONFIG.headers
+                });
+                const data = await response.json();
+                showResult('Video Categories Result', {
+                    status: response.status,
+                    data: data
+                }, !response.ok);
+            } catch (error) {
+                showResult('Video Categories Error', { error: error.message }, true);
+            }
+        }
+
+        // Auto-test on load
+        window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(async () => {
+                await testProducts();
+                await new Promise(r => setTimeout(r, 500));
+                await testCategories();
+            }, 1000);
+        });
+    </script>
+</body>
+
+</html>

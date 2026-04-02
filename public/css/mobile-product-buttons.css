@@ -1,0 +1,98 @@
+/* ============================================
+   MOBILE PRODUCT CARD BUTTONS
+   Makes Add to Cart and Quick View buttons
+   side by side and smaller on mobile
+   Desktop view is NOT affected
+   ============================================ */
+
+/* Prevent rating stars from wrapping on mobile */
+@media (max-width: 768px) {
+    html body .product-card .product-rating,
+    body .product-card .product-rating,
+    .product-card .product-rating {
+        display: flex !important;
+        flex-wrap: nowrap !important;
+        align-items: center !important;
+        gap: 5px !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+    
+    html body .product-card .product-rating .rating-stars,
+    body .product-card .product-rating .rating-stars,
+    .product-card .product-rating .rating-stars,
+    html body .product-card .product-rating .rating-count,
+    body .product-card .product-rating .rating-count,
+    .product-card .product-rating .rating-count {
+        white-space: nowrap !important;
+        flex-shrink: 0 !important;
+        display: inline-block !important;
+    }
+}
+
+/* Mobile - 768px and below */
+@media (max-width: 768px) {
+    /* Product card buttons - Side by side */
+    html body .product-actions,
+    body .product-actions,
+    .product-actions {
+        display: flex !important;
+        flex-direction: row !important;
+        gap: 8px !important;
+        margin-top: auto !important;
+        padding-top: 12px !important;
+        flex-wrap: nowrap !important;
+    }
+    
+    /* Make buttons smaller and side by side - Reduced height */
+    html body .product-card .btn-add-cart,
+    body .product-card .btn-add-cart,
+    .product-card .btn-add-cart,
+    html body .product-card .btn-quick-view,
+    body .product-card .btn-quick-view,
+    .product-card .btn-quick-view {
+        flex: 1 !important;
+        width: auto !important;
+        min-width: 0 !important;
+        padding: 6px 10px !important;
+        font-size: 11px !important;
+        font-weight: 600 !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        height: auto !important;
+        min-height: 32px !important;
+        line-height: 1.2 !important;
+    }
+    
+    /* Ensure buttons don't wrap */
+    html body .product-actions *,
+    body .product-actions *,
+    .product-actions * {
+        flex-shrink: 1 !important;
+    }
+}
+
+/* Smaller mobile - 480px and below */
+@media (max-width: 480px) {
+    html body .product-card .btn-add-cart,
+    body .product-card .btn-add-cart,
+    .product-card .btn-add-cart,
+    html body .product-card .btn-quick-view,
+    body .product-card .btn-quick-view,
+    .product-card .btn-quick-view {
+        padding: 5px 8px !important;
+        font-size: 10px !important;
+        min-height: 28px !important;
+        line-height: 1.1 !important;
+    }
+    
+    html body .product-actions,
+    body .product-actions,
+    .product-actions {
+        gap: 6px !important;
+    }
+}
+

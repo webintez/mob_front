@@ -1,0 +1,343 @@
+/* Mobile Search, Category, & Product Page Fixes */
+
+/* Default: Hide mobile elements on desktop */
+.mobile-search-actions,
+.mobile-filter-header {
+    display: none;
+}
+
+/* 1. Global: Fix Layout & Remove Header Gap */
+@media (max-width: 768px) {
+
+    /* Remove excessive spacing causing gap on Search, Categories, and Product pages */
+    .search-main,
+    .main-content,
+    .product-main,
+    main {
+        margin-top: 0 !important;
+        padding-top: 30px !important;
+        /* Adjusted to fit header height exactly (approx 30px) */
+    }
+
+    /* Hide desktop sidebar */
+    .filter-sidebar {
+        display: none;
+        /* Hidden by default on mobile */
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 20002;
+        /* Higher than header (10000) to show back button */
+        background: #fff;
+        padding: 0;
+        margin: 0;
+        overflow-y: auto;
+        box-shadow: none;
+    }
+
+    /* When active (toggled via button) */
+    .filter-sidebar.active {
+        display: block;
+    }
+
+    /* Close/Back Button for Filter Modal */
+    .mobile-filter-header {
+        display: flex;
+        align-items: center;
+        padding: 15px;
+        border-bottom: 1px solid #e0e0e0;
+        background: #fff;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        gap: 15px;
+    }
+
+    .mobile-filter-back {
+        background: none;
+        border: none;
+        font-size: 16px;
+        color: #2874f0;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+        padding: 0;
+    }
+
+    .mobile-filter-title {
+        font-size: 17px;
+        font-weight: 600;
+        color: #212121;
+    }
+
+    /* 2. Fix Search Content Width */
+    .search-container-wrapper {
+        display: block;
+        /* Disable flex on wrapper to prevent squeezing */
+        padding: 0;
+    }
+
+    .search-results {
+        width: 100%;
+        padding: 10px;
+        margin: 0;
+    }
+
+    /* 3. Mobile Product Grid (Strict 1 Column) */
+    .products-grid {
+        display: flex !important;
+        flex-direction: column !important;
+        width: 100% !important;
+        gap: 0 !important;
+        padding-bottom: 60px;
+        background: #fff;
+    }
+
+    /* Product Card Adjustments - Horizontal Layout */
+    .product-card {
+        width: 100%;
+        margin: 0;
+        border-bottom: 1px solid #f0f0f0;
+        border-right: none;
+        border-left: none;
+        border-top: none;
+        border-radius: 0;
+        padding: 8px 12px;
+        /* Ultra-compact Flipkart spacing */
+        display: flex;
+        flex-direction: row;
+        height: auto;
+        min-height: auto;
+        position: relative;
+    }
+
+    /* Left Side: Image */
+    .product-card .product-image-container,
+    .product-card .product-image {
+        width: 100px !important;
+        /* Smaller like Flipkart */
+        height: 100px !important;
+        flex-shrink: 0;
+        margin-right: 10px;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 0;
+    }
+
+    .product-card .product-image img {
+        max-height: 100%;
+        max-width: 100%;
+        object-fit: contain;
+    }
+
+    .product-card .product-image a {
+        display: block;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Right Side: Info - SCOPED TO PRODUCT CARD */
+    .product-card .product-info {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        padding-right: 0;
+        gap: 2px;
+        /* Minimal gap between elements */
+        margin-top: -2px;
+        /* Pull content up slightly */
+    }
+
+    .product-card .product-title {
+        font-size: 14px;
+        font-weight: 400;
+        color: #212121;
+        margin-bottom: 0;
+        line-height: 1.3;
+        height: auto;
+        max-height: none;
+        overflow: visible;
+        display: block !important;
+    }
+
+    /* Rating & Reviews Line */
+    .product-card .product-meta-row {
+        display: flex;
+        align-items: center;
+        margin-bottom: 0;
+        flex-wrap: wrap;
+        gap: 3px;
+    }
+
+    .product-card .flipkart-rating-badge {
+        background-color: #388e3c;
+        color: #fff;
+        font-size: 11px;
+        font-weight: 600;
+        padding: 2px 4px 2px 5px;
+        border-radius: 3px;
+        display: inline-flex;
+        align-items: center;
+        gap: 2px;
+        line-height: 1;
+    }
+
+    .product-card .flipkart-rating-badge i {
+        font-size: 9px;
+    }
+
+    .product-card .rating-count-text {
+        font-size: 12px;
+        color: #878787;
+        font-weight: 400;
+    }
+
+    .product-card .flipkart-assured-badge {
+        height: 16px;
+        margin-left: 4px;
+    }
+
+    /* Specs List */
+    .product-card .product-features-list {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        margin-bottom: 0;
+    }
+
+    .product-card .product-features-list li {
+        font-size: 12px;
+        color: #878787;
+        margin-bottom: 1px;
+        display: flex;
+        align-items: center;
+        line-height: 1.2;
+    }
+
+    .product-card .product-features-list li::before {
+        content: "•";
+        color: #c2c2c2;
+        margin-right: 4px;
+        font-size: 8px;
+    }
+
+    /* Price Section */
+    .product-card .product-price-container {
+        flex-direction: row;
+        align-items: baseline;
+        gap: 5px;
+        margin-top: 0;
+        flex-wrap: wrap;
+    }
+
+    .product-card .current-price {
+        font-size: 16px;
+        font-weight: 500;
+        color: #212121;
+    }
+
+    .product-card .original-price {
+        font-size: 12px;
+        color: #878787;
+        text-decoration: line-through;
+    }
+
+    .product-card .discount {
+        font-size: 12px;
+        color: #388e3c;
+        font-weight: 500;
+    }
+
+    .product-card .free-delivery {
+        font-size: 11px;
+        color: #212121;
+        margin-top: 0;
+    }
+
+    .product-card .bank-offer {
+        font-size: 11px;
+        color: #26a541;
+        font-weight: 500;
+        margin-top: 0;
+    }
+
+    /* Comparison Checkbox - Hide on mobile list view or style nicely */
+    .product-actions {
+        display: none;
+    }
+
+    /* Heart Icon (Favorite) - Absolute Position */
+    .mobile-wishlist-icon {
+        position: absolute;
+        top: 0;
+        right: 0;
+        padding: 8px;
+        color: #c2c2c2;
+        font-size: 18px;
+        z-index: 5;
+    }
+
+    /* Status Labels */
+    .status-label-container {
+        color: #d32f2f;
+        font-size: 12px;
+        font-weight: 500;
+        margin-top: 4px;
+    }
+
+    .coming-soon-label {
+        color: #388e3c;
+        font-weight: 500;
+    }
+
+    /* 4. Sticky Filter/Sort Bar at Bottom */
+    .mobile-search-actions {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        display: flex;
+        background: #fff;
+        box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.1);
+        z-index: 900;
+        border-top: 1px solid #e0e0e0;
+    }
+
+    .mobile-action-btn {
+        flex: 1;
+        padding: 14px;
+        background: #fff;
+        border: none;
+        font-size: 14px;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        color: #212121;
+    }
+
+    .mobile-action-btn:first-child {
+        border-right: 1px solid #e0e0e0;
+    }
+
+    .mobile-action-btn i {
+        color: #757575;
+    }
+
+    /* Ensure specific sections inside filter sidebar are spaced */
+    .filter-group {
+        padding: 15px;
+        border-bottom: 1px solid #f0f0f0;
+    }
+}

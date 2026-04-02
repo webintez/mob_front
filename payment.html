@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <link rel="icon" href="/favicon.png" type="image/png">
+    <title>Complete Payment - Mobitez</title>
+    <link rel="stylesheet" href="/css/style.css?v=section_spacing_fix">
+    <link rel="stylesheet" href="/css/videos.css?v=1.1">
+    <link rel="stylesheet" href="/css/categories.css">
+    <link rel="stylesheet" href="/css/homepage-categories.css">
+    <link rel="stylesheet" href="/css/recently-viewed.css?v=padding_fix_final">
+    <link rel="stylesheet" href="/css/mobile-responsive.css?v=header_padding_114px">
+    <link rel="stylesheet" href="/css/flipkart-mobile-style.css?v=banner_padding_114px">
+    <!-- CRITICAL: Mobile header consistency - MUST load LAST -->
+    <link rel="stylesheet" href="/css/mobile-header-consistent.css">
+    <!-- CRITICAL: Flipkart-style mobile header - MUST load AFTER mobile-header-consistent -->
+    <link rel="stylesheet" href="/css/flipkart-mobile-header.css?v=nocache_1773128051">
+    <!-- CRITICAL: Remove empty container under search bar - MUST load AFTER all header styles -->
+    <link rel="stylesheet" href="/css/remove-empty-container-search.css">
+
+    <!-- DESKTOP FULL WIDTH: Force 100% width on large screens -->
+    <link rel="stylesheet" href="/css/desktop-full-width.css?v=branding_fix_v11">
+
+    <!-- Page Specific Styles -->
+    <link rel="stylesheet" href="/css/flipkart-checkout.css">
+    <link rel="stylesheet" href="/css/flipkart-payment.css?v=payment_fix_v4">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script src="/js/auth.js?v=1769841025"></script>
+    <script src="/js/cart-api.js?v=1769841025"></script>
+    <script src="/js/order-api.js?v=1769841025"></script>
+    <script src="/js/search-common.js?v=1769841025"></script>
+</head>
+
+<body class="payment-page-flow" style="background-color: var(--f-bg-grey);">
+
+    <!-- Focused Payment Header -->
+    <header class="focused-payment-header">
+        <div class="focused-header-container">
+            <div class="payment-header-left">
+                <a href="/checkout.html" class="btn-back-f">
+                    <i class="fas fa-arrow-left"></i>
+                </a>
+                <span class="payment-header-title">Complete Payment</span>
+            </div>
+
+            <div class="payment-secure-badge">
+                <i class="fas fa-lock"></i>
+                <span>100% Secure</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="payment-container" style="padding-top: 80px;">
+        <div class="payment-grid">
+            <!-- Left: Payment Methods Sidebar -->
+            <div class="payment-methods-sidebar">
+                <div class="pm-item active" data-target="online">
+                    <i class="fas fa-credit-card"></i>
+                    <div>
+                        Online Payment
+                        <span class="pm-subtext">Credit/Debit Card, UPI, NetBanking</span>
+                    </div>
+                </div>
+                <div class="pm-item" data-target="cod">
+                    <i class="fas fa-money-bill-wave"></i>
+                    <div>
+                        Cash on Delivery
+                        <span class="pm-subtext">Pay on Delivery</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Center: Method Details -->
+            <div class="payment-method-details">
+                <!-- Online Payment Section -->
+                <div class="pm-content-section active" id="online">
+                    <div class="online-payment-f">
+                        <p style="font-weight: 500; margin-bottom: 12px; font-size: 16px;">Pay Securely with Razorpay
+                        </p>
+                        <p style="color: var(--f-dark-grey); font-size: 14px; margin-bottom: 24px; line-height: 1.6;">
+                            You will be redirected to Razorpay to choose your preferred payment method (UPI, Cards, Net
+                            Banking, EMI, or Wallets) and complete the transaction.
+                        </p>
+                        <ul style="padding-left: 20px; font-size: 13px; color: #666; margin-bottom: 24px;">
+                            <li>Secure SSL Encryption</li>
+                            <li>Instant Confirmation</li>
+                            <li>No Hidden Charges</li>
+                        </ul>
+                        <button class="btn-pay-f" id="payBtnOnline">Proceed to Pay ₹0</button>
+                    </div>
+                </div>
+
+                <!-- COD Section -->
+                <div class="pm-content-section" id="cod">
+                    <div class="cod-payment-f">
+                        <p style="font-weight: 500; margin-bottom: 12px; font-size: 16px;">Cash on Delivery</p>
+                        <p style="font-size: 14px; color: var(--f-dark-grey); margin-bottom: 24px; line-height: 1.6;">
+                            You can pay via Cash, PhonePe/UPI, or QR Code scanning at the time of delivery.
+                        </p>
+                        <div style="background: #f9f9f9; padding: 16px; border-radius: 4px; margin-bottom: 24px;">
+                            <p style="color: #666; font-size: 12px;">Notice: Please keep the exact amount ready to avoid
+                                delivery delays.</p>
+                        </div>
+                        <button class="btn-pay-f" id="payBtnCod">CONFIRM ORDER</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Price Summary -->
+            <div class="price-summary-sidebar">
+                <div class="price-summary-title">Price Details</div>
+                <div class="price-summary-body">
+                    <div class="price-item">
+                        <span>Price (<span id="summaryItemCount">0</span> items)</span>
+                        <span id="summaryPrice">₹0</span>
+                    </div>
+                    <div class="price-item discount" id="discountRow">
+                        <span>Discount</span>
+                        <span id="summaryDiscount">− ₹0</span>
+                    </div>
+                    <div class="price-item">
+                        <span>Platform Fee</span>
+                        <span id="summaryPlatformFee">₹7</span>
+                    </div>
+                    <div class="price-item">
+                        <span>Delivery Charges</span>
+                        <span class="delivery-fee-f">FREE</span>
+                    </div>
+                    <div class="total-amount-f">
+                        <span>Total Amount</span>
+                        <span id="summaryTotal">₹0</span>
+                    </div>
+                </div>
+
+                <!-- Instant Discount Banner -->
+                <div class="payment-offers">
+                    <div class="offer-item-f">
+                        <i class="fas fa-percentage offer-icon"></i>
+                        <div class="offer-text">
+                            <strong style="color: var(--f-green);">10% instant discount</strong><br>
+                            Claim now with payment offers
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="/js/footer-common.js?v=1769841025"></script>
+    <script src="/js/mobile-menu.js?v=1769841025"></script>
+    <script src="/js/flipkart-mobile-header.js?v=1769841025"></script>
+    <script src="/js/payment.js?v=1769841025"></script>
+</body>
+
+</html>

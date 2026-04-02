@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Mobitez</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/login.css">
+    <link rel="stylesheet" href="/css/mobile-responsive.css">
+    <link rel="stylesheet" href="/css/flipkart-mobile-style.css">
+    <!-- CRITICAL: Mobile header consistency - MUST load LAST -->
+    <link rel="stylesheet" href="/css/mobile-header-consistent.css">
+    <link rel="stylesheet" href="/css/flipkart-mobile-header.css">
+
+    <!-- DESKTOP FULL WIDTH: Force 100% width on large screens -->
+    <link rel="stylesheet" href="/css/desktop-full-width.css">
+    <link rel="stylesheet" href="/css/secondary-menu.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="/js/secondary-menu.js?v=1769841025" defer></script>
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <!-- Logo -->
+            <div class="logo">
+                <img src="/images/mobitez-logo.png" alt="Mobitez" class="logo-image">
+            </div>
+
+            <!-- Search Bar -->
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="Search for products, brands and more"
+                    id="searchInput" autocomplete="off">
+                <button class="search-btn" id="searchBtn">
+                    <i class="fas fa-search"></i>
+                </button>
+                <!-- Search Suggestions Dropdown -->
+                <div class="search-suggestions" id="searchSuggestions" style="display: none;">
+                    <div class="search-suggestions-content" id="searchSuggestionsContent">
+                        <!-- Suggestions will be populated here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side Menu -->
+            <div class="header-right">
+                <div class="header-item login-dropdown-wrapper">
+                    <a href="#" class="login-btn" id="loginBtn">
+                        Login
+                        <i class="fas fa-chevron-down"></i>
+                    </a>
+                    <div class="login-dropdown" id="loginDropdown">
+                        <a href="/login.html" class="dropdown-item">
+                            <i class="fas fa-sign-in-alt"></i>
+                            Login
+                        </a>
+                        <a href="/signup.html" class="dropdown-item">
+                            <i class="fas fa-user-plus"></i>
+                            Sign Up
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="/profile.html" class="dropdown-item">
+                            <i class="fas fa-user"></i>
+                            My Profile
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-star"></i>
+                            Mobitez Plus Zone
+                        </a>
+                        <a href="/orders.html" class="dropdown-item">
+                            <i class="fas fa-shopping-bag"></i>
+                            Orders
+                        </a>
+                        <a href="/wishlist.html" class="dropdown-item">
+                            <i class="fas fa-heart"></i>
+                            Wishlist
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-gift"></i>
+                            Rewards
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-credit-card"></i>
+                            Gift Cards
+                        </a>
+                    </div>
+                </div>
+                <div class="header-item">
+                    <a href="#" class="become-seller">Sell with Us</a>
+                </div>
+                <div class="header-item more-dropdown-wrapper">
+                    <a href="#" class="more-options">
+                        More
+                        <i class="fas fa-chevron-down"></i>
+                    </a>
+                    <div class="more-dropdown">
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-bell"></i>
+                            Notification Preferences
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-headset"></i>
+                            24x7 Customer Care
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-bullhorn"></i>
+                            Advertise
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-download"></i>
+                            Download App
+                        </a>
+                    </div>
+                </div>
+                <div class="header-item">
+                    <a href="/cart.html" class="cart">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-text">Cart</span>
+                        <span class="cart-count">0</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content" style="padding-top: 64px;">
+        <div class="container login-container">
+            <div class="login-wrapper">
+
+                <!-- Step 1: Phone Number -->
+                <div class="phone-form-section" id="phoneFormSection">
+                    <h2 class="login-title">Login</h2>
+                    <p class="login-subtitle">Get access to your Orders, Wishlist and Recommendations</p>
+
+                    <form id="phoneForm" class="auth-form">
+                        <div class="form-group">
+                            <div class="mobile-input-wrapper">
+                                <span class="country-code">+91</span>
+                                <input type="tel" id="phoneInput" class="form-input mobile-input"
+                                    placeholder="Enter Mobile Number" maxlength="10" pattern="[6-9][0-9]{9}"
+                                    inputmode="numeric" autocomplete="tel" required>
+                            </div>
+                            <span class="form-error" id="phoneError"></span>
+                        </div>
+
+                        <button type="submit" class="btn-primary" id="sendOTPBtn">
+                            <i class="fas fa-paper-plane"></i> Send OTP
+                        </button>
+                    </form>
+
+                    <div class="signup-link">
+                        <p>New to Mobitez? <a href="/signup.html">Create an account</a></p>
+                    </div>
+                </div>
+
+                <!-- Step 2: OTP Verification -->
+                <div class="otp-form-section" id="otpFormSection" style="display: none;">
+                    <button type="button" class="back-btn" id="backBtn">
+                        <i class="fas fa-arrow-left"></i> Back
+                    </button>
+
+                    <h2 class="login-title">Verify OTP</h2>
+                    <p class="login-subtitle">
+                        Enter the 6-digit OTP sent to<br>
+                        <strong id="displayPhone">+91 98765 43210</strong>
+                    </p>
+
+                    <form id="otpForm" class="auth-form">
+                        <div class="form-group">
+                            <div class="otp-input-container">
+                                <input type="text" class="otp-digit" maxlength="1" inputmode="numeric"
+                                    autocomplete="off">
+                                <input type="text" class="otp-digit" maxlength="1" inputmode="numeric"
+                                    autocomplete="off">
+                                <input type="text" class="otp-digit" maxlength="1" inputmode="numeric"
+                                    autocomplete="off">
+                                <input type="text" class="otp-digit" maxlength="1" inputmode="numeric"
+                                    autocomplete="off">
+                                <input type="text" class="otp-digit" maxlength="1" inputmode="numeric"
+                                    autocomplete="off">
+                                <input type="text" class="otp-digit" maxlength="1" inputmode="numeric"
+                                    autocomplete="off">
+                            </div>
+                            <span class="form-error" id="otpError"></span>
+                        </div>
+
+                        <div class="otp-timer">
+                            OTP expires in <strong id="otpCountdown">05:00</strong>
+                        </div>
+
+                        <button type="submit" class="btn-primary" id="verifyOTPBtn">
+                            <i class="fas fa-check-circle"></i> Verify & Login
+                        </button>
+
+                        <div class="resend-otp">
+                            <p>Didn't receive OTP?
+                                <button type="button" class="resend-btn" id="resendOTPBtn" disabled>
+                                    Resend OTP
+                                </button>
+                            </p>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <div id="notificationContainer"></div>
+
+    <script src="/js/auth.js?v=1769841025"></script>
+    <script src="/js/cart-api.js?v=1769841025"></script>
+    <script src="/js/mobile-menu.js?v=1769841025"></script>
+    <script src="/js/flipkart-mobile-header.js?v=1769841025"></script>
+    <script src="/js/login.js?v=1769841025"></script>
+
+    <!-- Footer loaded dynamically -->
+    <script src="/js/footer-common.js?v=1769841025"></script>
+</body>
+
+</html>

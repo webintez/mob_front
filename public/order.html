@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Details - Mobitez</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/order.css">
+    <link rel="stylesheet" href="/css/nav-menu-visible.css">
+    <link rel="stylesheet" href="/css/flipkart-dropdown.css">
+    <link rel="stylesheet" href="/css/mobile-responsive.css">
+    <link rel="stylesheet" href="/css/flipkart-mobile-style.css">
+    <!-- CRITICAL: Mobile header consistency - MUST load LAST -->
+    <link rel="stylesheet" href="/css/mobile-header-consistent.css">
+    <link rel="stylesheet" href="/css/flipkart-mobile-header.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="/js/auth.js?v=1769841025"></script>
+    <script src="/js/cart-api.js?v=1769841025"></script>
+    <script src="/js/order-api.js?v=1769841025"></script>
+    <script src="/js/search-common.js?v=1769841025"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <!-- Logo -->
+            <div class="logo">
+                <img src="/images/mobitez-logo.png" alt="Mobitez" class="logo-image">
+            </div>
+
+            <!-- Search Bar -->
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="Search for products, brands and more"
+                    id="searchInput" autocomplete="off">
+                <button class="search-btn" id="searchBtn">
+                    <i class="fas fa-search"></i>
+                </button>
+                <!-- Search Suggestions Dropdown -->
+                <div class="search-suggestions" id="searchSuggestions" style="display: none;">
+                    <div class="search-suggestions-content" id="searchSuggestionsContent">
+                        <!-- Suggestions will be populated here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side Menu -->
+            <div class="header-right">
+                <div class="header-item login-dropdown-wrapper">
+                    <a href="#" class="login-btn" id="loginBtn">
+                        Login
+                        <i class="fas fa-chevron-down"></i>
+                    </a>
+                    <div class="login-dropdown" id="loginDropdown">
+                        <a href="/login.html" class="dropdown-item">
+                            <i class="fas fa-sign-in-alt"></i>
+                            Login
+                        </a>
+                        <a href="/signup.html" class="dropdown-item">
+                            <i class="fas fa-user-plus"></i>
+                            Sign Up
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="/profile.html" class="dropdown-item">
+                            <i class="fas fa-user"></i>
+                            My Profile
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-star"></i>
+                            Mobitez Plus Zone
+                        </a>
+                        <a href="/orders.html" class="dropdown-item">
+                            <i class="fas fa-shopping-bag"></i>
+                            Orders
+                        </a>
+                        <a href="/wishlist.html" class="dropdown-item">
+                            <i class="fas fa-heart"></i>
+                            Wishlist
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-gift"></i>
+                            Rewards
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-credit-card"></i>
+                            Gift Cards
+                        </a>
+                    </div>
+                </div>
+                <div class="header-item">
+                    <a href="#" class="become-seller">Sell with Us</a>
+                </div>
+                <div class="header-item more-dropdown-wrapper">
+                    <a href="#" class="more-options">
+                        More
+                        <i class="fas fa-chevron-down"></i>
+                    </a>
+                    <div class="more-dropdown">
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-bell"></i>
+                            Notification Preferences
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-headset"></i>
+                            24x7 Customer Care
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-bullhorn"></i>
+                            Advertise
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-download"></i>
+                            Download App
+                        </a>
+                    </div>
+                </div>
+                <div class="header-item">
+                    <a href="/cart.html" class="cart">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-text">Cart</span>
+                        <span class="cart-count">0</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation Menu -->
+    <nav class="nav-menu">
+        <div class="nav-container" id="navContainer">
+            <!-- Categories will be loaded dynamically -->
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content" style="padding-top: 112px;">
+        <div class="container order-container">
+            <!-- Breadcrumbs -->
+            <div class="breadcrumbs">
+                <div class="container">
+                    <a href="/">Home</a>
+                    <i class="fas fa-chevron-right breadcrumb-icon"></i>
+                    <a href="/profile.html">My Account</a>
+                    <i class="fas fa-chevron-right breadcrumb-icon"></i>
+                    <a href="/orders.html">My Orders</a>
+                    <i class="fas fa-chevron-right breadcrumb-icon"></i>
+                    <span id="orderNumberBreadcrumb">Order Details</span>
+                </div>
+            </div>
+
+            <!-- Order Content -->
+            <div class="order-content-wrapper">
+                <!-- Left: Main Order Details -->
+                <div class="order-left-main">
+                    <!-- Order Tracking Info -->
+                    <div class="order-tracking-info" id="orderTrackingInfo" style="display: none;">
+                        <div class="tracking-text">
+                            <span>Order can be tracked by <strong id="trackingPhone">-</strong>.</span>
+                            <span>Tracking link is shared via SMS.</span>
+                        </div>
+                        <button class="btn-manage-access" id="manageAccessBtn">
+                            Manage who can access
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+
+                    <!-- Payment Prompt (if payment pending) -->
+                    <div class="payment-prompt" id="paymentPrompt" style="display: none;">
+                        <span>Pay online for a smooth doorstep experience</span>
+                        <button class="btn-pay-now" id="payNowBtn">Pay ₹<span id="payAmount">0</span></button>
+                    </div>
+
+                    <!-- Order Items Section -->
+                    <div class="order-items-section" id="orderItemsSection">
+                        <div class="loading-spinner">
+                            <div class="spinner"></div>
+                            <p>Loading order details...</p>
+                        </div>
+                    </div>
+
+                    <!-- Order Timeline -->
+                    <div class="order-timeline-section" id="orderTimelineSection" style="display: none;">
+                        <div class="timeline-container" id="timelineContainer">
+                            <!-- Timeline will be populated dynamically -->
+                        </div>
+                        <button class="btn-see-all-updates" id="seeAllUpdatesBtn">
+                            See All Updates
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+
+                    <!-- Delivery Executive Note -->
+                    <div class="delivery-executive-note" id="deliveryExecutiveNote" style="display: none;">
+                        Delivery Executive details will be available once the order is out for delivery
+                    </div>
+
+                    <!-- Order Actions -->
+                    <div class="order-actions-section">
+                        <button class="btn-cancel-order" id="cancelOrderBtn" style="display: none;">
+                            Cancel
+                        </button>
+                        <button class="btn-chat" id="chatBtn">
+                            <i class="fas fa-comments"></i>
+                            Chat with us
+                        </button>
+                    </div>
+
+                    <!-- Rate Experience -->
+                    <div class="rate-experience-section">
+                        <span class="rate-title">Rate your experience</span>
+                        <button class="btn-rate" id="rateBtn">
+                            <i class="far fa-thumbs-up"></i>
+                            <span>Did you find this page helpful?</span>
+                            <i class="far fa-thumbs-down"></i>
+                        </button>
+                    </div>
+
+                    <!-- Send Order Details -->
+                    <div class="send-order-details">
+                        <button class="btn-send-details" id="sendDetailsBtn">
+                            <i class="fas fa-share-alt"></i>
+                            Send Order Details
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+
+                    <!-- Order Number -->
+                    <div class="order-number-section">
+                        <span>Order #<span id="orderNumberDisplay">-</span></span>
+                        <button class="btn-copy-order" id="copyOrderBtn" title="Copy order number">
+                            <i class="far fa-copy"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Right: Delivery & Price Details -->
+                <div class="order-right-sidebar">
+                    <!-- Delivery Details -->
+                    <div class="delivery-details-card">
+                        <h3 class="card-title">Delivery details</h3>
+                        <div class="delivery-info">
+                            <div class="delivery-address">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <div class="address-content">
+                                    <div class="address-type" id="addressType">Home</div>
+                                    <div class="address-text" id="deliveryAddressText">-</div>
+                                </div>
+                                <i class="fas fa-chevron-right address-arrow"></i>
+                            </div>
+                            <div class="delivery-divider"></div>
+                            <div class="delivery-contact">
+                                <i class="fas fa-user"></i>
+                                <div class="contact-content">
+                                    <div class="contact-name" id="deliveryContactName">-</div>
+                                    <div class="contact-phone" id="deliveryContactPhone">-</div>
+                                </div>
+                                <i class="fas fa-chevron-right address-arrow"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Price Details -->
+                    <div class="price-details-card">
+                        <h3 class="card-title">Price details</h3>
+                        <div class="price-details-content">
+                            <div class="price-row">
+                                <span>Listing price</span>
+                                <span id="listingPrice">₹0</span>
+                            </div>
+                            <div class="price-row">
+                                <div class="price-label-with-icon">
+                                    <span>Special price</span>
+                                    <i class="fas fa-info-circle" title="Special price information"></i>
+                                </div>
+                                <span id="specialPrice">₹0</span>
+                            </div>
+                            <div class="price-row">
+                                <div class="price-label-with-icon">
+                                    <span>Total fees</span>
+                                    <i class="fas fa-info-circle" title="Total fees information"></i>
+                                </div>
+                                <span id="totalFees">₹0</span>
+                            </div>
+                            <div class="price-row price-total">
+                                <span>Total amount</span>
+                                <span id="totalAmount">₹0</span>
+                            </div>
+                            <div class="payment-method-section">
+                                <span class="payment-label">Payment method</span>
+                                <div class="payment-method-display">
+                                    <i class="fas fa-money-bill-wave"></i>
+                                    <span id="paymentMethodDisplay">Cash On Delivery</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Cancel Order Confirmation Popup -->
+    <div class="cancel-popup-overlay" id="cancelPopupOverlay" style="display: none;">
+        <div class="cancel-popup-modal">
+            <button class="cancel-popup-close" id="cancelPopupClose">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="cancel-popup-content">
+                <div class="cancel-popup-savings">
+                    <span class="cancel-popup-savings-text" id="cancelPopupSavingsText">You saved ₹0 on this product!</span>
+                    <i class="fas fa-percentage cancel-popup-icon"></i>
+                </div>
+                <div class="cancel-popup-product">
+                    <img src="" alt="Product" id="cancelPopupProductImage" class="cancel-popup-product-img">
+                </div>
+                <div class="cancel-popup-warning">
+                    If you cancel now, you may not be able to avail this deal again. Do you still want to cancel?
+                </div>
+                <div class="cancel-popup-actions">
+                    <button class="cancel-popup-btn cancel-popup-btn-dont" id="cancelPopupDontCancel">
+                        Don't cancel
+                    </button>
+                    <button class="cancel-popup-btn cancel-popup-btn-cancel" id="cancelPopupCancelOrder">
+                        Cancel Order
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/order.js?v=1769841025"></script>
+    <script src="/js/category-nav-common.js?v=1769841025"></script>
+    
+    <!-- Footer loaded dynamically -->
+    <script>
+        // Setup login dropdown
+        function setupLoginDropdown() {
+            const loginBtn = document.getElementById('loginBtn');
+            const loginDropdown = document.getElementById('loginDropdown');
+            const loginWrapper = loginBtn?.closest('.login-dropdown-wrapper');
+            
+            if (!loginBtn || !loginDropdown || !loginWrapper) return;
+            
+            loginBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                loginWrapper.classList.toggle('active');
+            });
+            
+            document.addEventListener('click', (e) => {
+                if (!loginWrapper.contains(e.target)) {
+                    loginWrapper.classList.remove('active');
+                }
+            });
+        }
+        
+        // Setup More Dropdown
+        function setupMoreDropdown() {
+            const moreOptions = document.querySelector('.more-options');
+            const moreDropdown = document.querySelector('.more-dropdown');
+            const moreWrapper = document.querySelector('.more-dropdown-wrapper');
+            
+            if (moreOptions && moreDropdown && moreWrapper) {
+                // Function to position dropdown
+                function positionMoreDropdown() {
+                    const btnRect = moreOptions.getBoundingClientRect();
+                    moreDropdown.style.top = (btnRect.bottom + 8) + 'px';
+                    moreDropdown.style.right = (window.innerWidth - btnRect.right) + 'px';
+                }
+                
+                // Position dropdown on hover
+                moreWrapper.addEventListener('mouseenter', () => {
+                    positionMoreDropdown();
+                });
+                
+                // Reposition on scroll/resize when visible
+                window.addEventListener('scroll', () => {
+                    if (moreDropdown.style.opacity === '1' || moreDropdown.style.visibility === 'visible') {
+                        positionMoreDropdown();
+                    }
+                });
+                
+                window.addEventListener('resize', () => {
+                    if (moreDropdown.style.opacity === '1' || moreDropdown.style.visibility === 'visible') {
+                        positionMoreDropdown();
+                    }
+                });
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            setupLoginDropdown();
+            setupMoreDropdown();
+        });
+    </script>
+    <script src="/js/mobile-menu.js?v=1769841025"></script>
+    <script src="/js/flipkart-mobile-header.js?v=1769841025"></script>
+    <script src="/js/category-nav-common.js?v=1769841025"></script>
+    <script src="/js/footer-common.js?v=1769841025"></script>
+</body>
+</html>

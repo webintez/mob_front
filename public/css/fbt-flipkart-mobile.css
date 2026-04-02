@@ -1,0 +1,268 @@
+/* ==========================================================================
+   FLIPKART STYLE FREQUENTLY BOUGHT TOGETHER - MOBILE LIST VIEW
+   Matches the specific design requested by user (list with checkboxes)
+   ONLY affects mobile view (< 768px). Desktop view remains unchanged.
+   ========================================================================== */
+
+@media (max-width: 768px) {
+
+    /* 1. HIDE the default Carousel Section on Mobile */
+    #frequentlyBoughtSection {
+        display: none !important;
+    }
+
+    /* 2. SHOW the Bundle Section (which acts as the checklist) */
+    #buyTogetherSection {
+        display: block !important;
+        background: #fff !important;
+        margin-top: 10px !important;
+        padding: 16px !important;
+        border-top: 8px solid #f1f3f6 !important;
+        /* Separator styling */
+    }
+
+    /* Section Header */
+    .buy-together-header {
+        margin-bottom: 16px !important;
+        border-bottom: none !important;
+    }
+
+    .buy-together-title {
+        font-size: 16px !important;
+        font-weight: 600 !important;
+        color: #212121 !important;
+        margin: 0 !important;
+        font-family: 'Roboto', sans-serif !important;
+    }
+
+    /* 3. TRANSFORM the Product List into a Vertical List */
+    #buyTogetherProducts {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 0 !important;
+        border: 1px solid #e0e0e0 !important;
+        border-radius: 8px !important;
+        overflow: hidden !important;
+        width: 100% !important;
+    }
+
+    /* Product Row (Card) Style */
+    .buy-together-product-item {
+        display: grid !important;
+        /* Grid Layout: Image (Left) | Details (Middle) | Checkbox (Right) */
+        grid-template-columns: 56px 1fr 40px !important;
+        grid-template-areas:
+            "image name checkbox"
+            "image details checkbox"
+            "image price checkbox" !important;
+        gap: 4px 12px !important;
+        padding: 12px !important;
+        border-bottom: 1px solid #f0f0f0 !important;
+        width: 100% !important;
+        background: #fff !important;
+        /* Default background */
+        align-items: center !important;
+        margin: 0 !important;
+        box-shadow: none !important;
+        min-height: 80px !important;
+        position: relative !important;
+    }
+
+    /* Last item needs no border */
+    .buy-together-product-item:last-child {
+        border-bottom: none !important;
+    }
+
+    /* Main Product Specifics - Grey Background like Image 2 */
+    .buy-together-product-item.main-product {
+        background-color: #f1f3f6 !important;
+        /* Slight grey bg for main item */
+    }
+
+    /* HIDE the Plus Signs (+) from the bundle layout */
+    .buy-together-plus {
+        display: none !important;
+    }
+
+    /* IMAGE Styling */
+    .buy-together-product-image-container {
+        grid-area: image !important;
+        width: 56px !important;
+        height: 70px !important;
+        /* Taller aspect ratio */
+        margin: 0 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    .buy-together-product-image {
+        max-width: 100% !important;
+        max-height: 100% !important;
+        object-fit: contain !important;
+        mix-blend-mode: multiply !important;
+    }
+
+    /* NAME Styling */
+    .buy-together-product-name {
+        grid-area: name !important;
+        font-size: 13px !important;
+        color: #212121 !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        margin: 0 !important;
+        font-weight: 400 !important;
+        line-height: 1.2 !important;
+        align-self: end !important;
+    }
+
+    /* RATING Styling */
+    .buy-together-product-rating {
+        grid-area: details !important;
+        margin: 0 !important;
+        display: none !important;
+        /* Image 2 doesn't show ratings, only name and price/specs */
+    }
+
+    /* Since we hidden ratings, let's look for specs if they exist. 
+       Usually JS puts name, rating, price.
+       If we hide rating, rows collapse. 
+    */
+
+    /* PRICE Styling */
+    .buy-together-product-price-container {
+        grid-area: price !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 6px !important;
+        margin: 0 !important;
+        align-self: start !important;
+        flex-wrap: wrap !important;
+        font-family: 'Roboto', sans-serif !important;
+    }
+
+    /* Current Price */
+    .buy-together-product-price-container .current-price,
+    .buy-together-product-price-container span:first-child {
+        /* Fallback selector if class not exact */
+        font-size: 14px !important;
+        font-weight: 500 !important;
+        color: #212121 !important;
+    }
+
+    /* Original Price (Strikethrough) */
+    .buy-together-product-price-container .original-price,
+    .buy-together-product-price-container strike {
+        font-size: 12px !important;
+        color: #878787 !important;
+        text-decoration: line-through !important;
+    }
+
+    /* Discount */
+    .buy-together-product-price-container .discount-percentage {
+        font-size: 12px !important;
+        color: #388e3c !important;
+        /* Flipkart Green */
+        font-weight: 500 !important;
+    }
+
+    /* CHECKBOX Styling */
+    .addon-checkbox {
+        grid-area: checkbox !important;
+        position: static !important;
+        /* Reset */
+        width: 18px !important;
+        height: 18px !important;
+        border: 1px solid #c2c2c2 !important;
+        border-radius: 2px !important;
+        margin: auto !important;
+        cursor: pointer !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        background: #fff !important;
+    }
+
+    .addon-checkbox.checked {
+        border-color: #2874f0 !important;
+        background-color: #2874f0 !important;
+    }
+
+    .addon-checkbox.checked::after {
+        content: '' !important;
+        width: 5px !important;
+        height: 10px !important;
+        border: solid white !important;
+        border-width: 0 2px 2px 0 !important;
+        transform: rotate(45deg) translate(-1px, -1px) !important;
+    }
+
+    /* MAIN PRODUCT FAKE CHECKBOX (Disabled/Checked look) */
+    /* JS doesn't add checkbox to main product. We use ::after on the item. */
+    .buy-together-product-item.main-product::after {
+        content: '' !important;
+        grid-area: checkbox !important;
+        width: 18px !important;
+        height: 18px !important;
+        border: 1px solid #d0d0d0 !important;
+        background-color: #e0e0e0 !important;
+        /* Disabled Grey */
+        border-radius: 2px !important;
+        margin: auto !important;
+        /* Disabled Checkmark */
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%239e9e9e' width='16px' height='16px'%3E%3Cpath d='M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: center;
+        opacity: 0.6 !important;
+    }
+
+    /* 4. FOOTER Styling */
+    .buy-together-total-footer-wrapper {
+        margin-top: 16px !important;
+        width: 100% !important;
+        border: none !important;
+        background: transparent !important;
+    }
+
+    /* Hide the complex "1 Item + 1 Addon = Total" section */
+    #buyTogetherTotalSection {
+        display: none !important;
+    }
+
+    .buy-together-footer {
+        width: 100% !important;
+        display: block !important;
+    }
+
+    /* Add To Cart Button */
+    #buyTogetherAddCartBtn {
+        width: 100% !important;
+        height: 48px !important;
+        background: #616161 !important;
+        /* Dark Grey like Image 2 */
+        color: #fff !important;
+        font-weight: 500 !important;
+        font-size: 15px !important;
+        border-radius: 4px !important;
+        border: none !important;
+        margin: 0 !important;
+    }
+
+    /* Active State (Flipkart Orange/Darker) */
+    #buyTogetherAddCartBtn:not(:disabled) {
+        background: #fb641b !important;
+        /* Flipkart Orange for actionable */
+        /* Or keep grey if that's the intention. Image 2 button is grey. */
+        /* Let's stick to Grey if disabled/partial, Orange if active. */
+        /* But user wants "like image 2". Image 2 button is grey. */
+        background: #424242 !important;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+    }
+
+    #buyTogetherAddCartBtn:disabled {
+        background: #9e9e9e !important;
+        cursor: not-allowed !important;
+    }
+
+}

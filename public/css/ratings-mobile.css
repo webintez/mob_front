@@ -1,0 +1,224 @@
+/* ============================================
+   RATINGS & REVIEWS MOBILE STYLING (UPDATED)
+   Mobile-specific styling for the ratings and reviews section
+   Matches Desktop Left-Aligned Design
+   ============================================ */
+
+@media (max-width: 768px) {
+
+    /* ===== SECTION ===== */
+    .ratings-reviews-section {
+        padding: 16px !important;
+        margin-top: 12px !important;
+        background: white !important;
+        border-top: 1px solid #f0f0f0 !important;
+        border-bottom: 8px solid #f0f0f0 !important;
+        /* Thick separator at bottom */
+    }
+
+    /* ===== HEADER ===== */
+    .ratings-reviews-header {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        margin-bottom: 20px !important;
+    }
+
+    .ratings-reviews-title {
+        font-size: 18px !important;
+        font-weight: 600 !important;
+        color: #212121 !important;
+        margin: 0 !important;
+    }
+
+    .rate-product-btn {
+        display: none !important;
+        /* Hide button on mobile view similar to desktop or keep simpler */
+    }
+
+    /* ===== CONTENT LAYOUT ===== */
+    .ratings-reviews-content {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 24px !important;
+    }
+
+    /* Overall Rating Summary - Left Aligned */
+    .overall-rating-summary {
+        display: flex !important;
+        align-items: flex-start !important;
+        gap: 24px !important;
+        padding: 0 !important;
+        background: transparent !important;
+        flex-direction: row !important;
+        width: 100% !important;
+    }
+
+    /* Big Rating Circle/Block */
+    .rating-big-block {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 4px !important;
+    }
+
+    .overall-rating-value {
+        font-size: 48px !important;
+        /* Big like desktop */
+        font-weight: 400 !important;
+        color: #212121 !important;
+        line-height: 1 !important;
+        display: flex !important;
+        align-items: flex-start !important;
+    }
+
+    .overall-rating-value i.fa-star {
+        font-size: 24px !important;
+        margin-left: 4px !important;
+        margin-top: 4px !important;
+        color: #212121 !important;
+        /* Black star on desktop usually? Or verify color */
+    }
+
+    .overall-rating-text {
+        font-size: 14px !important;
+        color: #878787 !important;
+        text-align: center !important;
+    }
+
+    /* Star Rating Breakdown - Desktop Style */
+    .star-rating-breakdown {
+        flex: 1 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 6px !important;
+        justify-content: center !important;
+    }
+
+    .star-rating-row {
+        display: flex !important;
+        align-items: center !important;
+        gap: 12px !important;
+        font-size: 12px !important;
+        height: 18px !important;
+    }
+
+    .star-label {
+        font-size: 12px !important;
+        font-weight: 500 !important;
+        color: #212121 !important;
+        width: 30px !important;
+        text-align: right !important;
+    }
+
+    .star-bar-container {
+        flex: 1 !important;
+        height: 5px !important;
+        background: #f0f0f0 !important;
+        border-radius: 2px !important;
+        overflow: hidden !important;
+        max-width: 200px !important;
+    }
+
+    .star-bar {
+        height: 100% !important;
+        background: #388e3c !important;
+        /* Green */
+    }
+
+    .star-bar.color-orange {
+        background: #ff9f00 !important;
+    }
+
+    .star-bar.color-red {
+        background: #ff6161 !important;
+    }
+
+    .star-count {
+        font-size: 12px !important;
+        color: #878787 !important;
+        width: 40px !important;
+        text-align: right !important;
+    }
+
+    /* Hide Category Ratings matching desktop (usually doesn't have circular ones prominently) */
+    .category-ratings {
+        display: none !important;
+    }
+
+    /* Review Images */
+    .review-images-gallery {
+        display: flex !important;
+        gap: 8px !important;
+        overflow-x: auto !important;
+        padding-bottom: 8px !important;
+        margin-top: 8px !important;
+        border-bottom: 1px solid #f0f0f0 !important;
+        padding-bottom: 16px !important;
+    }
+
+    .review-image-item {
+        width: 64px !important;
+        height: 64px !important;
+        border-radius: 4px !important;
+    }
+
+    /* Individual Reviews */
+    .reviews-list {
+        margin-top: 0 !important;
+        border-top: none !important;
+    }
+
+    .review-item {
+        padding: 16px 0 !important;
+        background: white !important;
+        border: none !important;
+        border-bottom: 1px solid #f0f0f0 !important;
+        border-radius: 0 !important;
+    }
+
+    .review-header {
+        justify-content: flex-start !important;
+        gap: 12px !important;
+    }
+
+    .review-rating {
+        font-size: 12px !important;
+        padding: 2px 6px !important;
+        border-radius: 2px !important;
+    }
+
+    .review-rating.bg-green {
+        background-color: #388e3c !important;
+    }
+
+    .review-rating.bg-orange {
+        background-color: #ff9f00 !important;
+    }
+
+    .review-rating.bg-red {
+        background-color: #ff6161 !important;
+    }
+
+    .review-text {
+        font-size: 14px !important;
+        line-height: 1.4 !important;
+    }
+
+    .review-footer {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        margin-top: 8px !important;
+    }
+
+    .review-author {
+        font-size: 12px !important;
+        color: #878787 !important;
+        font-weight: 500 !important;
+    }
+
+    .review-date {
+        float: right !important;
+    }
+}

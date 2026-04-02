@@ -1,0 +1,165 @@
+/* ============================================
+   FREQUENTLY BOUGHT TOGETHER - FLIPKART STYLE
+   Match Flipkart's "Frequently bought together" section
+   ============================================ */
+
+/* Section Title - Large like Flipkart */
+.buy-together-title {
+    font-size: 24px !important;
+    font-weight: 500 !important;
+    color: #212121 !important;
+    margin: 0 0 24px 0 !important;
+    font-family: 'Roboto', sans-serif !important;
+    text-transform: none !important;
+    letter-spacing: 0 !important;
+}
+
+/* Total and Footer Wrapper - Same Line Layout */
+.buy-together-total-footer-wrapper {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 24px !important;
+    padding: 16px 0 !important;
+    padding-left: 24px !important;
+    border-top: 1px solid #f0f0f0 !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+/* Total Price Section - Flipkart Style */
+.buy-together-total-footer-wrapper .buy-together-total-section {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 12px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border-top: none !important;
+    flex-wrap: wrap !important;
+    flex: 1 !important; /* Take available space */
+}
+
+/* Footer - Same line as total section */
+.buy-together-total-footer-wrapper .buy-together-footer {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border-top: none !important;
+    flex-shrink: 0 !important; /* Don't shrink */
+}
+
+.buy-together-total-item {
+    display: flex !important;
+    align-items: center !important;
+    gap: 4px !important;
+    font-size: 14px !important;
+    color: #212121 !important;
+    font-family: 'Roboto', sans-serif !important;
+}
+
+.buy-together-total-label {
+    color: #878787 !important;
+    font-weight: 400 !important;
+}
+
+.buy-together-total-price {
+    color: #212121 !important;
+    font-weight: 500 !important;
+}
+
+.buy-together-total-plus,
+.buy-together-total-equals {
+    font-size: 18px !important;
+    font-weight: 300 !important;
+    color: #878787 !important;
+    margin: 0 8px !important;
+}
+
+.buy-together-total-final {
+    display: flex !important;
+    align-items: center !important;
+    gap: 4px !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    color: #212121 !important;
+    margin-left: 8px !important;
+}
+
+.buy-together-total-final-label {
+    color: #212121 !important;
+    font-weight: 600 !important;
+}
+
+.buy-together-total-final-price {
+    color: #212121 !important;
+    font-weight: 600 !important;
+    font-size: 18px !important;
+}
+
+/* Button - Flipkart Style */
+.buy-together-add-cart-btn {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    padding: 14px 32px !important;
+    background: #ff9f00 !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 2px !important;
+    font-size: 16px !important;
+    font-weight: 500 !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    font-family: 'Roboto', sans-serif !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    box-shadow: 0 1px 2px 0 rgba(0,0,0,.2) !important;
+}
+
+.buy-together-add-cart-btn:hover:enabled {
+    background: #ff8c00 !important;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,.2) !important;
+}
+
+.buy-together-add-cart-btn:disabled {
+    background: #878787 !important;
+    cursor: not-allowed !important;
+    opacity: 0.6 !important;
+}
+
+.buy-together-add-cart-btn i {
+    font-size: 18px !important;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .buy-together-title {
+        font-size: 20px !important;
+    }
+    
+    .buy-together-total-footer-wrapper {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 16px !important;
+    }
+    
+    .buy-together-total-footer-wrapper .buy-together-total-section {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 8px !important;
+        width: 100% !important;
+    }
+    
+    .buy-together-total-footer-wrapper .buy-together-footer {
+        width: 100% !important;
+        justify-content: stretch !important;
+    }
+    
+    .buy-together-add-cart-btn {
+        width: 100% !important;
+        justify-content: center !important;
+    }
+}

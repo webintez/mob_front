@@ -1,0 +1,493 @@
+/* ==========================================================================
+   MOBILE VIEW ULTRA-SPECIFIC FIXES - MAXIMUM PRIORITY
+   Uses maximum specificity to override ALL other CSS files
+   ========================================================================== */
+
+@media (max-width: 768px) {
+
+    /* FIX 1: Remove gap above product image - ULTRA SPECIFIC */
+    html body main.product-main .product-container .product-content .product-images-wrapper,
+    html body main .product-container .product-content .product-images-wrapper,
+    html body .product-main .product-container .product-images-wrapper,
+    html body .product-container .product-images-wrapper,
+    body main.product-main .product-images-wrapper,
+    body .product-main .product-images-wrapper,
+    body .product-images-wrapper,
+    .product-main .product-images-wrapper,
+    .product-images-wrapper {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+        top: 0 !important;
+        position: static !important;
+        /* Force natural stack flow */
+    }
+
+    html body main.product-main .product-container .product-content .product-images,
+    html body main .product-container .product-content .product-images,
+    html body .product-main .product-container .product-images,
+    html body .product-container .product-images,
+    body main.product-main .product-images,
+    body .product-main .product-images,
+    body .product-images,
+    .product-main .product-images,
+    .product-images {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        padding-bottom: 0 !important;
+    }
+
+    /* Remove gap from containers */
+    html body main.product-main,
+    html body .product-main,
+    body main.product-main,
+    body .product-main,
+    main.product-main,
+    .product-main {
+        padding-top: 0 !important;
+        margin-top: 0 !important;
+    }
+
+    html body main.product-main .product-container,
+    html body .product-main .product-container,
+    body main.product-main .product-container,
+    body .product-main .product-container,
+    .product-main .product-container,
+    .product-container {
+        padding-top: 0 !important;
+        margin-top: 0 !important;
+    }
+
+    /* FIX 1.1: Force Flex Column Layering (Source of Truth) */
+    html body main.product-main .product-container .product-content,
+    html body main.product-main .product-container #productContent,
+    html body .product-main .product-container .product-content,
+    html body .product-main .product-container #productContent,
+    body main.product-main .product-container .product-content,
+    body main.product-main .product-container #productContent,
+    .product-content,
+    #productContent {
+        display: flex !important;
+        flex-direction: column !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        gap: 0 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        margin-top: 60px !important;
+        /* Mobile product page spacing */
+        position: relative !important;
+        overflow: visible !important;
+    }
+
+    /* NUCLEAR: Ensure children take full width and stack NATURALLY */
+    html body .product-images-wrapper,
+    body .product-images-wrapper,
+    .product-images-wrapper {
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        position: static !important;
+        /* Forces natural flow, kills sticky/absolute overlap */
+        top: auto !important;
+        left: auto !important;
+        right: auto !important;
+        bottom: auto !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        z-index: 1 !important;
+        float: none !important;
+        height: auto !important;
+    }
+
+    html body .product-right-column,
+    body .product-right-column,
+    .product-right-column {
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        position: relative !important;
+        top: 0 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        z-index: 1 !important;
+    }
+
+    /* FIX 2: Product Title - FINAL MOBILE FIX */
+    html body main.product-main .product-container .product-content .product-right-column .product-info .product-title,
+    html body main.product-main .product-container #productContent .product-right-column .product-info .product-title,
+    html body .product-main .product-container .product-content .product-right-column .product-info h1.product-title,
+    html body .product-main .product-container #productContent .product-right-column .product-info h1.product-title,
+    body main.product-main .product-container .product-content .product-right-column .product-info h1.product-title,
+    body main.product-main .product-container #productContent .product-right-column .product-info h1.product-title,
+    body .product-main .product-container .product-content .product-right-column .product-info h1.product-title,
+    body .product-main .product-container #productContent .product-right-column .product-info h1.product-title,
+    html body .product-info .product-title,
+    body .product-info .product-title,
+    h1.product-title,
+    .product-title,
+    #productTitle {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        padding: 0 !important;
+        padding-right: 0 !important;
+        margin: 8px 0 !important;
+        /* Standard spacing, natural flow restored */
+        font-size: 16px !important;
+        line-height: 1.4 !important;
+        color: #212121 !important;
+        font-weight: 500 !important;
+        white-space: normal !important;
+        overflow: visible !important;
+        position: relative !important;
+        z-index: 10 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        height: auto !important;
+        min-height: auto !important;
+        max-height: none !important;
+        border: none !important;
+        background: transparent !important;
+        transform: none !important;
+    }
+
+    /* FIX 2.1: Rating Summary - Flipkart Mobile Style */
+    html body .product-info .product-rating,
+    body .product-info .product-rating,
+    .product-info .product-rating,
+    #productRating {
+        display: flex !important;
+        align-items: center !important;
+        gap: 8px !important;
+        margin: 0 0 12px 0 !important;
+        padding: 0 !important;
+        background: transparent !important;
+        position: static !important;
+    }
+
+    html body .product-info .product-rating .rating-badge,
+    body .product-info .product-rating .rating-badge,
+    .product-info .product-rating .rating-badge,
+    #productRating .rating-badge {
+        background: #388e3c !important;
+        /* Green Badge */
+        color: #fff !important;
+        padding: 2px 6px !important;
+        border-radius: 3px !important;
+        font-size: 12px !important;
+        font-weight: 600 !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 2px !important;
+    }
+
+    html body .product-info .product-rating .rating-text,
+    body .product-info .product-rating .rating-text,
+    .product-info .product-rating .rating-text,
+    #productRating .rating-text {
+        font-size: 13px !important;
+        color: #878787 !important;
+        /* Grey text for count */
+        font-weight: 500 !important;
+        background: transparent !important;
+        padding: 0 !important;
+    }
+
+    /* Product info padding */
+    html body .product-info,
+    body .product-info,
+    .product-info {
+        padding: 12px !important;
+        background: #fff !important;
+    }
+
+    /* Move top actions below title */
+    html body .product-top-actions,
+    body .product-top-actions,
+    .product-top-actions {
+        display: none !important;
+        /* Hide redundant compare/share on mobile */
+    }
+
+    /* FIX 3: FBT Section - ULTRA SPECIFIC */
+
+    /* Hide carousel */
+    html body #frequentlyBoughtSection,
+    body #frequentlyBoughtSection,
+    #frequentlyBoughtSection {
+        display: none !important;
+    }
+
+    /* Show list */
+    html body #buyTogetherSection,
+    body #buyTogetherSection,
+    #buyTogetherSection {
+        display: block !important;
+        padding: 16px 12px !important;
+        margin: 0 !important;
+        background: #fff !important;
+        border-top: 8px solid #f1f3f6 !important;
+    }
+
+    /* Product list */
+    html body #buyTogetherProducts,
+    body #buyTogetherProducts,
+    #buyTogetherProducts {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 0 !important;
+        border: 1px solid #e0e0e0 !important;
+        border-radius: 8px !important;
+        overflow: hidden !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Individual items - Compact & Full Text */
+    html body .buy-together-product-item,
+    body .buy-together-product-item,
+    .buy-together-product-item {
+        display: grid !important;
+        grid-template-columns: 80px 1fr 30px !important;
+        /* Increased image width for clarity */
+        grid-template-areas:
+            "image content checkbox" !important;
+        gap: 0 10px !important;
+        padding: 6px 8px !important;
+        /* Tighter vertical padding */
+        border-bottom: 1px solid #f0f0f0 !important;
+        align-items: center !important;
+        background: #fff !important;
+        margin: 0 !important;
+        box-shadow: none !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        min-height: 100px !important;
+        /* Ensure enough height for 3 rows */
+    }
+
+    /* Create a nested grid/flex for the middle content area to prevent overlap */
+    .buy-together-product-item .buy-together-product-name,
+    .buy-together-product-item .buy-together-product-price-container,
+    .buy-together-product-item .buy-together-special-price {
+        grid-column: 2 !important;
+        /* Force to middle column */
+        position: static !important;
+    }
+
+    html body .buy-together-product-item:last-child,
+    body .buy-together-product-item:last-child,
+    .buy-together-product-item:last-child {
+        border-bottom: none !important;
+    }
+
+    /* Main product grey background */
+    html body .buy-together-product-item.main-product,
+    body .buy-together-product-item.main-product,
+    .buy-together-product-item.main-product {
+        background: #f1f3f6 !important;
+    }
+
+    /* Hide plus signs */
+    html body .buy-together-plus,
+    body .buy-together-plus,
+    .buy-together-plus {
+        display: none !important;
+    }
+
+    /* Image - Increased height for full visibility */
+    html body .buy-together-product-image-container,
+    body .buy-together-product-image-container,
+    .buy-together-product-image-container {
+        grid-area: image !important;
+        width: 80px !important;
+        height: 90px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        margin: 0 !important;
+        background: #fff !important;
+    }
+
+    html body .buy-together-product-image,
+    body .buy-together-product-image,
+    .buy-together-product-image {
+        max-width: 100% !important;
+        max-height: 100% !important;
+        height: 100% !important;
+        width: 100% !important;
+        object-fit: contain !important;
+    }
+
+    /* Name - NO OVERLAP */
+    html body .buy-together-product-name,
+    body .buy-together-product-name,
+    .buy-together-product-name {
+        font-size: 13px !important;
+        color: #212121 !important;
+        white-space: normal !important;
+        overflow: visible !important;
+        font-weight: 400 !important;
+        margin: 0 0 2px 0 !important;
+        line-height: 1.3 !important;
+        display: block !important;
+    }
+
+    /* Price - NO OVERLAP */
+    html body .buy-together-product-price-container,
+    body .buy-together-product-price-container,
+    .buy-together-product-price-container {
+        display: flex !important;
+        gap: 6px !important;
+        align-items: center !important;
+        flex-wrap: wrap !important;
+        margin: 2px 0 !important;
+    }
+
+    html body .buy-together-product-price-container .current-price,
+    body .buy-together-product-price-container .current-price,
+    .buy-together-product-price-container .current-price {
+        font-size: 14px !important;
+        font-weight: 600 !important;
+        color: #212121 !important;
+    }
+
+    /* Special Price Message - NO OVERLAP */
+    .buy-together-special-price {
+        font-size: 11px !important;
+        color: #388e3c !important;
+        font-weight: 500 !important;
+        margin-top: 2px !important;
+        line-height: 1.2 !important;
+        display: block !important;
+    }
+
+    /* Hide rating for maximum compactness */
+    html body .buy-together-product-rating,
+    body .buy-together-product-rating,
+    .buy-together-product-rating {
+        display: none !important;
+    }
+
+    /* Checkbox */
+    html body .addon-checkbox,
+    body .addon-checkbox,
+    .addon-checkbox {
+        grid-area: checkbox !important;
+        width: 18px !important;
+        height: 18px !important;
+        border: 1px solid #c2c2c2 !important;
+        border-radius: 2px !important;
+        background: #fff !important;
+        cursor: pointer !important;
+        position: static !important;
+        margin: auto !important;
+    }
+
+    html body .addon-checkbox.checked,
+    body .addon-checkbox.checked,
+    .addon-checkbox.checked {
+        border-color: #2874f0 !important;
+        background: #2874f0 !important;
+    }
+
+    html body .addon-checkbox.checked::after,
+    body .addon-checkbox.checked::after,
+    .addon-checkbox.checked::after {
+        content: '' !important;
+        width: 5px !important;
+        height: 10px !important;
+        border: solid white !important;
+        border-width: 0 2px 2px 0 !important;
+        transform: rotate(45deg) translate(-1px, -1px) !important;
+        display: block !important;
+    }
+
+    /* Main product checkbox */
+    html body .buy-together-product-item.main-product::after,
+    body .buy-together-product-item.main-product::after,
+    .buy-together-product-item.main-product::after {
+        content: '' !important;
+        grid-area: checkbox !important;
+        width: 18px !important;
+        height: 18px !important;
+        border: 1px solid #d0d0d0 !important;
+        background: #e0e0e0 !important;
+        border-radius: 2px !important;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%239e9e9e' width='16px' height='16px'%3E%3Cpath d='M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z'/%3E%3C/svg%3E") !important;
+        background-repeat: no-repeat !important;
+        background-position: center !important;
+        opacity: 0.6 !important;
+        margin: auto !important;
+    }
+
+    /* Footer button */
+    html body #buyTogetherAddCartBtn,
+    body #buyTogetherAddCartBtn,
+    #buyTogetherAddCartBtn {
+        width: 100% !important;
+        height: 48px !important;
+        background: #424242 !important;
+        color: #fff !important;
+        font-weight: 500 !important;
+        font-size: 15px !important;
+        border-radius: 4px !important;
+        border: none !important;
+        margin-top: 16px !important;
+    }
+
+    html body #buyTogetherAddCartBtn:not(:disabled),
+    body #buyTogetherAddCartBtn:not(:disabled),
+    #buyTogetherAddCartBtn:not(:disabled) {
+        background: #424242 !important;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+    }
+
+    html body #buyTogetherAddCartBtn:disabled,
+    body #buyTogetherAddCartBtn:disabled,
+    #buyTogetherAddCartBtn:disabled {
+        background: #9e9e9e !important;
+        cursor: not-allowed !important;
+    }
+
+    /* Hide total section */
+    html body #buyTogetherTotalSection,
+    body #buyTogetherTotalSection,
+    #buyTogetherTotalSection {
+        display: none !important;
+    }
+
+    /* FIX 4: GLOBAL FOOTER REMOVAL - ULTRA SPECIFIC */
+    html body .flipkart-footer,
+    html body .seo-footer-section,
+    html body .seo-footer-container,
+    body .flipkart-footer,
+    body .seo-footer-section,
+    body .seo-footer-container,
+    .flipkart-footer,
+    .seo-footer-section,
+    .seo-footer-container {
+        display: none !important;
+        height: 0 !important;
+        overflow: hidden !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        border: none !important;
+    }
+
+    /* ADDITIONAL FBT STRETCH FIXES */
+    .buy-together-section,
+    .buy-together-header,
+    .buy-together-products,
+    .buy-together-product-item,
+    .buy-together-footer {
+        width: 100% !important;
+        min-width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+}

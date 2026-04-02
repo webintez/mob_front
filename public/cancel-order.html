@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cancel Order - Mobitez</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/cancel-order.css">
+    <link rel="stylesheet" href="/css/nav-menu-visible.css">
+    <link rel="stylesheet" href="/css/flipkart-dropdown.css">
+    <link rel="stylesheet" href="/css/mobile-responsive.css">
+    <link rel="stylesheet" href="/css/flipkart-mobile-style.css">
+    <!-- CRITICAL: Mobile header consistency - MUST load LAST -->
+    <link rel="stylesheet" href="/css/mobile-header-consistent.css">
+    <link rel="stylesheet" href="/css/flipkart-mobile-header.css">
+    <link rel="stylesheet" href="/css/mobile-header-consistent.css">
+    <link rel="stylesheet" href="/css/flipkart-mobile-header.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/secondary-menu.css">
+    <script src="/js/auth.js?v=1769841025"></script>
+    <script src="/js/cart-api.js?v=1769841025"></script>
+    <script src="/js/order-api.js?v=1769841025"></script>
+    <script src="/js/search-common.js?v=1769841025"></script>
+    <script src="/js/secondary-menu.js?v=1769841025" defer></script>
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <!-- Logo -->
+            <div class="logo">
+                <img src="/images/mobitez-logo.png" alt="Mobitez" class="logo-image">
+            </div>
+
+            <!-- Search Bar -->
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="Search for products, brands and more"
+                    id="searchInput" autocomplete="off">
+                <button class="search-btn" id="searchBtn">
+                    <i class="fas fa-search"></i>
+                </button>
+                <!-- Search Suggestions Dropdown -->
+                <div class="search-suggestions" id="searchSuggestions" style="display: none;">
+                    <div class="search-suggestions-content" id="searchSuggestionsContent">
+                        <!-- Suggestions will be populated here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side Menu -->
+            <div class="header-right">
+                <div class="header-item login-dropdown-wrapper">
+                    <a href="#" class="login-btn" id="loginBtn">
+                        Login
+                        <i class="fas fa-chevron-down"></i>
+                    </a>
+                    <div class="login-dropdown" id="loginDropdown">
+                        <a href="/login.html" class="dropdown-item">
+                            <i class="fas fa-sign-in-alt"></i>
+                            Login
+                        </a>
+                        <a href="/signup.html" class="dropdown-item">
+                            <i class="fas fa-user-plus"></i>
+                            Sign Up
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="/profile.html" class="dropdown-item">
+                            <i class="fas fa-user"></i>
+                            My Profile
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-star"></i>
+                            Mobitez Plus Zone
+                        </a>
+                        <a href="/orders.html" class="dropdown-item">
+                            <i class="fas fa-shopping-bag"></i>
+                            Orders
+                        </a>
+                        <a href="/wishlist.html" class="dropdown-item">
+                            <i class="fas fa-heart"></i>
+                            Wishlist
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-gift"></i>
+                            Rewards
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-credit-card"></i>
+                            Gift Cards
+                        </a>
+                    </div>
+                </div>
+                <div class="header-item">
+                    <a href="#" class="become-seller">Sell with Us</a>
+                </div>
+                <div class="header-item more-dropdown-wrapper">
+                    <a href="#" class="more-options">
+                        More
+                        <i class="fas fa-chevron-down"></i>
+                    </a>
+                    <div class="more-dropdown">
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-bell"></i>
+                            Notification Preferences
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-headset"></i>
+                            24x7 Customer Care
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-bullhorn"></i>
+                            Advertise
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-download"></i>
+                            Download App
+                        </a>
+                    </div>
+                </div>
+                <div class="header-item">
+                    <a href="/cart.html" class="cart">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-text">Cart</span>
+                        <span class="cart-count">0</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation Menu -->
+    <nav class="nav-menu">
+        <div class="nav-container" id="navContainer">
+            <!-- Categories will be loaded dynamically -->
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content" style="padding-top: 112px;">
+        <div class="container cancel-order-container">
+            <!-- Breadcrumbs -->
+            <div class="breadcrumbs">
+                <div class="container">
+                    <a href="/">Home</a>
+                    <i class="fas fa-chevron-right breadcrumb-icon"></i>
+                    <a href="/orders.html">My Orders</a>
+                    <i class="fas fa-chevron-right breadcrumb-icon"></i>
+                    <a href="#" id="orderNumberBreadcrumbLink">Order Details</a>
+                    <i class="fas fa-chevron-right breadcrumb-icon"></i>
+                    <span>Cancel</span>
+                </div>
+            </div>
+
+            <!-- Cancel Order Content -->
+            <div class="cancel-order-content">
+                <!-- Left: Cancellation Form -->
+                <div class="cancel-order-left">
+                    <!-- Step 1: Easy Cancellation -->
+                    <div class="cancel-step-section">
+                        <div class="cancel-step-header">
+                            <span class="cancel-step-number">1</span>
+                            <h3 class="cancel-step-title">EASY CANCELLATION</h3>
+                        </div>
+                        <form class="cancel-order-form" id="cancelOrderForm">
+                            <div class="form-group">
+                                <label for="cancelReason" class="form-label">
+                                    Reason for Cancellation <span class="required">*</span>
+                                </label>
+                                <select id="cancelReason" name="reason" class="form-select" required>
+                                    <option value="" disabled selected>Select Reason</option>
+                                    <option value="worried_ratings">I'm worried about the ratings/reviews</option>
+                                    <option value="change_payment">I want to change the payment option</option>
+                                    <option value="price_decreased">Price of the product has now decreased</option>
+                                    <option value="change_address">I want to change the delivery address</option>
+                                    <option value="change_contact">I want to change the contact details</option>
+                                    <option value="shorter_delivery">I was hoping for a shorter delivery time</option>
+                                    <option value="not_listed">My reasons are not listed here</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="cancelComments" class="form-label">
+                                    Comments <span class="required">*</span>
+                                </label>
+                                <textarea id="cancelComments" name="comments" class="form-textarea"
+                                    placeholder="eg: Item not required anymore." required rows="4"></textarea>
+                            </div>
+                            <button type="submit" class="btn-continue" id="continueBtn" disabled>
+                                CONTINUE
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Step 2: Refund Modes -->
+                    <div class="cancel-step-section">
+                        <div class="cancel-step-header">
+                            <span class="cancel-step-number">2</span>
+                            <h3 class="cancel-step-title">REFUND MODES</h3>
+                        </div>
+                        <div class="refund-modes-content">
+                            <p class="refund-info-text">Refund details will be shown after cancellation is confirmed.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Item Details -->
+                <div class="cancel-order-right">
+                    <div class="item-details-card">
+                        <h3 class="item-details-title">ITEM DETAILS</h3>
+                        <div class="item-details-content" id="itemDetailsContent">
+                            <div class="loading-spinner">
+                                <div class="spinner"></div>
+                                <p>Loading item details...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+
+
+    <script src="/js/cancel-order.js?v=1769841025"></script>
+    <script src="/js/category-nav-common.js?v=1769841025"></script>
+
+    <!-- Footer loaded dynamically -->
+    <script>
+        // Setup login dropdown
+        function setupLoginDropdown() {
+            const loginBtn = document.getElementById('loginBtn');
+            const loginDropdown = document.getElementById('loginDropdown');
+            const loginWrapper = loginBtn?.closest('.login-dropdown-wrapper');
+
+            if (!loginBtn || !loginDropdown || !loginWrapper) return;
+
+            loginBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                loginWrapper.classList.toggle('active');
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!loginWrapper.contains(e.target)) {
+                    loginWrapper.classList.remove('active');
+                }
+            });
+        }
+
+        // Setup More Dropdown
+        function setupMoreDropdown() {
+            const moreOptions = document.querySelector('.more-options');
+            const moreDropdown = document.querySelector('.more-dropdown');
+            const moreWrapper = document.querySelector('.more-dropdown-wrapper');
+
+            if (moreOptions && moreDropdown && moreWrapper) {
+                // Function to position dropdown
+                function positionMoreDropdown() {
+                    const btnRect = moreOptions.getBoundingClientRect();
+                    moreDropdown.style.top = (btnRect.bottom + 8) + 'px';
+                    moreDropdown.style.right = (window.innerWidth - btnRect.right) + 'px';
+                }
+
+                // Position dropdown on hover
+                moreWrapper.addEventListener('mouseenter', () => {
+                    positionMoreDropdown();
+                });
+
+                // Reposition on scroll/resize when visible
+                window.addEventListener('scroll', () => {
+                    if (moreDropdown.style.opacity === '1' || moreDropdown.style.visibility === 'visible') {
+                        positionMoreDropdown();
+                    }
+                });
+
+                window.addEventListener('resize', () => {
+                    if (moreDropdown.style.opacity === '1' || moreDropdown.style.visibility === 'visible') {
+                        positionMoreDropdown();
+                    }
+                });
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            setupLoginDropdown();
+            setupMoreDropdown();
+        });
+    </script>
+    <script src="/js/mobile-menu.js?v=1769841025"></script>
+    <script src="/js/flipkart-mobile-header.js?v=1769841025"></script>
+    <script src="/js/category-nav-common.js?v=1769841025"></script>
+    <script src="/js/footer-common.js?v=1769841025"></script>
+</body>
+
+</html>

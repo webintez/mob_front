@@ -1,0 +1,74 @@
+/* Recently Viewed Section Styles - Flipkart Style */
+/* Uses same container structure as Featured Products and All Products sections */
+
+.recently-viewed-container {
+    position: relative;
+    width: 100%;
+    margin-top: 15px;
+    background: #fff;
+    border-radius: 4px;
+    padding: 10px 0;
+}
+
+.recently-viewed-scroll {
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-behavior: smooth;
+    gap: 20px;
+    padding: 0;
+    scrollbar-width: none;
+    /* Firefox */
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    max-width: 100%;
+}
+
+.recently-viewed-scroll::-webkit-scrollbar {
+    display: none;
+    /* Chrome, Safari, Opera */
+}
+
+.recently-viewed-products {
+    display: flex;
+    gap: 20px;
+    min-width: max-content;
+}
+
+/* The cards will now use .homepage-product-card styles from dynamic-sections.css */
+.recently-viewed-products .product-card {
+    flex: 0 0 200px;
+    max-width: 200px;
+}
+
+@media (max-width: 768px) {
+    .recently-viewed-products .product-card {
+        flex: 0 0 150px;
+        max-width: 150px;
+    }
+}
+
+.scroll-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    transition: all 0.2s;
+}
+
+.scroll-btn-left {
+    left: -20px;
+}
+.scroll-btn-right {
+    right: -20px;
+}

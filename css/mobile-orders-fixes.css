@@ -1,0 +1,324 @@
+/* Mobile Orders Page Fixes - Collapsible Filter */
+
+/* Mobile only - Max-width 768px */
+@media (max-width: 768px) {
+
+    /* Remove gap above filters */
+    .main-content {
+        padding-top: 70px !important; /* Adjusted for single row header */
+    }
+
+    .orders-container {
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    .breadcrumbs {
+        margin: 0 !important;
+        padding: 12px 16px !important;
+        background: white;
+    }
+
+    .breadcrumbs .container {
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    /* Mobile Header */
+    .mobile-orders-header {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 14px 16px;
+        background: white;
+        border-bottom: 1px solid #e0e0e0;
+    }
+
+    .mobile-orders-back {
+        font-size: 18px;
+        color: #212121;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+    }
+
+    .mobile-orders-title {
+        font-size: 16px;
+        font-weight: 500;
+        color: #212121;
+    }
+
+    /* Search Orders Section - Inline Design */
+    .search-orders-section {
+        background: white;
+        padding: 12px 16px;
+        box-shadow: none !important;
+        border-bottom: 1px solid #e0e0e0;
+    }
+
+    .search-orders-box {
+        display: flex;
+        flex-direction: row !important;
+        gap: 16px;
+        align-items: center;
+        width: 100%;
+    }
+
+    .search-input-wrapper {
+        flex: 1;
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+
+    .search-input-wrapper .search-icon {
+        position: absolute;
+        left: 12px;
+        color: #878787;
+        font-size: 14px;
+        pointer-events: none;
+    }
+
+    .search-orders-input {
+        width: 100%;
+        padding: 9px 12px 9px 34px !important;
+        border: 1px solid #e0e0e0;
+        border-radius: 4px;
+        font-size: 13px;
+        color: #212121;
+        background: #fafafa;
+        outline: none;
+    }
+
+    .btn-orders-filter {
+        background: none;
+        border: none;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 13px;
+        font-weight: 500;
+        color: #444;
+        cursor: pointer;
+        padding: 0;
+        white-space: nowrap;
+    }
+
+    .btn-orders-filter i {
+        font-size: 14px;
+        color: #666;
+    }
+
+    /* Hide filter sidebar by default on mobile */
+    .orders-filters-sidebar {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 20002;
+        background: #fff;
+        padding: 0;
+        margin: 0;
+        overflow-y: auto;
+        box-shadow: none;
+    }
+
+    /* When active (toggled via button) */
+    .orders-filters-sidebar.active {
+        display: block;
+    }
+
+    /* Mobile Filter Header (Back Button) */
+    .mobile-filter-header {
+        display: flex;
+        align-items: center;
+        padding: 15px;
+        border-bottom: 1px solid #e0e0e0;
+        background: #fff;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        gap: 15px;
+    }
+
+    .mobile-filter-back {
+        background: none;
+        border: none;
+        font-size: 16px;
+        color: #0a4409;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+        padding: 0;
+    }
+
+    .mobile-filter-title {
+        font-size: 17px;
+        font-weight: 600;
+        color: #212121;
+    }
+
+    /* Hide desktop-only filter title on mobile */
+    .desktop-only {
+        display: none !important;
+    }
+
+    /* Adjust filters card for mobile */
+    .orders-filters-sidebar .filters-card {
+        box-shadow: none;
+        border-radius: 0;
+        margin-bottom: 0;
+    }
+
+    /* Adjust orders content wrapper */
+    .orders-content-wrapper {
+        display: block;
+        gap: 0;
+    }
+
+    /* Mobile Card Layout Tuning */
+    .orders-list {
+        background: #f1f3f6;
+    }
+
+    .order-card-link {
+        padding: 16px !important;
+        margin-bottom: 0 !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    .order-card-content {
+        display: grid;
+        grid-template-columns: 80px 1fr 16px;
+        grid-template-areas: 
+            "img info chevron"
+            "rating rating rating";
+        gap: 12px;
+        align-items: center;
+    }
+
+    .order-product-image {
+        grid-area: img;
+        width: 64px !important;
+        height: 64px !important;
+        padding: 4px !important;
+    }
+
+    .order-product-details {
+        grid-area: info;
+        gap: 3px !important;
+    }
+
+    .order-delivery-info {
+        display: none !important; /* Hide details area, building it directly into product_details in JS */
+    }
+
+    /* Chevron link icon for item */
+    .order-card-chevron {
+        grid-area: chevron;
+        font-size: 12px;
+        color: #878787;
+        justify-self: end;
+    }
+
+    /* Star Ratings Section */
+    .order-rating-row {
+        grid-area: rating;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin-top: 10px;
+        padding-top: 12px;
+        border-top: 1px solid #f0f0f0;
+    }
+
+    .star-items {
+        display: flex;
+        gap: 10px;
+    }
+
+    .star-items i {
+        font-size: 20px;
+        color: #e0e0e0;
+        cursor: pointer;
+    }
+
+    .star-items i.active {
+        color: #117a15; /* Flipkart green or deep green */
+    }
+
+    .rating-text {
+        font-size: 12px;
+        color: #555;
+    }
+
+    /* Hide search container on mobile */
+    html body .search-container,
+    body .search-container,
+    html body .header-container .search-container,
+    body .header-container .search-container,
+    html body header .search-container,
+    body header .search-container,
+    .search-container {
+        display: none !important;
+    }
+
+    /* Bottom Navigation Bar */
+    .mobile-bottom-nav {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background: white;
+        display: flex;
+        justify-content: space-around;
+        padding: 8px 0;
+        border-top: 1px solid #e0e0e0;
+        box-shadow: 0 -1px 4px rgba(0,0,0,0.05);
+        z-index: 1000;
+    }
+
+    .mobile-bottom-nav .nav-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-decoration: none;
+        color: #878787;
+        font-size: 11px;
+    }
+
+    .mobile-bottom-nav .nav-item i {
+        font-size: 18px;
+        margin-bottom: 4px;
+    }
+
+    .mobile-bottom-nav .nav-item.active {
+        color: #004700; /* Accent */
+    }
+
+    /* Padding for bottom nav to prevent content cut off */
+    body {
+        padding-bottom: 60px !important;
+    }
+}
+
+/* Desktop only - Hide mobile elements */
+@media (min-width: 769px) {
+    .mobile-orders-actions {
+        display: none !important;
+    }
+
+    .mobile-filter-header {
+        display: none !important;
+    }
+
+    .desktop-only {
+        display: block !important;
+    }
+}

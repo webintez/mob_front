@@ -1,0 +1,426 @@
+/* ============================================
+   FLIPKART FINAL OVERRIDE - MAXIMUM SPECIFICITY
+   This file MUST load LAST to override ALL other CSS
+   Uses maximum specificity to ensure changes apply
+   ============================================ */
+
+/* ============================================
+   FIX PRODUCT TITLE/RATING VISIBILITY
+   ============================================ */
+
+/* CRITICAL: Product info must be visible - use maximum specificity */
+html body main.product-main .product-container .product-content .product-right-column .product-info,
+html body main.product-main .product-container #productContent .product-right-column .product-info,
+html body .product-main .product-container .product-content .product-right-column .product-info,
+html body .product-main .product-container #productContent .product-right-column .product-info,
+body main.product-main .product-container .product-content .product-right-column .product-info,
+body main.product-main .product-container #productContent .product-right-column .product-info,
+body .product-main .product-container .product-content .product-right-column .product-info,
+body .product-main .product-container #productContent .product-right-column .product-info,
+.product-main .product-container .product-content .product-right-column .product-info,
+.product-main .product-container #productContent .product-right-column .product-info,
+.product-info {
+    margin-top: 0 !important;
+    padding-top: 24px !important;
+    /* Ensure content is pushed down below nav */
+    /* padding-left: 24px !important;
+    padding-right: 24px !important;
+    padding-bottom: 24px !important; */
+    background: white !important;
+    position: relative !important;
+    z-index: 10 !important;
+    border-bottom: 1px solid #f0f0f0 !important;
+    transform: translateZ(0) !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    /* Ensure it starts below navigation */
+    min-height: auto !important;
+}
+
+/* NEW: Container for main product information (breadcrumbs, title, rating, price) */
+.product-main-info-container {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0 !important;
+    background: white !important;
+    position: relative !important;
+    z-index: 10 !important;
+}
+
+@media (max-width: 768px) {
+    .product-main-info-container {
+        padding: 0 !important;
+        /* margin-bottom: 8px !important; */
+        /* Matches Flipkart mobile vibe: section separator */
+        /* border-bottom: 8px solid #f1f3f6 !important; */
+        margin-left: -16px !important;
+        margin-right: -16px !important;
+        padding-left: 16px !important;
+        padding-right: 16px !important;
+    }
+}
+
+/* CRITICAL: Product title visibility - maximum specificity */
+html body main.product-main .product-container .product-content .product-right-column .product-main-info-container .product-title,
+html body main.product-main .product-container #productContent .product-right-column .product-main-info-container .product-title,
+html body .product-main .product-container .product-content .product-right-column .product-main-info-container .product-title,
+html body .product-main .product-container #productContent .product-right-column .product-main-info-container .product-title,
+body main.product-main .product-container .product-content .product-right-column .product-main-info-container h1.product-title,
+body main.product-main .product-container #productContent .product-right-column .product-main-info-container h1.product-title,
+body .product-main .product-container .product-content .product-right-column .product-main-info-container h1.product-title,
+body .product-main .product-container #productContent .product-right-column .product-main-info-container h1.product-title,
+.product-main-info-container .product-title,
+.product-title {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+    margin-bottom: 8px !important;
+    /* padding-right: 120px !important; */
+    font-size: 18px !important;
+    font-weight: 400 !important;
+    line-height: 1.3 !important;
+    color: #212121 !important;
+    position: relative !important;
+    z-index: 11 !important;
+    transform: translateZ(0) !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    display: block !important;
+}
+
+/* CRITICAL: Rating visibility - maximum specificity */
+html body main.product-main .product-container .product-content .product-right-column .product-main-info-container .product-rating,
+html body main.product-main .product-container #productContent .product-right-column .product-main-info-container .product-rating,
+html body .product-main .product-container .product-content .product-right-column .product-main-info-container .product-rating,
+html body .product-main .product-container #productContent .product-right-column .product-main-info-container .product-rating,
+body main.product-main .product-container .product-content .product-right-column .product-main-info-container .product-rating,
+body main.product-main .product-container #productContent .product-right-column .product-main-info-container .product-rating,
+body .product-main .product-container .product-content .product-right-column .product-main-info-container .product-rating,
+body .product-main .product-container #productContent .product-right-column .product-main-info-container .product-rating,
+.product-main-info-container .product-rating,
+.product-rating {
+    margin-top: 0 !important;
+    margin-bottom: 8px !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    position: relative !important;
+    z-index: 11 !important;
+    transform: translateZ(0) !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    display: inline-flex !important;
+}
+
+/* ============================================
+   REMOVE GAP ABOVE IMAGES - MAXIMUM SPECIFICITY
+   ============================================ */
+
+/* CRITICAL: Remove ALL gaps above image gallery - maximum specificity */
+html body main.product-main .product-container .product-content .product-images-wrapper,
+html body main.product-main .product-container #productContent .product-images-wrapper,
+html body .product-main .product-container .product-content .product-images-wrapper,
+html body .product-main .product-container #productContent .product-images-wrapper,
+body main.product-main .product-container .product-content .product-images-wrapper,
+body main.product-main .product-container #productContent .product-images-wrapper,
+body .product-main .product-container .product-content .product-images-wrapper,
+body .product-main .product-container #productContent .product-images-wrapper,
+.product-main .product-container .product-content .product-images-wrapper,
+.product-main .product-container #productContent .product-images-wrapper,
+.product-images-wrapper {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+    border-top: none !important;
+    background: white !important;
+    /* Sticky positioning moved to desktop media query below */
+}
+
+/* Sticky positioning only for Desktop */
+@media (min-width: 769px) {
+    html body main.product-main .product-container .product-content .product-images-wrapper,
+    html body main.product-main .product-container #productContent .product-images-wrapper,
+    html body .product-main .product-container .product-content .product-images-wrapper,
+    html body .product-main .product-container #productContent .product-images-wrapper,
+    body main.product-main .product-container .product-content .product-images-wrapper,
+    body main.product-main .product-container #productContent .product-images-wrapper,
+    body .product-main .product-container .product-content .product-images-wrapper,
+    body .product-main .product-container #productContent .product-images-wrapper,
+    .product-main .product-container .product-content .product-images-wrapper,
+    .product-main .product-container #productContent .product-images-wrapper,
+    .product-images-wrapper {
+        position: -webkit-sticky !important;
+        position: sticky !important;
+        top: 112px !important;
+        z-index: 100 !important;
+    }
+}
+
+/* CRITICAL: Remove gap from product-images - maximum specificity */
+html body main.product-main .product-container .product-content .product-images-wrapper .product-images,
+html body main.product-main .product-container #productContent .product-images-wrapper .product-images,
+html body .product-main .product-container .product-content .product-images-wrapper .product-images,
+html body .product-main .product-container #productContent .product-images-wrapper .product-images,
+body main.product-main .product-container .product-content .product-images-wrapper .product-images,
+body main.product-main .product-container #productContent .product-images-wrapper .product-images,
+body .product-main .product-container .product-content .product-images-wrapper .product-images,
+body .product-main .product-container #productContent .product-images-wrapper .product-images,
+.product-images-wrapper .product-images,
+.product-images {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+    padding-left: 24px !important;
+    padding-right: 24px !important;
+    padding-bottom: 24px !important;
+    border-top: none !important;
+}
+
+/* CRITICAL: Remove gap from thumbnails - maximum specificity */
+html body main.product-main .product-container .product-content .product-images-wrapper .product-images .thumbnail-gallery-vertical,
+html body main.product-main .product-container #productContent .product-images-wrapper .product-images .thumbnail-gallery-vertical,
+html body .product-main .product-container .product-content .product-images-wrapper .product-images .thumbnail-gallery-vertical,
+html body .product-main .product-container #productContent .product-images-wrapper .product-images .thumbnail-gallery-vertical,
+.product-images .thumbnail-gallery-vertical,
+.thumbnail-gallery-vertical {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+/* CRITICAL: Remove gap from main image - maximum specificity */
+html body main.product-main .product-container .product-content .product-images-wrapper .product-images .main-image-container,
+html body main.product-main .product-container #productContent .product-images-wrapper .product-images .main-image-container,
+html body .product-main .product-container .product-content .product-images-wrapper .product-images .main-image-container,
+html body .product-main .product-container #productContent .product-images-wrapper .product-images .main-image-container,
+.product-images .main-image-container,
+.main-image-container {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+html body main.product-main .product-container .product-content .product-images-wrapper .product-images .main-image-container .main-image-wrapper,
+html body main.product-main .product-container #productContent .product-images-wrapper .product-images .main-image-container .main-image-wrapper,
+html body .product-main .product-container .product-content .product-images-wrapper .product-images .main-image-container .main-image-wrapper,
+html body .product-main .product-container #productContent .product-images-wrapper .product-images .main-image-container .main-image-wrapper,
+.main-image-container .main-image-wrapper,
+.main-image-wrapper {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+/* ============================================
+   BREADCRUMBS POSITIONING - MAXIMUM SPECIFICITY
+   ============================================ */
+
+/* CRITICAL: Breadcrumbs positioning - maximum specificity */
+html body .breadcrumbs,
+body .breadcrumbs,
+.breadcrumbs {
+    margin-top: 112px !important;
+    /* Header (56px) + Nav (56px) = 112px */
+    margin-bottom: 0 !important;
+    padding-top: 12px !important;
+    padding-bottom: 12px !important;
+    background-color: #f1f3f6 !important;
+    position: relative !important;
+    z-index: 5 !important;
+}
+
+/* ============================================
+   PRODUCT CONTENT GRID - NO GAPS
+   ============================================ */
+
+/* CRITICAL: Product content grid - maximum specificity */
+html body main.product-main .product-container .product-content,
+html body main.product-main .product-container #productContent,
+html body .product-main .product-container .product-content,
+html body .product-main .product-container #productContent,
+body main.product-main .product-container .product-content,
+body main.product-main .product-container #productContent,
+body .product-main .product-container .product-content,
+body .product-main .product-container #productContent,
+.product-main .product-container .product-content,
+.product-main .product-container #productContent,
+.product-content,
+#productContent {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+    gap: 0 !important;
+    align-items: start !important;
+    position: relative !important;
+    z-index: 1 !important;
+}
+
+/* CRITICAL: Product main - maximum specificity */
+html body main.product-main,
+html body .product-main,
+body main.product-main,
+body .product-main,
+main.product-main,
+.product-main {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+    background-color: #f1f3f6 !important;
+    position: relative !important;
+    z-index: 1 !important;
+}
+
+/* CRITICAL: Product container - maximum specificity */
+html body main.product-main .product-container,
+html body main.product-main #productContainer,
+html body .product-main .product-container,
+html body .product-main #productContainer,
+body main.product-main .product-container,
+body main.product-main #productContainer,
+body .product-main .product-container,
+body .product-main #productContainer,
+.product-main .product-container,
+.product-main #productContainer,
+.product-container,
+#productContainer {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+    position: relative !important;
+    z-index: 1 !important;
+}
+
+/* CRITICAL: Product right column - maximum specificity */
+html body main.product-main .product-container .product-content .product-right-column,
+html body main.product-main .product-container #productContent .product-right-column,
+html body .product-main .product-container .product-content .product-right-column,
+html body .product-main .product-container #productContent .product-right-column,
+body main.product-main .product-container .product-content .product-right-column,
+body main.product-main .product-container #productContent .product-right-column,
+body .product-main .product-container .product-content .product-right-column,
+body .product-main .product-container #productContent .product-right-column,
+.product-content .product-right-column,
+#productContent .product-right-column,
+.product-right-column {
+    /* margin-top: 0 !important; */
+    padding-top: 0 !important;
+    padding-left: 0 !important;
+    background: white !important;
+    position: relative !important;
+    z-index: 10 !important;
+}
+
+/* ============================================
+   PRICE SECTION - EXACT SPACING
+   ============================================ */
+
+.product-price-section {
+    margin-top: 0 !important;
+    margin-bottom: 8px !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+/* ============================================
+   RESPONSIVE FIXES
+   ============================================ */
+
+@media (max-width: 768px) {
+    .breadcrumbs {
+        margin-top: 112px !important;
+    }
+
+    .product-info {
+        padding-top: 16px !important;
+        padding-left: 16px !important;
+        padding-right: 16px !important;
+        padding-bottom: 16px !important;
+    }
+
+    .product-title {
+        padding-right: 0 !important;
+        font-size: 16px !important;
+    }
+
+    .product-images {
+        padding-left: 16px !important;
+        padding-right: 16px !important;
+        padding-bottom: 16px !important;
+    }
+
+    .product-images-wrapper {
+        position: relative !important;
+        top: 0 !important;
+        z-index: 1 !important;
+    }
+}
+
+
+
+/* ============================================
+   STICKY LAYOUT FINAL FIX
+   ============================================ */
+
+/* 
+   We must override the overflow-x: hidden in style.css that breaks sticky.
+   This must only apply to Desktop to avoid mobile issues.
+*/
+@media (min-width: 769px) {
+
+    /* Unlock ALL ancestors */
+    html body,
+    body {
+        /* We can't always force body overflow, but we can try to ensure it doesn't block if possible.
+           However, style.css sets overflow-x: hidden on body. 
+           For sticky to work relative to viewport, body usually needs to be the scroll container (overflow: visible/auto).
+        */
+    }
+
+    /* 1. Main Wrapper */
+    html body main.product-main,
+    html body .product-main,
+    main.product-main,
+    .product-main {
+        overflow: visible !important;
+        overflow-x: visible !important;
+        overflow-y: visible !important;
+    }
+
+    /* 2. Container */
+    html body main.product-main>.container,
+    html body .product-main>.container,
+    html body main.product-main .container,
+    html body .product-main .container,
+    .product-main .container {
+        overflow: visible !important;
+        overflow-x: visible !important;
+        overflow-y: visible !important;
+        /* max-width: 1400px !important; */
+    }
+
+    /* 3. Product Container */
+    html body .product-container,
+    html body #productContainer,
+    .product-container,
+    #productContainer {
+        overflow: visible !important;
+        overflow-x: visible !important;
+        overflow-y: visible !important;
+    }
+
+    /* 4. Product Content Grid */
+    html body .product-content,
+    html body #productContent,
+    .product-content,
+    #productContent {
+        overflow: visible !important;
+        overflow-x: visible !important;
+        overflow-y: visible !important;
+        display: grid !important;
+        grid-template-columns: 37.3% 62.7% !important;
+        align-items: start !important;
+    }
+
+    /* Sticky behavior handled in product-desktop-sticky.css mostly, ensuring no conflict here */
+    html body .product-images-wrapper,
+    html body .product-main .product-images-wrapper,
+    .product-images-wrapper {
+        /* Only apply sticky on desktop if needed, but ensure it doesn't break mobile if screen narrows */
+    }
+}

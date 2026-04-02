@@ -1,0 +1,307 @@
+/* ============================================
+   REMOVE GAP ABOVE IMAGES - NUCLEAR OPTION
+   Remove ALL possible gaps above image section
+   ============================================ */
+
+/* CRITICAL: Product content - ensure no top spacing creates gap */
+html body main.product-main .product-container .product-content,
+html body main.product-main .product-container #productContent,
+html body .product-main .product-container .product-content,
+html body .product-main .product-container #productContent,
+body main.product-main .product-container .product-content,
+body main.product-main .product-container #productContent,
+body .product-main .product-container .product-content,
+body .product-main .product-container #productContent,
+.product-main .product-container .product-content,
+.product-main .product-container #productContent,
+.product-content,
+#productContent {
+    margin-top: 0 !important;
+    /* No top margin - start immediately */
+    padding-top: 0 !important;
+    gap: 0 !important;
+    row-gap: 0 !important;
+    column-gap: 0 !important;
+    align-items: start !important;
+    align-content: start !important;
+    justify-items: start !important;
+    /* Ensure grid items start at the very top */
+    grid-auto-rows: auto !important;
+}
+
+/* CRITICAL: Product images wrapper - ABSOLUTELY NO GAP - START AT TOP */
+html body main.product-main .product-container .product-content .product-images-wrapper,
+html body main.product-main .product-container #productContent .product-images-wrapper,
+html body .product-main .product-container .product-content .product-images-wrapper,
+html body .product-main .product-container #productContent .product-images-wrapper,
+body main.product-main .product-container .product-content .product-images-wrapper,
+body main.product-main .product-container #productContent .product-images-wrapper,
+body .product-main .product-container .product-content .product-images-wrapper,
+body .product-main .product-container #productContent .product-images-wrapper,
+.product-main .product-container .product-content .product-images-wrapper,
+.product-main .product-container #productContent .product-images-wrapper,
+.product-content .product-images-wrapper,
+#productContent .product-images-wrapper,
+.product-images-wrapper {
+    margin: 0 !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    padding: 0 !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    border-top: none !important;
+    border-bottom: none !important;
+    border-left: none !important;
+    border-right: 1px solid #f0f0f0 !important;
+    background: white !important;
+    /* Sticky handled in desktop media query below */
+    align-self: start !important;
+    justify-self: start !important;
+    height: auto !important;
+    min-height: auto !important;
+    max-height: none !important;
+    /* Force start at grid top */
+    grid-row-start: auto !important;
+    grid-column-start: auto !important;
+}
+
+/* Sticky positioning only for Desktop */
+@media (min-width: 769px) {
+
+    html body main.product-main .product-container .product-content .product-images-wrapper,
+    html body main.product-main .product-container #productContent .product-images-wrapper,
+    html body .product-main .product-container .product-content .product-images-wrapper,
+    html body .product-main .product-container #productContent .product-images-wrapper,
+    body main.product-main .product-container .product-content .product-images-wrapper,
+    body main.product-main .product-container #productContent .product-images-wrapper,
+    body .product-main .product-container .product-content .product-images-wrapper,
+    body .product-main .product-container #productContent .product-images-wrapper,
+    .product-main .product-container .product-content .product-images-wrapper,
+    .product-main .product-container #productContent .product-images-wrapper,
+    .product-content .product-images-wrapper,
+    #productContent .product-images-wrapper,
+    .product-images-wrapper {
+        position: -webkit-sticky !important;
+        position: sticky !important;
+        top: 140px !important;
+        z-index: 100 !important;
+    }
+}
+
+/* CRITICAL: Product images - ABSOLUTELY NO TOP PADDING/MARGIN - START IMMEDIATELY */
+html body main.product-main .product-container .product-content .product-images-wrapper .product-images,
+html body main.product-main .product-container #productContent .product-images-wrapper .product-images,
+html body .product-main .product-container .product-content .product-images-wrapper .product-images,
+html body .product-main .product-container #productContent .product-images-wrapper .product-images,
+body main.product-main .product-container .product-content .product-images-wrapper .product-images,
+body main.product-main .product-container #productContent .product-images-wrapper .product-images,
+body .product-main .product-container .product-content .product-images-wrapper .product-images,
+body .product-main .product-container #productContent .product-images-wrapper .product-images,
+.product-images-wrapper .product-images,
+.product-images {
+    margin: 0 !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    padding: 0 24px 24px 24px !important;
+    /* NO top padding - only left, right, bottom */
+    padding-top: 0 !important;
+    border-top: none !important;
+    border-bottom: none !important;
+    display: flex !important;
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
+    gap: 20px !important;
+    /* Force start at top */
+    align-self: start !important;
+}
+
+/* CRITICAL: Thumbnail gallery - NO TOP SPACING */
+html body main.product-main .product-container .product-content .product-images-wrapper .product-images .thumbnail-gallery-vertical,
+html body main.product-main .product-container #productContent .product-images-wrapper .product-images .thumbnail-gallery-vertical,
+html body .product-main .product-container .product-content .product-images-wrapper .product-images .thumbnail-gallery-vertical,
+html body .product-main .product-container #productContent .product-images-wrapper .product-images .thumbnail-gallery-vertical,
+.product-images .thumbnail-gallery-vertical,
+.thumbnail-gallery-vertical {
+    margin: 0 !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    padding: 0 !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+/* CRITICAL: Main image container - NO TOP SPACING */
+html body main.product-main .product-container .product-content .product-images-wrapper .product-images .main-image-container,
+html body main.product-main .product-container #productContent .product-images-wrapper .product-images .main-image-container,
+html body .product-main .product-container .product-content .product-images-wrapper .product-images .main-image-container,
+html body .product-main .product-container #productContent .product-images-wrapper .product-images .main-image-container,
+.product-images .main-image-container,
+.main-image-container {
+    margin: 0 !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    padding: 0 !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+/* CRITICAL: Main image wrapper - NO TOP SPACING */
+html body main.product-main .product-container .product-content .product-images-wrapper .product-images .main-image-container .main-image-wrapper,
+html body main.product-main .product-container #productContent .product-images-wrapper .product-images .main-image-container .main-image-wrapper,
+html body .product-main .product-container .product-content .product-images-wrapper .product-images .main-image-container .main-image-wrapper,
+html body .product-main .product-container #productContent .product-images-wrapper .product-images .main-image-container .main-image-wrapper,
+.main-image-container .main-image-wrapper,
+.main-image-wrapper {
+    margin: 0 !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    padding: 0 !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+/* CRITICAL: Wishlist button - ensure it doesn't create gap */
+.product-wishlist {
+    margin: 0 !important;
+    margin-top: 0 !important;
+    padding: 0 !important;
+    padding-top: 0 !important;
+    position: absolute !important;
+    top: 32px !important;
+    /* Position from top of image area */
+    right: 32px !important;
+    z-index: 20 !important;
+}
+
+/* CRITICAL: Product actions left - ensure no gap above */
+.product-actions-left {
+    margin: 0 !important;
+    margin-top: 0 !important;
+    padding: 0 24px 24px 24px !important;
+    /* NO top padding */
+    padding-top: 0 !important;
+}
+
+/* CRITICAL: Ensure product-content grid has no row gap and items start at top */
+.product-content,
+#productContent {
+    grid-row-gap: 0 !important;
+    grid-column-gap: 0 !important;
+    gap: 0 !important;
+    row-gap: 0 !important;
+    column-gap: 0 !important;
+    align-items: start !important;
+    align-content: start !important;
+    justify-items: start !important;
+    /* Ensure first row starts immediately */
+    grid-auto-rows: min-content !important;
+}
+
+/* CRITICAL: Force images-wrapper to be first grid item with no spacing */
+.product-images-wrapper {
+    grid-row: 1 !important;
+    grid-column: 1 !important;
+    align-self: start !important;
+    justify-self: start !important;
+    /* Force it to start at absolute top of grid */
+    margin-block-start: 0 !important;
+    margin-block-end: 0 !important;
+    margin-inline-start: 0 !important;
+    margin-inline-end: 0 !important;
+}
+
+/* CRITICAL: Ensure product-content has no spacing that creates gap */
+.product-content[style*="display: grid"],
+.product-content[style*="display:grid"],
+#productContent[style*="display: grid"],
+#productContent[style*="display:grid"] {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+    gap: 0 !important;
+}
+
+/* CRITICAL: When product-content is displayed, ensure no gap */
+.product-content:not([style*="display: none"]),
+#productContent:not([style*="display: none"]) {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+/* CRITICAL: Remove any pseudo-elements that might create spacing */
+.product-images-wrapper::before,
+.product-images-wrapper::after,
+.product-images::before,
+.product-images::after {
+    display: none !important;
+    content: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* CRITICAL: Ensure parent containers don't create gap */
+html body main.product-main,
+html body .product-main,
+body main.product-main,
+body .product-main,
+.product-main {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+html body main.product-main .product-container,
+html body main.product-main #productContainer,
+html body .product-main .product-container,
+html body .product-main #productContainer,
+body main.product-main .product-container,
+body main.product-main #productContainer,
+body .product-main .product-container,
+body .product-main #productContainer,
+.product-main .product-container,
+.product-main #productContainer,
+.product-container,
+#productContainer {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+html body main.product-main .product-container .container,
+html body main.product-main #productContainer .container,
+html body .product-main .product-container .container,
+html body .product-main #productContainer .container,
+.product-main .product-container .container,
+.product-main #productContainer .container {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+
+    .product-content,
+    #productContent {
+        margin-top: 0 !important;
+    }
+
+    .product-images-wrapper {
+        position: relative !important;
+        top: 0 !important;
+        z-index: 1 !important;
+    }
+
+    .product-images {
+        padding-left: 16px !important;
+        padding-right: 16px !important;
+        padding-bottom: 16px !important;
+        padding-top: 0 !important;
+    }
+
+    .product-actions-left {
+        padding-left: 16px !important;
+        padding-right: 16px !important;
+        padding-bottom: 0 !important;
+        padding-top: 0 !important;
+        margin-bottom: 0 !important;
+    }
+}

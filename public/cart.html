@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart - Mobitez</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/cart.css">
+    <link rel="stylesheet" href="/css/nav-menu-visible.css">
+    <link rel="stylesheet" href="/css/flipkart-dropdown.css">
+    <link rel="stylesheet" href="/css/mobile-responsive.css">
+    <link rel="stylesheet" href="/css/flipkart-mobile-style.css">
+    <!-- CRITICAL: Mobile header consistency - MUST load LAST -->
+    <link rel="stylesheet" href="/css/mobile-header-consistent.css">
+    <link rel="stylesheet" href="/css/flipkart-mobile-header.css">
+    <link rel="stylesheet" href="/css/mobile-gap-fixes.css">
+
+    <!-- DESKTOP FULL WIDTH: Force 100% width on large screens -->
+    <link rel="stylesheet" href="/css/desktop-full-width.css">
+    <link rel="stylesheet" href="/css/secondary-menu.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="/js/auth.js?v=1769841025"></script>
+    <script src="/js/cart-api.js?v=1769841025"></script>
+    <script src="/js/search-common.js?v=1769841025"></script>
+    <script src="/js/secondary-menu.js?v=1769841025" defer></script>
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <!-- Logo -->
+            <div class="logo">
+                <img src="/images/mobitez-logo.png" alt="Mobitez" class="logo-image">
+            </div>
+
+            <!-- Search Bar -->
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="Search for products, brands and more"
+                    id="searchInput" autocomplete="off">
+                <button class="search-btn" id="searchBtn">
+                    <i class="fas fa-search"></i>
+                </button>
+                <!-- Search Suggestions Dropdown -->
+                <div class="search-suggestions" id="searchSuggestions" style="display: none;">
+                    <div class="search-suggestions-content" id="searchSuggestionsContent">
+                        <!-- Suggestions will be populated here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side Menu -->
+            <div class="header-right">
+                <div class="header-item login-dropdown-wrapper">
+                    <a href="#" class="login-btn" id="loginBtn">
+                        Login
+                        <i class="fas fa-chevron-down"></i>
+                    </a>
+                    <div class="login-dropdown" id="loginDropdown">
+                        <a href="/login.html" class="dropdown-item">
+                            <i class="fas fa-sign-in-alt"></i>
+                            Login
+                        </a>
+                        <a href="/signup.html" class="dropdown-item">
+                            <i class="fas fa-user-plus"></i>
+                            Sign Up
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="/profile.html" class="dropdown-item">
+                            <i class="fas fa-user"></i>
+                            My Profile
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-star"></i>
+                            Mobitez Plus Zone
+                        </a>
+                        <a href="/orders.html" class="dropdown-item">
+                            <i class="fas fa-shopping-bag"></i>
+                            Orders
+                        </a>
+                        <a href="/wishlist.html" class="dropdown-item">
+                            <i class="fas fa-heart"></i>
+                            Wishlist
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-gift"></i>
+                            Rewards
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-credit-card"></i>
+                            Gift Cards
+                        </a>
+                    </div>
+                </div>
+                <div class="header-item">
+                    <a href="#" class="become-seller">Sell with Us</a>
+                </div>
+                <div class="header-item more-dropdown-wrapper">
+                    <a href="#" class="more-options">
+                        More
+                        <i class="fas fa-chevron-down"></i>
+                    </a>
+                    <div class="more-dropdown">
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-bell"></i>
+                            Notification Preferences
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-headset"></i>
+                            24x7 Customer Care
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-bullhorn"></i>
+                            Advertise
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-download"></i>
+                            Download App
+                        </a>
+                    </div>
+                </div>
+                <div class="header-item">
+                    <a href="/cart.html" class="cart">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-text">Cart</span>
+                        <span class="cart-count">0</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation Menu -->
+    <nav class="nav-menu">
+        <div class="nav-container" id="navContainer">
+            <!-- Categories will be loaded dynamically -->
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content" style="padding-top: 112px;">
+        <div class="container cart-container">
+            <!-- Delivery Pincode Section -->
+            <div class="delivery-pincode-section">
+                <div class="pincode-label">From Saved Addresses</div>
+                <button class="btn-pincode" id="enterPincodeBtn">Enter Delivery Pincode</button>
+            </div>
+
+            <!-- Cart Content -->
+            <div class="cart-content">
+                <!-- Left: Cart Items -->
+                <div class="cart-items-section">
+                    <!-- Empty Cart State -->
+                    <div class="empty-cart" id="emptyCart" style="display: none;">
+                        <div class="empty-cart-icon">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                        <h2>Your cart is empty!</h2>
+                        <p>Looks like you haven't added anything to your cart yet.</p>
+                        <a href="/" class="btn-primary">Continue Shopping</a>
+                    </div>
+
+                    <!-- Cart Items List -->
+                    <div class="cart-items-list" id="cartItemsList">
+                        <!-- Cart items will be loaded dynamically -->
+                        <div class="loading-spinner">
+                            <div class="spinner"></div>
+                            <p>Loading cart...</p>
+                        </div>
+                    </div>
+
+                    <!-- Place Order Button -->
+                    <div class="cart-actions" id="cartActions" style="display: none;">
+                        <button class="btn-place-order-large" id="placeOrderBtn">
+                            Place Order
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Right: Price Summary -->
+                <div class="cart-summary-section">
+                    <div class="price-summary">
+                        <h3 class="summary-title">Price details</h3>
+
+                        <div class="summary-content">
+                            <div class="summary-row">
+                                <span>Price (<span id="summaryItemCount">0</span> item<span
+                                        id="summaryItemPlural">s</span>)</span>
+                                <span id="summaryPrice">₹0</span>
+                            </div>
+
+                            <div class="summary-row" id="discountRow" style="display: none;">
+                                <span>Discount</span>
+                                <span class="discount-amount" id="summaryDiscount">− ₹0</span>
+                            </div>
+
+                            <div class="summary-row" id="platformFeeRow" style="display: none;">
+                                <span>Platform Fee</span>
+                                <span id="summaryPlatformFee">₹0</span>
+                            </div>
+
+                            <div class="summary-row" id="protectFeeRow" style="display: none;">
+                                <span>Protect Promise Fee</span>
+                                <span id="summaryProtectFee">₹0</span>
+                            </div>
+
+                            <div class="summary-row summary-total">
+                                <span>Total Amount</span>
+                                <span id="summaryTotal">₹0</span>
+                            </div>
+
+                            <div class="summary-savings" id="summarySavings" style="display: none;">
+                                <span>You will save <strong id="savingsAmount">₹0</strong> on this order</span>
+                            </div>
+                        </div>
+
+                        <div class="summary-security">
+                            <i class="fas fa-shield-alt"></i>
+                            <span>Safe and Secure Payments. Easy returns. 100% Authentic products.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="/js/auth.js?v=1769841025"></script>
+    <script src="/js/cart-api.js?v=1769841025"></script>
+    <script src="/js/cart.js?v=1769841025"></script>
+    <script src="/js/category-nav-common.js?v=1769841025"></script>
+    <script src="/js/mobile-menu.js?v=1769841025"></script>
+    <script src="/js/flipkart-mobile-header.js?v=1769841025"></script>
+
+    <!-- Footer loaded dynamically -->
+    <script>
+        // Setup login dropdown
+        function setupLoginDropdown() {
+            const loginBtn = document.getElementById('loginBtn');
+            const loginDropdown = document.getElementById('loginDropdown');
+            const loginWrapper = loginBtn?.closest('.login-dropdown-wrapper');
+
+            if (!loginBtn || !loginDropdown || !loginWrapper) return;
+
+            loginBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                loginWrapper.classList.toggle('active');
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!loginWrapper.contains(e.target)) {
+                    loginWrapper.classList.remove('active');
+                }
+            });
+        }
+
+        // Setup More Dropdown
+        function setupMoreDropdown() {
+            const moreOptions = document.querySelector('.more-options');
+            const moreDropdown = document.querySelector('.more-dropdown');
+            const moreWrapper = document.querySelector('.more-dropdown-wrapper');
+
+            if (moreOptions && moreDropdown && moreWrapper) {
+                // Function to position dropdown
+                function positionMoreDropdown() {
+                    const btnRect = moreOptions.getBoundingClientRect();
+                    moreDropdown.style.top = (btnRect.bottom + 8) + 'px';
+                    moreDropdown.style.right = (window.innerWidth - btnRect.right) + 'px';
+                }
+
+                // Position dropdown on hover
+                moreWrapper.addEventListener('mouseenter', () => {
+                    positionMoreDropdown();
+                });
+
+                // Reposition on scroll/resize when visible
+                window.addEventListener('scroll', () => {
+                    if (moreDropdown.style.opacity === '1' || moreDropdown.style.visibility === 'visible') {
+                        positionMoreDropdown();
+                    }
+                });
+
+                window.addEventListener('resize', () => {
+                    if (moreDropdown.style.opacity === '1' || moreDropdown.style.visibility === 'visible') {
+                        positionMoreDropdown();
+                    }
+                });
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            setupLoginDropdown();
+            setupMoreDropdown();
+        });
+    </script>
+    <script src="/js/category-nav-common.js?v=1769841025"></script>
+    <script src="/js/mobile-menu.js?v=1769841025"></script>
+    <script src="/js/flipkart-mobile-header.js?v=1769841025"></script>
+    <script src="/js/footer-common.js?v=1769841025"></script>
+</body>
+
+</html>

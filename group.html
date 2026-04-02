@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/favicon.png" type="image/png">
+    <title>Loading... - Mobitez</title>
+    <link rel="stylesheet" href="/css/style.css?v=nocache_1773128051">
+    <link rel="stylesheet" href="/css/nav-menu-visible.css">
+    <link rel="stylesheet" href="/css/flipkart-dropdown.css">
+    <link rel="stylesheet" href="/css/mobile-responsive.css?v=nocache_1773128051">
+    <link rel="stylesheet" href="/css/flipkart-mobile-style.css?v=nocache_1773128051">
+    <!-- CRITICAL: Mobile header consistency - MUST load LAST -->
+    <link rel="stylesheet" href="/css/mobile-header-consistent.css?v=nocache_1773128051">
+    <!-- CRITICAL: Flipkart-style mobile header - MUST load AFTER mobile-header-consistent -->
+    <link rel="stylesheet" href="/css/flipkart-mobile-header.css?v=nocache_1773128051">
+    <!-- CRITICAL: Remove empty container under search bar - MUST load AFTER all header styles -->
+    <link rel="stylesheet" href="/css/remove-empty-container-search.css?v=nocache_1773128051">
+    <!-- CRITICAL: Mobile product buttons - side by side -->
+    <link rel="stylesheet" href="/css/mobile-product-buttons.css?v=nocache_1773128051">
+    <link rel="stylesheet" href="/css/flipkart-mobile-homepage.css?v=nocache_1773128051">
+    <!-- Dynamic Sections Styles -->
+    <link rel="stylesheet" href="/css/dynamic-sections.css?v=1773046328">
+
+    <!-- DESKTOP FULL WIDTH: Force 100% width on large screens -->
+    <link rel="stylesheet" href="/css/desktop-full-width.css?v=branding_fix_v11">
+    <link rel="stylesheet" href="/css/secondary-menu.css?v=nocache_1773128051">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        .group-container {
+            width: 100%;
+            margin: 0 auto;
+            min-height: 60vh;
+        }
+
+        .group-header {
+            background: linear-gradient(135deg, #011C08 0%, #0a4409 100%);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .group-header h1 {
+            font-size: 32px;
+            margin: 0;
+            color: white;
+            font-weight: 600;
+        }
+
+        .loading-container {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .loading-spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #0a4409;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .error-container {
+            text-align: center;
+            padding: 60px 20px;
+            background: white;
+            border-radius: 8px;
+            max-width: 600px;
+            margin: 40px auto;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .error-container i {
+            font-size: 64px;
+            color: #f44336;
+            margin-bottom: 20px;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #0a4409;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 10px 20px;
+            border: 2px solid #0a4409;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        .back-link:hover {
+            background: #0a4409;
+            color: white;
+        }
+    </style>
+
+    <script src="/js/auth.js?v=1769841025"></script>
+    <script src="/js/cart-api.js?v=1769841025"></script>
+    <script src="/js/wishlist-api.js?v=1769841025"></script>
+    <script src="/js/search-common.js?v=1769841025"></script>
+    <script src="/js/components/product-card.js?v=1769841025"></script>
+    <script src="/js/components/section-renderer.js?v=1769841025"></script>
+    <script src="/js/header-common.js?v=1769841025"></script>
+    <script src="/js/secondary-menu.js?v=1769841025" defer></script>
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <!-- Logo -->
+            <div class="logo">
+                <a href="/">
+                    <img src="/PNG/logo-yw.png?v=2" alt="Mobitez" class="logo-image">
+                </a>
+            </div>
+
+            <!-- Search Bar -->
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="Search for products, brands and more"
+                    id="searchInput" autocomplete="off">
+                <button class="search-btn" id="searchBtn">
+                    <i class="fas fa-search"></i>
+                </button>
+                <!-- Search Suggestions Dropdown -->
+                <div class="search-suggestions" id="searchSuggestions" style="display: none;">
+                    <div class="search-suggestions-content" id="searchSuggestionsContent">
+                        <!-- Suggestions will be populated here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side Menu -->
+            <div class="header-right">
+                <div class="header-item login-dropdown-wrapper">
+                    <a href="#" class="login-btn" id="loginBtn">
+                        Login
+                        <i class="fas fa-chevron-down"></i>
+                    </a>
+                    <div class="login-dropdown" id="loginDropdown">
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-sign-in-alt"></i>
+                            Login
+                        </a>
+                        <a href="/signup.html" class="dropdown-item">
+                            <i class="fas fa-user-plus"></i>
+                            Sign Up
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="/profile.html" class="dropdown-item">
+                            <i class="fas fa-user"></i>
+                            My Profile
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-star"></i>
+                            Mobitez Plus Zone
+                        </a>
+                        <a href="/orders.html" class="dropdown-item">
+                            <i class="fas fa-shopping-bag"></i>
+                            Orders
+                        </a>
+                        <a href="/wishlist.html" class="dropdown-item">
+                            <i class="fas fa-heart"></i>
+                            Wishlist
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-gift"></i>
+                            Rewards
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-credit-card"></i>
+                            Gift Cards
+                        </a>
+                    </div>
+                </div>
+                <div class="header-item">
+                    <a href="#" class="become-seller">Sell with Us</a>
+                </div>
+                <div class="header-item more-dropdown-wrapper">
+                    <a href="#" class="more-options">
+                        More
+                        <i class="fas fa-chevron-down"></i>
+                    </a>
+                    <div class="more-dropdown">
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-bell"></i>
+                            Notification Preferences
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-headset"></i>
+                            24x7 Customer Care
+                        </a>
+
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-download"></i>
+                            Download App
+                        </a>
+                    </div>
+                </div>
+                <div class="header-item">
+                    <a href="/cart.html" class="cart">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-text">Cart</span>
+                        <span class="cart-count">0</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation Menu -->
+    <nav class="nav-menu">
+        <div class="nav-container" id="navContainer">
+            <!-- Categories will be loaded dynamically -->
+        </div>
+    </nav>
+
+    <!-- Group Header (Optional, hidden by default) -->
+    <div class="group-header" id="group-header" style="display: none;">
+        <h1 id="group-title"></h1>
+    </div>
+
+    <!-- Group Content -->
+    <main class="main-content">
+        <div id="group-content-container" class="dynamic-sections-container">
+            <div class="skeleton-group-loading" style="padding: 15px; display: flex; flex-direction: column; gap: 12px; background: #f1f3f6;">
+                <div class="skeleton-banner shimmer" style="height: 160px; border-radius: 4px; border: 1px solid #e0e0e0;"></div>
+                <div class="skeleton-banner shimmer" style="height: 200px; border-radius: 4px; border: 1px solid #e0e0e0;"></div>
+                <div class="skeleton-banner shimmer" style="height: 180px; border-radius: 4px; border: 1px solid #e0e0e0;"></div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer loaded dynamically -->
+    <script src="/js/footer-common.js?v=1769841025"></script>
+    <script src="/js/category-nav-common.js?v=1769841025"></script>
+    <script src="/js/mobile-menu.js?v=1769841025"></script>
+    <script src="/js/flipkart-mobile-header.js?v=1769841025"></script>
+    <script src="/js/group-renderer.js?v=1769841025"></script>
+    <script>
+        // Setup login dropdown
+        document.addEventListener('DOMContentLoaded', () => {
+            const loginBtn = document.getElementById('loginBtn');
+            const loginDropdown = document.getElementById('loginDropdown');
+
+            if (loginBtn && loginDropdown) {
+                loginBtn.addEventListener('mouseenter', () => {
+                    loginDropdown.classList.add('show');
+                });
+
+                loginBtn.addEventListener('mouseleave', () => {
+                    setTimeout(() => {
+                        if (!loginDropdown.matches(':hover')) {
+                            loginDropdown.classList.remove('show');
+                        }
+                    }, 200);
+                });
+
+                loginDropdown.addEventListener('mouseleave', () => {
+                    loginDropdown.classList.remove('show');
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>

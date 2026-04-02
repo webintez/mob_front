@@ -1,0 +1,278 @@
+/* Product Mobile Banner Slider - Only for Mobile View */
+@media (max-width: 768px) {
+    /* Hide thumbnails on mobile - replace with banner slider */
+    .product-images-wrapper .thumbnail-gallery-vertical {
+        display: none !important;
+    }
+
+    /* Transform main image container into banner slider */
+    .product-images-wrapper .main-image-container {
+        position: relative;
+        width: 100%;
+        height: 300px !important;
+        max-height: 300px !important;
+        overflow-x: hidden;
+        overflow-y: hidden;
+        background: white;
+        border-radius: 0;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Banner slider container */
+    .product-images-wrapper .product-banner-carousel {
+        position: relative;
+        width: 100%;
+        height: 300px !important;
+        overflow-x: hidden;
+        overflow-y: hidden;
+        background: white;
+    }
+
+    /* Banner slides container */
+    .product-images-wrapper .product-banner-slides,
+    #productBannerSlides {
+        display: flex;
+        transition: transform 0.3s ease;
+        height: 300px !important;
+        will-change: transform;
+        width: 100%;
+    }
+
+    /* Individual slide */
+    .product-images-wrapper .product-banner-slide {
+        min-width: 100%;
+        width: 100%;
+        max-width: 100%;
+        height: 300px !important;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: white;
+        flex-shrink: 0;
+        flex-grow: 0;
+        flex-basis: 100%;
+        box-sizing: border-box;
+        padding: 0;
+        margin: 0;
+    }
+
+    /* Slide image - Full height display, no cropping */
+    .product-images-wrapper .product-banner-slide img {
+        width: auto !important;
+        height: 300px !important;
+        object-fit: contain !important;
+        max-width: 100% !important;
+        display: block;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Slide indicators/dots */
+    .product-images-wrapper .product-banner-dots {
+        position: absolute;
+        bottom: 16px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 8px;
+        z-index: 10;
+    }
+
+    .product-images-wrapper .product-banner-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.5);
+        border: 1px solid rgba(0, 0, 0, 0.2);
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .product-images-wrapper .product-banner-dot.active {
+        background: #f7a200;
+        border-color: #0a4409;
+        width: 24px;
+        border-radius: 4px;
+    }
+
+    /* Navigation arrows (optional - can be hidden if not needed) */
+    .product-images-wrapper .product-banner-arrow {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(255, 255, 255, 0.9);
+        border: none;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 10;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        transition: all 0.3s ease;
+    }
+
+    .product-images-wrapper .product-banner-arrow:hover {
+        background: white;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .product-images-wrapper .product-banner-arrow.prev {
+        left: 12px;
+    }
+
+    .product-images-wrapper .product-banner-arrow.next {
+        right: 12px;
+    }
+
+    .product-images-wrapper .product-banner-arrow i {
+        color: #0a4409;
+        font-size: 16px;
+    }
+
+    /* Hide arrows on very small screens */
+    @media (max-width: 480px) {
+        .product-images-wrapper .product-banner-arrow {
+            display: none;
+        }
+    }
+
+    /* Touch/swipe indicator */
+    .product-images-wrapper .product-banner-slides {
+        touch-action: pan-y pinch-zoom;
+    }
+    
+    /* Action Buttons (Share and Wishlist) - Top Right Corner */
+    .product-images-wrapper .product-banner-actions {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        z-index: 20;
+    }
+    
+    .product-images-wrapper .product-banner-action-btn {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.95);
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        transition: all 0.3s ease;
+        padding: 0;
+        margin: 0;
+    }
+    
+    .product-images-wrapper .product-banner-action-btn:hover,
+    .product-images-wrapper .product-banner-action-btn:active {
+        background: white;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        transform: scale(1.05);
+    }
+    
+    .product-images-wrapper .product-banner-action-btn i {
+        font-size: 18px;
+        color: #212121;
+        transition: color 0.3s ease;
+    }
+    
+    .product-images-wrapper .product-banner-wishlist.active i {
+        color: #ff6161;
+    }
+    
+    .product-images-wrapper .product-banner-share i {
+        color: #0a4409;
+    }
+    
+    /* Hide Navigation Menu (Categories Section) on Mobile - Override nav-menu-visible.css */
+    nav.nav-menu,
+    .nav-menu,
+    body:not(.homepage) .nav-menu,
+    body:not(.homepage) nav.nav-menu,
+    .nav-menu:not(.homepage-hidden),
+    body:not(.homepage) .nav-menu:not(.homepage-hidden) {
+        display: none !important;
+        visibility: hidden !important;
+        height: 0 !important;
+        min-height: 0 !important;
+        overflow: hidden !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border: none !important;
+        opacity: 0 !important;
+    }
+    
+    /* Also hide nav container */
+    .nav-menu .nav-container,
+    nav.nav-menu .nav-container,
+    body:not(.homepage) .nav-menu .nav-container,
+    body:not(.homepage) nav.nav-menu .nav-container {
+        display: none !important;
+        visibility: hidden !important;
+        height: 0 !important;
+        min-height: 0 !important;
+        overflow: hidden !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    /* Skeleton Loading Placeholders */
+    @keyframes skeleton-shimmer {
+        0% {
+            background-position: -468px 0;
+        }
+        100% {
+            background-position: 468px 0;
+        }
+    }
+
+    .skeleton {
+        background: #f6f7f8;
+        background-image: linear-gradient(to right, #f6f7f8 0%, #edeef1 20%, #f6f7f8 40%, #f6f7f8 100%);
+        background-repeat: no-repeat;
+        background-size: 800px 104px;
+        display: block;
+        position: relative;
+        animation: skeleton-shimmer 1.2s linear infinite forwards;
+        border-radius: 4px;
+    }
+
+    .skeleton-text {
+        height: 16px;
+        margin-bottom: 8px;
+        width: 100%;
+    }
+
+    .skeleton-text.title-1 { width: 85%; height: 22px; margin-bottom: 12px; }
+    .skeleton-text.title-2 { width: 60%; height: 20px; margin-bottom: 16px; }
+    .skeleton-text.price { width: 45%; height: 28px; margin-top: 16px; margin-bottom: 16px; }
+    .skeleton-text.rating { width: 35%; height: 18px; margin-bottom: 12px; }
+    .skeleton-text.options-1 { width: 80%; height: 36px; margin-bottom: 8px; }
+    .skeleton-text.options-2 { width: 50%; height: 36px; }
+
+    .skeleton-image {
+        width: 100%;
+        height: 100%;
+        border-radius: 0;
+    }
+
+    /* Hide desktop overlay spinner on mobile to prevent double overlay flicker */
+    #loadingSpinner {
+        display: none !important;
+    }
+
+    /* Hide raw main image wrapper while skeleton sits inside the container */
+    .product-images-wrapper .main-image-container .skeleton-image + .main-image-wrapper {
+        display: none !important;
+    }
+}
