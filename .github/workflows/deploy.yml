@@ -1,0 +1,59 @@
+name: Deploy Mobitez Frontend to VPS
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploy to VPS
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy application via SSH
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_PORT || 22 }}
+          script: |
+            set -e
+            echo "🚀 [Deploy] Starting Mobitez Frontend deployment..."
+            
+            DEPLOY_PATH="${{ secrets.VPS_DEPLOY_PATH || '/var/www/mobitez_frontend' }}"
+            
+            if [ ! -d "$DEPLOY_PATH" ]; then
+              echo "📁 Directory $DEPLOY_PATH does not exist. Cloning repository..."
+              mkdir -p "$(dirname "$DEPLOY_PATH")"
+              git clone git@github.com:webintez/mob_front.git "$DEPLOY_PATH"
+            fi
+
+            cd "$DEPLOY_PATH"
+
+            echo "📥 [Git] Fetching latest changes..."
+            git fetch origin
+            CURRENT_BRANCH=$(git branch --show-current 2>/dev/null || echo "main")
+            if [ "$CURRENT_BRANCH" = "master" ]; then
+              git reset --hard origin/master
+            else
+              git reset --hard origin/main
+            fi
+
+            if [ ! -f .env ]; then
+              echo "⚠️ [Config] .env file missing! Creating from .env.example..."
+              cp .env.example .env
+              echo "Please review and customize $DEPLOY_PATH/.env on your VPS if needed."
+            fi
+
+            echo "🐳 [Docker] Building and restarting containers..."
+            docker compose build
+            docker compose up -d --remove-orphans
+
+            echo "🧹 [Docker] Pruning dangling images..."
+            docker image prune -f
+
+            echo "✅ [Deploy] Deployment completed successfully!"
