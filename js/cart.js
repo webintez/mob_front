@@ -147,6 +147,9 @@ function showConfirmModal(title, message) {
 }
 
 
+// Global state to prevent multiple concurrent actions on the same item
+const processingProducts = new Set();
+
 async function loadCart() {
     const cartItemsList = document.getElementById('cartItemsList');
     const emptyCart = document.getElementById('emptyCart');
@@ -520,6 +523,8 @@ async function updateQuantity(productId, newQuantity) {
 }
 
 async function removeItem(productId) {
+    if (processingProducts.has(productId)) return;
+
     const confirmed = await showConfirmModal(
         'Remove Item?',
         'Are you sure you want to remove this item from your cart?'
@@ -529,45 +534,104 @@ async function removeItem(productId) {
         return;
     }
 
-    const result = await CART_API.removeFromCart(productId);
+    // Set processing state
+    processingProducts.add(productId);
+    
+    // Show temporary feedback on the button if possible (optional, but good)
+    const removeBtn = document.querySelector(`.cart-item[data-product-id="${productId}"] a[onclick*="removeItem"]`);
+    const originalText = removeBtn ? removeBtn.innerHTML : '';
+    if (removeBtn) {
+        removeBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Removing...';
+        removeBtn.style.pointerEvents = 'none';
+        removeBtn.style.opacity = '0.7';
+    }
 
-    if (result.success) {
-        await loadCart();
-        await updateCartCountInHeader();
-        showNotification('Item removed from cart');
-    } else {
-        showNotification(result.message || 'Failed to remove item', 'error');
+    try {
+        const result = await CART_API.removeFromCart(productId);
+
+        if (result.success) {
+            await loadCart();
+            await updateCartCountInHeader();
+            showNotification('Item removed from cart');
+        } else {
+            showNotification(result.message || 'Failed to remove item', 'error');
+            // Reset button if failed
+            if (removeBtn) {
+                removeBtn.innerHTML = originalText;
+                removeBtn.style.pointerEvents = 'auto';
+                removeBtn.style.opacity = '1';
+            }
+        }
+    } catch (error) {
+        console.error('Remove item failed:', error);
+        showNotification('An error occurred. Please try again.', 'error');
+        if (removeBtn) {
+            removeBtn.innerHTML = originalText;
+            removeBtn.style.pointerEvents = 'auto';
+            removeBtn.style.opacity = '1';
+        }
+    } finally {
+        processingProducts.delete(productId);
     }
 }
 
 async function saveForLater(productId) {
+    if (processingProducts.has(productId)) return;
+
+    // Set processing state
+    processingProducts.add(productId);
+    
+    // Provide visual feedback on the button
+    const wishlistBtn = document.querySelector(`.cart-item[data-product-id="${productId}"] a[onclick*="saveForLater"]`);
+    const originalText = wishlistBtn ? wishlistBtn.innerHTML : '';
+    if (wishlistBtn) {
+        wishlistBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Moving...';
+        wishlistBtn.style.pointerEvents = 'none';
+        wishlistBtn.style.opacity = '0.7';
+    }
+
     // Show temporary "moving" notification
     showNotification('Moving item to wishlist...');
 
     try {
         // 1. Add to wishlist
-        const wishlistResult = await WISHLIST_API.addToWishlist(productId);
+        // We attempt this first. If it fails (e.g., already in wishlist), we move on to remove from cart.
+        await WISHLIST_API.addToWishlist(productId);
 
-        if (wishlistResult.success) {
-            // 2. Remove from cart if successfully added to wishlist
-            const cartResult = await CART_API.removeFromCart(productId);
+        // 2. Remove from cart 
+        const cartResult = await CART_API.removeFromCart(productId);
 
-            if (cartResult.success) {
-                // 3. Refresh cart page
-                await loadCart();
-                await updateCartCountInHeader();
-                showNotification('Moved to wishlist successfully!');
-            } else {
-                showNotification(cartResult.message || 'Added to wishlist, but failed to remove from cart.', 'error');
-            }
+        if (cartResult.success) {
+            // 3. Refresh cart page
+            await loadCart();
+            await updateCartCountInHeader();
+            showNotification('Moved to wishlist successfully!');
         } else {
-            showNotification(wishlistResult.message || 'Failed to add to wishlist. Please try again.', 'error');
+            // Only show error if the cart removal itself failed
+            showNotification(cartResult.message || 'Failed to remove from cart.', 'error');
+            // Reset button if failed
+            if (wishlistBtn) {
+                wishlistBtn.innerHTML = originalText;
+                wishlistBtn.style.pointerEvents = 'auto';
+                wishlistBtn.style.opacity = '1';
+            }
         }
     } catch (error) {
         console.error('Save for later failed:', error);
         showNotification('An error occurred. Please try again.', 'error');
+        // Reset button if failed
+        if (wishlistBtn) {
+            wishlistBtn.innerHTML = originalText;
+            wishlistBtn.style.pointerEvents = 'auto';
+            wishlistBtn.style.opacity = '1';
+        }
+    } finally {
+        processingProducts.delete(productId);
     }
 }
+
+
+
 
 function setupEventListeners() {
     const placeOrderBtnDesktop = document.getElementById('placeOrderBtnDesktop');

@@ -183,7 +183,7 @@ function openRazorpayCheckout(orderData, paymentData, orderNumber) {
         "key": paymentData.key_id,
         "amount": paymentData.amount,
         "currency": paymentData.currency,
-        "name": "Mobitez",
+        "name": "Mobitez Private Limited",
         "description": "Order #" + orderNumber,
         "image": "/2.png",
         "order_id": paymentData.id,

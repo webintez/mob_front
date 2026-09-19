@@ -6,6 +6,7 @@
 // Global state for brands page
 let currentBrandSlug = null;
 let currentBrandName = '';
+let listingCurrentPage = 1;
 
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', () => {
@@ -87,7 +88,7 @@ function displayBrandsList(brands) {
 /**
  * Load products for a specific brand
  */
-async function loadBrandProducts(brandSlug) {
+async function loadBrandProducts(brandSlug, page = 1) {
     const brandsDisplaySection = document.getElementById('brandsDisplaySection');
     const productsSection = document.getElementById('productsSection');
     const productsGrid = document.getElementById('allProducts');
@@ -100,25 +101,45 @@ async function loadBrandProducts(brandSlug) {
     brandsDisplaySection.style.display = 'none';
     productsSection.style.display = 'block';
 
-    productsGrid.innerHTML = `
-        <div class="loading-spinner">
-            <div class="spinner"></div>
-            <p>Loading products for ${brandSlug}...</p>
-        </div>
-    `;
+    if (page === 1) {
+        productsGrid.innerHTML = `
+            <div class="loading-spinner">
+                <div class="spinner"></div>
+                <p>Loading products for ${brandSlug}...</p>
+            </div>
+        `;
+    }
 
     try {
-        // Use app.js loadProductsByBrand to ensure centralized state
-        if (typeof loadProductsByBrand === 'function') {
-            await loadProductsByBrand(brandSlug);
-        }
-
         // Fetch brand details for UI
-        const result = await makeApiCall(`/brands/${brandSlug}`, { timeout: 10000 });
+        const result = await makeApiCall(`/brands/${brandSlug}?page=${page}&per_page=20`, { timeout: 10000 });
+        console.log('Brand Products API Response:', result);
 
         if (result && result.success && result.data) {
             const brandInfo = result.data.brand || { name: brandSlug, slug: brandSlug };
-            const products = result.data.products || [];
+            let products = [];
+            let pagination = null;
+
+            // Robust data extraction for brand products
+            if (result.data) {
+                if (result.data.products) {
+                    if (Array.isArray(result.data.products)) {
+                        products = result.data.products;
+                        pagination = result.data.pagination || result.pagination || null;
+                    } else if (result.data.products.data && Array.isArray(result.data.products.data)) {
+                        products = result.data.products.data;
+                        pagination = result.data.products;
+                    }
+                } else if (Array.isArray(result.data.data)) {
+                    products = result.data.data;
+                    pagination = result.data;
+                } else if (Array.isArray(result.data)) {
+                    products = result.data;
+                    pagination = result.pagination || null;
+                }
+            }
+
+            console.log(`Extracted ${products.length} products for brand ${brandSlug}`);
 
             currentBrandName = brandInfo.name;
 
@@ -132,7 +153,7 @@ async function loadBrandProducts(brandSlug) {
                 `;
             }
 
-            document.title = `${currentBrandName} - Mobitez`;
+            document.title = `${currentBrandName} - Mobitez Private Limited`;
 
             if (products.length > 0) {
                 displayBrandProducts(products);
@@ -140,6 +161,22 @@ async function loadBrandProducts(brandSlug) {
                 // Load filter options
                 if (typeof loadBrandsForFilter === 'function') loadBrandsForFilter();
                 if (typeof loadCategoriesForFilter === 'function') loadCategoriesForFilter();
+
+                // Update results count and display pagination
+                const paginationData = pagination || {
+                    current_page: page,
+                    per_page: 20,
+                    total: products.length,
+                    total_pages: 1
+                };
+
+                updateResultsCount(paginationData);
+                if (paginationData.total_pages > 1) {
+                    displayPagination(paginationData, brandSlug);
+                } else {
+                    const paginationDiv = document.getElementById('pagination');
+                    if (paginationDiv) paginationDiv.style.display = 'none';
+                }
             } else {
                 productsGrid.innerHTML = `
                     <div class="no-results-message" style="text-align: center; padding: 60px 20px; width: 100%; grid-column: 1 / -1; display: flex; flex-direction: column; align-items: center; justify-content: center; background-color: #fff; border-radius: 4px; box-shadow: 0 1px 2px 0 rgba(0,0,0,0.1); margin-top: 10px;">
@@ -148,17 +185,10 @@ async function loadBrandProducts(brandSlug) {
                         </div>
                         <h3 style="font-size: 20px; font-weight: 500; color: #212121; margin: 0 0 10px 0;">Coming Soon</h3>
                         <p style="font-size: 14px; color: #878787; margin: 0 0 24px 0;">We are currently adding new products for this brand.</p>
-                        <a href="/" class="browse-btn" style="display: inline-block; background: #2874f0; color: #fff; padding: 12px 32px; border-radius: 2px; text-decoration: none; font-weight: 500; font-size: 14px; box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2);">Explore Other Products</a>
+                        <a href="/" class="browse-btn" style="display: inline-block; background: #1b5e20; color: #fff; padding: 12px 32px; border-radius: 2px; text-decoration: none; font-weight: 500; font-size: 14px; box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2);">Explore Other Products</a>
                     </div>
                 `;
             }
-
-            // Update results count
-            const resultsCount = document.getElementById('resultsCount');
-            if (resultsCount) {
-                resultsCount.textContent = `Showing 1 – ${products.length} of ${result.data.count || products.length} results`;
-            }
-
         } else {
             throw new Error('Failed to load brand products');
         }
@@ -173,6 +203,76 @@ async function loadBrandProducts(brandSlug) {
         `;
     }
 }
+
+/**
+ * Update results count
+ */
+function updateResultsCount(pagination) {
+    const resultsCount = document.getElementById('resultsCount');
+    if (resultsCount && pagination) {
+        const start = ((pagination.current_page - 1) * pagination.per_page) + 1;
+        const end = Math.min(start + pagination.per_page - 1, pagination.total);
+        resultsCount.textContent = `Showing ${start} - ${end} of ${pagination.total} results`;
+    }
+}
+
+/**
+ * Display pagination
+ */
+function displayPagination(pagination, brandSlug) {
+    const paginationDiv = document.getElementById('pagination');
+    if (!paginationDiv) return;
+
+    paginationDiv.style.display = 'flex';
+    paginationDiv.innerHTML = '';
+
+    // Previous button
+    if (pagination.current_page > 1) {
+        const prevBtn = document.createElement('button');
+        prevBtn.className = 'pagination-btn';
+        prevBtn.textContent = 'Previous';
+        prevBtn.addEventListener('click', () => {
+            listingCurrentPage--;
+            loadBrandProducts(brandSlug, listingCurrentPage);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+        paginationDiv.appendChild(prevBtn);
+    }
+
+    // Page numbers
+    for (let i = 1; i <= pagination.total_pages; i++) {
+        if (i === 1 || i === pagination.total_pages || (i >= pagination.current_page - 2 && i <= pagination.current_page + 2)) {
+            const pageBtn = document.createElement('button');
+            pageBtn.className = `pagination-btn ${i === pagination.current_page ? 'active' : ''}`;
+            pageBtn.textContent = i;
+            pageBtn.addEventListener('click', () => {
+                listingCurrentPage = i;
+                loadBrandProducts(brandSlug, listingCurrentPage);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+            paginationDiv.appendChild(pageBtn);
+        } else if (i === pagination.current_page - 3 || i === pagination.current_page + 3) {
+            const ellipsis = document.createElement('span');
+            ellipsis.className = 'pagination-ellipsis';
+            ellipsis.textContent = '...';
+            paginationDiv.appendChild(ellipsis);
+        }
+    }
+
+    // Next button
+    if (pagination.current_page < pagination.total_pages) {
+        const nextBtn = document.createElement('button');
+        nextBtn.className = 'pagination-btn';
+        nextBtn.textContent = 'Next';
+        nextBtn.addEventListener('click', () => {
+            listingCurrentPage++;
+            loadBrandProducts(brandSlug, listingCurrentPage);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+        paginationDiv.appendChild(nextBtn);
+    }
+}
+
 
 /**
  * Display filtered products

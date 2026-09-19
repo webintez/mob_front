@@ -1,0 +1,298 @@
+/* EMI Checkout Specific Styles */
+
+/* Address Cards Grid */
+.emi-saved-addresses-wrapper {
+    margin-bottom: 24px;
+    padding: 16px 24px 0 24px;
+    box-sizing: border-box;
+}
+
+.emi-addresses-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+@media (max-width: 600px) {
+    .emi-addresses-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.emi-address-card {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 12px 16px;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s ease;
+    background: #ffffff;
+    text-align: left;
+    box-sizing: border-box;
+}
+
+.emi-address-card:hover {
+    border-color: #2874f0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.emi-address-card.selected {
+    border-color: #2874f0;
+    background-color: #f2f7ff;
+}
+
+.emi-address-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+}
+
+.emi-address-card-header h5 {
+    margin: 0;
+    font-size: 14px;
+    color: #212121;
+    font-weight: 500;
+}
+
+.emi-address-badge {
+    background: #f1f3f6;
+    color: #878787;
+    font-size: 11px;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+
+.emi-address-card.selected .emi-address-badge {
+    background: #2874f0;
+    color: #ffffff;
+}
+
+.emi-address-card p {
+    margin: 3px 0;
+    font-size: 13px;
+    color: #666;
+    line-height: 1.4;
+}
+
+.emi-address-card .phone {
+    font-weight: 500;
+    color: #212121;
+}
+
+/* Upload Grid and Cards */
+.emi-upload-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-top: 12px;
+}
+
+@media (max-width: 768px) {
+    .emi-upload-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.emi-upload-card {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.emi-upload-zone {
+    border: 2px dashed #d0d0d0;
+    border-radius: 8px;
+    background: #fdfdfd;
+    padding: 12px 8px;
+    text-align: center;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    transition: all 0.2s ease;
+    height: 100px;
+    box-sizing: border-box;
+}
+
+.emi-upload-zone:hover {
+    border-color: #2874f0;
+    background: #f9fbfd;
+}
+
+.emi-upload-zone.dragover {
+    border-color: #388e3c;
+    background: #f1f9f2;
+}
+
+.emi-preview-container {
+    position: relative;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    overflow: hidden;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f5f5f5;
+}
+
+.emi-preview-remove:hover {
+    background: #f44336 !important;
+}
+
+.btn-emi-secondary {
+    transition: all 0.2s;
+}
+
+.btn-emi-secondary:hover {
+    background: #f5f5f5 !important;
+    border-color: #bcbcbc !important;
+}
+
+/* Desktop Header/Navigation Overlap Fix */
+@media (min-width: 769px) {
+    body:not(.homepage) .main-content {
+        padding-top: 160px !important;
+    }
+}
+
+/* Mobile Responsive Adjustments */
+@media (max-width: 768px) {
+    body:not(.homepage) .main-content {
+        padding-top: 96px !important;
+    }
+
+    .checkout-container .checkout-grid {
+        display: flex !important;
+        flex-direction: column !important;
+        width: 100% !important;
+        gap: 16px !important;
+        padding-bottom: 60px !important;
+    }
+    
+    .checkout-container .checkout-left,
+    .checkout-container .price-summary-sidebar,
+    .checkout-container .f-section,
+    .checkout-container .address-form-f,
+    .checkout-container .address-form-f form {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        margin: 0 !important;
+    }
+    
+    .checkout-container .f-section {
+        overflow: hidden !important;
+    }
+    
+    .checkout-container .address-form-f {
+        padding: 16px !important;
+    }
+
+    .checkout-container .f-input, 
+    .checkout-container .f-form-group {
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    .checkout-container .form-row {
+        display: flex !important;
+        flex-direction: column !important;
+        flex-wrap: wrap !important;
+        width: 100% !important;
+        gap: 12px !important;
+        margin-bottom: 12px !important;
+    }
+
+    .checkout-container .form-row .f-form-group {
+        width: 100% !important;
+        max-width: 100% !important;
+        flex: none !important;
+        margin-bottom: 12px !important;
+    }
+    
+    .checkout-container .form-row .f-form-group:last-child {
+        margin-bottom: 0 !important;
+    }
+    
+    .checkout-container .emi-saved-addresses-wrapper {
+        padding: 16px 16px 0 16px !important;
+        box-sizing: border-box !important;
+        width: auto !important;
+        max-width: 100% !important;
+        overflow: hidden !important;
+        display: block !important;
+    }
+    
+    .checkout-container .emi-addresses-grid {
+        grid-template-columns: 1fr !important;
+        box-sizing: border-box !important;
+        width: auto !important;
+        max-width: 100% !important;
+        display: grid !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .checkout-container .emi-address-card {
+        box-sizing: border-box !important;
+        width: auto !important;
+        max-width: 100% !important;
+        margin: 0 0 12px 0 !important;
+    }
+    
+    .checkout-container .emi-upload-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 12px !important;
+    }
+    
+    .checkout-container .address-type-options {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 8px !important;
+        width: 100% !important;
+    }
+    
+    .checkout-container .address-type-btn {
+        width: 100% !important;
+        max-width: 100% !important;
+        flex: none !important;
+        color: #212121 !important;
+        font-size: 14px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
+        padding: 12px 16px !important;
+        height: 48px !important;
+        min-height: 48px !important;
+        background: #ffffff !important;
+        border: 1px solid #e0e0e0 !important;
+        box-sizing: border-box !important;
+    }
+
+    .checkout-container .address-type-btn.active {
+        border-color: #1b8b41 !important;
+        color: #1b8b41 !important;
+        background-color: #f2f7ff !important;
+    }
+}
+
+/* Accessibility Color Adjustments */
+#saveDeliverBtn, #emiSubmitBtn {
+    background-color: #d35400 !important; /* Darker orange for WCAG AA compliance */
+}
+
+.checkout-stepper .step-item.active {
+    color: #1b8b41 !important; /* Darker green for contrast compliance */
+}
+
+.checkout-stepper .step-item.active i {
+    background: #1b8b41 !important;
+    border-color: #1b8b41 !important;
+}

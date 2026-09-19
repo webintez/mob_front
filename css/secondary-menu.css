@@ -6,6 +6,8 @@
     border-bottom: 1px solid #f0f0f0;
     width: 100%;
     display: block;
+    position: relative;
+    /* Anchor for centered mega menu */
 }
 
 .secondary-menu-list {
@@ -22,7 +24,8 @@
 }
 
 .secondary-menu-item {
-    position: relative;
+    position: static;
+    /* Remove relative positioning to allow centering relative to the container */
     padding: 12px 0;
 }
 
@@ -53,100 +56,177 @@
     transition: transform 0.2s;
 }
 
-.secondary-menu-item:hover .secondary-menu-link i {
+.secondary-menu-item.active .secondary-menu-link i {
     transform: rotate(180deg);
     color: #0a4409;
 }
 
-/* Dropdown Styles */
+/* Dropdown Styles (Mega Menu Transformation) */
 .secondary-menu-dropdown {
     position: absolute;
     top: 100%;
-    /* Below the parent */
-    left: 0;
+    left: 50%;
+    transform: translateX(-50%);
     background: #fff;
-    min-width: 200px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
-    border: 1px solid #f0f0f0;
-    border-radius: 0 0 4px 4px;
-    list-style: none;
-    padding: 8px 0;
+    width: max-content;
+    /* Dynamic width based on columns */
+    min-width: 250px;
+    max-width: 95vw;
+    /* Prevent overflowing off the page on narrow viewports */
+    max-height: 85vh; /* Backup scroll for horizontal overflow */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    border: 1px solid #e0e0e0;
+    border-radius: 0 0 12px 12px;
+    padding: 24px 30px;
     margin: 0;
     z-index: 1000;
     display: none;
-    /* Hidden by default */
-    border-top: 2px solid #f7a200;
-    /* Optional: Blue top accent */
+    border-top: 4px solid #1b5e20;
+    /* User's preferred green accent */
+
+    /* Dynamic Wrapping Logic */
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    gap: 0 40px; /* 0 vertical gap, 40px between columns */
+    max-height: 588px; /* 15 rows * 36px (540px) + 48px padding = 588px */
+    overflow: visible;
 }
 
-/* Show Dropdown on Hover */
-.secondary-menu-item:hover .secondary-menu-dropdown {
-    display: block;
+/* Show Dropdown on Active Class */
+.secondary-menu-item.active .secondary-menu-dropdown {
+    display: flex;
     animation: fadeIn 0.2s ease-out;
 }
 
-.secondary-menu-dropdown .secondary-menu-item {
-    padding: 0;
+/* Mega Menu Column Styles */
+.menu-column {
+    flex: 0 0 220px;
+    /* Fixed width for each column to keep alignment consistent */
+    min-width: 200px;
+    margin-bottom: 0;
 }
 
-.secondary-menu-dropdown .secondary-menu-link {
-    padding: 10px 16px;
-    font-weight: 400;
-    color: #333;
-    display: block;
+.column-heading {
+    display: flex;
+    align-items: center;
+    height: 36px; /* Row Standard */
+    font-size: 14px;
+    font-weight: 700;
+    color: #1b5e20;
+    text-decoration: none;
+    transition: color 0.2s;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+    width: 220px;
 }
 
-.secondary-menu-dropdown .secondary-menu-link:hover {
-    background-color: #f5f5f5;
-    color: #0a4409;
+.column-list {
+    display: contents; /* Important for flex-wrap flow */
 }
 
-/* Nested Dropdowns */
-.secondary-menu-dropdown .secondary-menu-item {
-    position: relative;
+/* Recursive Recursive Nested List Styles */
+.column-item {
+    display: contents; /* Flatten hierarchy for dynamic wrapping */
 }
 
-.secondary-menu-dropdown .secondary-menu-dropdown {
-    top: 0;
-    left: 100%;
-    margin-top: -8px;
-    /* Align with top of parent padding */
-    border-radius: 4px;
-    display: none;
-}
-
-.secondary-menu-dropdown .secondary-menu-item:hover>.secondary-menu-dropdown {
-    display: block;
-}
-
-/* Sidebar chevrons for nested items */
-.secondary-menu-dropdown .secondary-menu-link {
+.column-link-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    height: 36px; /* Row Standard */
+    width: 220px;
+    box-sizing: border-box;
 }
 
-.secondary-menu-dropdown .secondary-menu-link i {
-    transform: rotate(-90deg);
-    /* Point to the right */
+.column-link {
+    font-size: 13px;
+    color: #666;
+    text-decoration: none;
+    transition: color 0.2s, font-weight 0.2s;
+    flex-grow: 1;
+}
+
+.column-link:hover {
+    color: #1b5e20;
+}
+
+.column-chevron {
     font-size: 10px;
-    color: #878787;
+    color: #999;
+    transition: transform 0.3s;
+    padding: 4px;
 }
 
-.secondary-menu-dropdown .secondary-menu-item:hover>.secondary-menu-link i {
-    transform: rotate(-90deg);
-    color: #0a4409;
+.column-item.expanded>.column-link-container .column-chevron {
+    transform: rotate(180deg);
 }
 
-@keyframes fadeIn {
+.column-item.expanded>.column-link-container .column-link {
+    font-weight: 600;
+    color: #1b5e20;
+}
+
+.nested-level-list {
+    display: none;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+
+
+/* Ensure sub-items are indented visually but still rows */
+.nested-level-list .column-link {
+    padding-left: 16px;
+}
+
+.column-item.expanded>.nested-level-list {
+    display: contents;
+}
+
+@keyframes slideDownSub {
     from {
         opacity: 0;
-        transform: translateY(-5px);
+        max-height: 0;
     }
 
     to {
         opacity: 1;
-        transform: translateY(0);
+        max-height: 500px;
+    }
+}
+
+/* Premium Scrollbar for overflow protection */
+.secondary-menu-dropdown::-webkit-scrollbar {
+    width: 6px;
+}
+
+.secondary-menu-dropdown::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.secondary-menu-dropdown::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 10px;
+}
+
+.secondary-menu-dropdown::-webkit-scrollbar-thumb:hover {
+    background: #aaa;
+}
+
+/* Adjust Level 1 positioning to ensure mega menu stays in viewport */
+/* Position adjustment for trailing items removed to maintain fixed central positioning */
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
     }
 }
 

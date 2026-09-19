@@ -563,43 +563,81 @@
             if (result && result.success && result.data && Array.isArray(result.data)) {
                 dynamicTagFilters.innerHTML = ''; // Clear prior
 
+                // Create a main SPECIFICATIONS filter group
+                const specGroup = document.createElement('div');
+                specGroup.className = 'filter-group';
+                specGroup.innerHTML = `
+                    <div class="filter-group-header">
+                        <span>SPECIFICATIONS</span>
+                        <i class="fas fa-chevron-down toggle-icon"></i>
+                    </div>
+                    <div class="filter-group-content" id="tagTreeContainer">
+                    </div>
+                `;
+
+                const container = specGroup.querySelector('#tagTreeContainer');
+
                 result.data.forEach(group => {
                     if (!group.tags || !Array.isArray(group.tags) || group.tags.length === 0) return;
 
-                    const groupDiv = document.createElement('div');
-                    groupDiv.className = 'filter-group';
+                    const groupWrapper = document.createElement('div');
+                    groupWrapper.className = 'category-filter-item-wrapper level-0';
                     
-                    groupDiv.innerHTML = `
-                        <div class="filter-group-header">
-                            <span>${group.name.toUpperCase()}</span>
-                            <i class="fas fa-chevron-down toggle-icon"></i>
-                        </div>
-                        <div class="filter-group-content collapsed">
-                            <div class="filter-options">
-                                ${group.tags.map(tag => `
-                                    <label class="filter-checkbox">
-                                        <input type="checkbox" value="${tag.slug}" class="tag-filter">
-                                        <span>${tag.name}</span>
-                                    </label>
-                                `).join('')}
-                            </div>
+                    groupWrapper.innerHTML = `
+                        <div class="category-header-row" style="display: flex; align-items: center; padding: 4px 0; cursor: pointer;">
+                            <i class="fas fa-chevron-right toggle-children" style="margin-right: 6px; font-size: 10px; color: #878787;"></i>
+                            <span style="font-size: 14px; font-weight: 600; color: #212121; text-transform: uppercase;">${group.name}</span>
                         </div>
                     `;
 
-                    // Add collapsible toggle to header
-                    const header = groupDiv.querySelector('.filter-group-header');
-                    header.addEventListener('click', toggleFilterGroup);
+                    const childrenContainer = document.createElement('div');
+                    childrenContainer.className = 'category-children-container';
+                    childrenContainer.style.display = 'none';
 
-                    // Add listener to checkboxes
-                    groupDiv.querySelectorAll('.tag-filter').forEach(input => {
-                        input.addEventListener('change', handleFilterChange);
+                    group.tags.forEach(tag => {
+                        const tagWrapper = document.createElement('div');
+                        tagWrapper.className = 'category-filter-item-wrapper level-1';
+                        tagWrapper.style.paddingLeft = '16px';
+                        tagWrapper.innerHTML = `
+                            <div class="category-header-row" style="display: flex; align-items: center; padding: 4px 0;">
+                                <span style="display:inline-block; width: 16px;"></span>
+                                <label class="filter-checkbox" style="display: flex; align-items: center; cursor: pointer; flex: 1; font-size: 14px; margin-bottom: 0 !important;">
+                                    <input type="checkbox" value="${tag.slug}" class="tag-filter" style="margin-right: 8px;">
+                                    <span>${tag.name}</span>
+                                </label>
+                            </div>
+                        `;
+                        
+                        tagWrapper.querySelector('input').addEventListener('change', (e) => {
+                            // Ensure it works with existing handleFilterChange logic
+                            e.target.classList.add('tag-filter'); // Should already be there
+                            handleFilterChange(e);
+                        });
+                        
+                        childrenContainer.appendChild(tagWrapper);
                     });
 
-                    dynamicTagFilters.appendChild(groupDiv);
+                    const toggleIcon = groupWrapper.querySelector('.toggle-children');
+                    const headerRow = groupWrapper.querySelector('.category-header-row');
+                    
+                    headerRow.addEventListener('click', () => {
+                        const isCollapsed = childrenContainer.style.display === 'none';
+                        childrenContainer.style.display = isCollapsed ? 'block' : 'none';
+                        toggleIcon.className = isCollapsed ? 'fas fa-chevron-down toggle-children' : 'fas fa-chevron-right toggle-children';
+                    });
+
+                    groupWrapper.appendChild(childrenContainer);
+                    container.appendChild(groupWrapper);
                 });
+
+                // Add collapsible toggle to main header
+                const mainHeader = specGroup.querySelector('.filter-group-header');
+                mainHeader.addEventListener('click', toggleFilterGroup);
+
+                dynamicTagFilters.appendChild(specGroup);
             }
         } catch (error) {
-            // console.error('TagGroups Fetch Failed:', error.message);
+            console.error('Error loading tag groups:', error);
         }
     }
     

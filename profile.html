@@ -5,16 +5,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="/favicon.png" type="image/png">
-    <title>My Profile - Mobitez</title>
+    <title>My Profile - Mobitez Private Limited</title>
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/profile.css">
-    <link rel="stylesheet" href="/css/nav-menu-visible.css">
-    <link rel="stylesheet" href="/css/flipkart-dropdown.css">
+    <link rel="stylesheet" href="/css/nav-menu-visible.css?v=fixed_nav">
+    <link rel="stylesheet" href="/css/mobitez-dropdown.css">
     <link rel="stylesheet" href="/css/mobile-responsive.css">
-    <link rel="stylesheet" href="/css/flipkart-mobile-style.css">
+    <link rel="stylesheet" href="/css/mobitez-mobile-style.css">
     <!-- CRITICAL: Mobile header consistency - MUST load LAST -->
     <link rel="stylesheet" href="/css/mobile-header-consistent.css">
-    <link rel="stylesheet" href="/css/flipkart-mobile-header.css?v=nocache_1773128051">
+    <link rel="stylesheet" href="/css/mobitez-mobile-header.css?v=1773128053">
     <link rel="stylesheet" href="/css/mobile-gap-fixes.css">
     <link rel="stylesheet" href="/css/profile-mobile.css">
 
@@ -22,14 +22,14 @@
     <link rel="stylesheet" href="/css/desktop-full-width.css?v=branding_fix_v11">
     <link rel="stylesheet" href="/css/secondary-menu.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="/js/auth.js?v=1769841025"></script>
-    <script src="/js/cart-api.js?v=1769841025"></script>
-    <script src="/js/order-api.js?v=1769841025"></script>
-    <script src="/js/wishlist-api.js?v=1769841025"></script>
-    <script src="/js/profile-api.js?v=1769841025"></script>
-    <script src="/js/search-common.js?v=1769841025"></script>
-    <script src="/js/header-common.js?v=1769841025"></script>
-    <script src="/js/secondary-menu.js?v=1769841025" defer></script>
+    <script src="/js/auth.js?v=1773128102"></script>
+    <script src="/js/cart-api.js?v=1773128102"></script>
+    <script src="/js/order-api.js?v=1773128102"></script>
+    <script src="/js/wishlist-api.js?v=1773128102"></script>
+    <script src="/js/profile-api.js?v=1773128102"></script>
+    <script src="/js/search-common.js?v=1773128102"></script>
+    <script src="/js/header-common.js?v=1773128102"></script>
+    <script src="/js/secondary-menu.js?v=1773128102" defer></script>
     <script>
         // Prevent FOUC on mobile load
         (function () {
@@ -94,6 +94,9 @@
                             </a>
                             <a href="/profile.html?section=pan" class="sidebar-submenu-item">
                                 PAN Card Information
+                            </a>
+                            <a href="/profile.html?section=emi" class="sidebar-submenu-item">
+                                EMI Applications
                             </a>
                         </div>
                     </div>
@@ -161,6 +164,17 @@
 
                 <!-- Right Main Content -->
                 <div class="profile-main-content">
+                    <!-- Deletion Pending Banner -->
+                    <div class="deletion-pending-banner" id="deletionPendingBanner" style="display: none;">
+                        <div class="banner-icon-wrapper">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div class="banner-text-content">
+                            <h4>Account Deletion Pending</h4>
+                            <p>Your account deletion request is currently pending review by the admin.</p>
+                        </div>
+                    </div>
+
                     <!-- Mobile Landing Section -->
                     <div class="profile-content-section" id="mobileLandingSection" data-profile-section="landing"
                         style="display: none;">
@@ -213,12 +227,12 @@
 
                         <div class="list-section-title">Finance Options</div>
                         <div class="profile-list">
-                            <a href="/coming-soon.html" class="list-item">
+                            <a href="/profile.html?section=emi" class="list-item">
                                 <div class="list-item-left">
                                     <i class="fas fa-credit-card accent-icon"></i>
                                     <div class="list-item-text">
-                                        <span class="item-title">EMI for Everyone</span>
-                                        <span class="item-desc">No Cost EMI | Instant Approval</span>
+                                        <span class="item-title">EMI Applications</span>
+                                        <span class="item-desc">Track and Manage EMI Applications</span>
                                     </div>
                                 </div>
                                 <i class="fas fa-chevron-right"></i>
@@ -268,12 +282,12 @@
                             </a> -->
                         </div>
 
-                        <div class="list-section-title">Earn with Mobitez</div>
+                        <div class="list-section-title">Earn with Mobitez Private Limited</div>
                         <div class="profile-list">
-                            <a href="https://seller.mobitez.webintez.com/" class="list-item">
+                            <a href="https://seller.mobitez.com/" class="list-item">
                                 <div class="list-item-left">
                                     <i class="fas fa-store"></i>
-                                    <span class="item-title">Sell on Mobitez</span>
+                                    <span class="item-title">Sell on Mobitez Private Limited</span>
                                 </div>
                                 <i class="fas fa-chevron-right"></i>
                             </a>
@@ -457,13 +471,13 @@
                                     account related communication on your updated email address .</p>
                             </div>
                             <div class="faq-item">
-                                <h4 class="faq-question">When will my Mobitez account be updated with the new email
+                                <h4 class="faq-question">When will my Mobitez Private Limited account be updated with the new email
                                     address ?</h4>
                                 <p class="faq-answer">It happens as soon as you confirm the verification code sent to
                                     your email and save the changes.</p>
                             </div>
                             <div class="faq-item">
-                                <h4 class="faq-question">What happens to my existing Mobitez account when I update my
+                                <h4 class="faq-question">What happens to my existing Mobitez Private Limited account when I update my
                                     email address ?</h4>
                                 <p class="faq-answer">Updating your email address doesn't invalidate your account. Your
                                     account remains fully functional. You'll continue seeing your Order history, saved
@@ -472,7 +486,7 @@
                             <div class="faq-item">
                                 <h4 class="faq-question">Does my Seller account get affected when I update my email
                                     address?</h4>
-                                <p class="faq-answer">Mobitez has a 'single sign-on' policy. Any changes will reflect in
+                                <p class="faq-answer">Mobitez Private Limited has a 'single sign-on' policy. Any changes will reflect in
                                     your Seller account also.</p>
                             </div>
                         </div>
@@ -647,6 +661,17 @@
                         </div>
                     </div>
 
+                    <!-- My EMI Applications Section -->
+                    <div class="profile-content-section emi-section" id="emiSection"
+                        data-profile-section="emi" style="display: none;">
+                        <div class="section-header-row">
+                            <h2 class="section-title">My EMI Applications</h2>
+                        </div>
+                        <div class="emi-container" id="emiContainer">
+                            <div class="emi-loading">Loading your EMI applications...</div>
+                        </div>
+                    </div>
+
                     <!-- Coming Soon Sections -->
                     <div class="profile-content-section" id="cardsSection" data-profile-section="cards"
                         style="display: none;">
@@ -656,7 +681,7 @@
                         <div class="coming-soon-mini">
                             <i class="fas fa-tools"></i>
                             <h3>Feature Coming Soon</h3>
-                            <p>We're working on bringing secure card storage to Mobitez. Stay tuned!</p>
+                            <p>We're working on bringing secure card storage to Mobitez Private Limited. Stay tuned!</p>
                         </div>
                     </div>
 
@@ -707,7 +732,7 @@
 
                         .coming-soon-mini i {
                             font-size: 48px;
-                            color: #fb641b;
+                            color: #FF8400;
                             margin-bottom: 20px;
                         }
 
@@ -747,13 +772,61 @@
         </a>
     </div>
 
-    <!-- Footer loaded dynamically -->
-    <script src="/js/footer-common.js?v=1769841025"></script>
+    <!-- Account Deletion Confirmation Modal -->
+    <div class="delete-modal-overlay" id="deleteAccountModal">
+        <div class="delete-modal-container">
+            <button class="btn-close-delete-modal" id="closeDeleteModalBtn" aria-label="Close modal">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="delete-modal-content">
+                <div class="delete-modal-icon-wrapper">
+                    <i class="fas fa-trash-alt"></i>
+                </div>
+                <h3 class="delete-modal-title">Delete Account</h3>
+                
+                <p class="delete-modal-warning-highlight">
+                    Are you sure you want to delete your account?
+                </p>
+                <p class="delete-modal-warning-desc">
+                    This will submit a request to the administrator to permanently delete your profile, orders, addresses, and other related details.
+                </p>
 
-    <script src="/js/profile.js?v=1769841025"></script>
-    <script src="/js/category-nav-common.js?v=1769841025"></script>
-    <script src="/js/mobile-menu.js?v=1769841025"></script>
-    <script src="/js/flipkart-mobile-header.js?v=1769841025"></script>
+                <div class="delete-modal-form-group">
+                    <label for="deleteAccountReason" class="delete-modal-label">
+                        Please let us know why you want to delete your account (optional):
+                    </label>
+                    <textarea 
+                        id="deleteAccountReason" 
+                        class="delete-modal-textarea" 
+                        placeholder="Provide feedback (max 1000 characters)" 
+                        maxlength="1000"
+                        rows="4"
+                    ></textarea>
+                    <div class="delete-modal-counter-row">
+                        <span class="delete-modal-counter" id="deleteReasonCounter">0 / 1000</span>
+                    </div>
+                </div>
+
+                <div class="delete-modal-actions">
+                    <button class="btn-delete-cancel" id="cancelDeleteModalBtn">
+                        Cancel
+                    </button>
+                    <button class="btn-delete-confirm" id="confirmDeleteBtn">
+                        <span class="btn-text">Submit Request</span>
+                        <span class="btn-spinner" style="display: none;"><i class="fas fa-spinner fa-spin"></i></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer loaded dynamically -->
+    <script src="/js/footer-common.js?v=1773128102"></script>
+
+    <script src="/js/profile.js?v=1773128102"></script>
+    <script src="/js/category-nav-common.js?v=1773128102"></script>
+    <script src="/js/mobile-menu.js?v=1773128102"></script>
+    <script src="/js/mobitez-mobile-header.js?v=1773128102"></script>
 </body>
 
 </html>

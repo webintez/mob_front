@@ -5,9 +5,9 @@ const BLOG_API = {
 };
 
 let currentPage = 1;
-let currentCategory = 'mobitez'; // Default to mobitez
+let currentCategory = 'Mobitez Private Limited'; // Default to Mobitez Private Limited
 
-async function fetchBlogs(page = 1, categorySlug = 'mobitez') {
+async function fetchBlogs(page = 1, categorySlug = 'Mobitez Private Limited') {
     const blogList = document.getElementById('blogList');
 
     blogList.innerHTML = '<div class="loading-message">Loading blogs...</div>';
@@ -57,7 +57,7 @@ async function fetchCategories() {
         // Safety check: Ensure categories is an array before filtering
         if (Array.isArray(categories)) {
             // Filter categories to only show "mobitez"
-            const filteredCategories = categories.filter(cat => cat.slug === 'mobitez');
+            const filteredCategories = categories.filter(cat => cat.slug === 'Mobitez Private Limited');
             renderCategories(filteredCategories);
 
             // Hide categories section if only one is left (optional, but requested "only Mobitez")
@@ -97,7 +97,7 @@ function renderBlogs(blogs) {
         card.innerHTML = `
             <img src="${blog.image_url}" alt="${blog.title}" class="blog-image" onerror="this.src='/img/placeholder.png'">
             <div class="blog-content">
-                <div class="blog-category">${blog.category ? blog.category.name : 'Mobitez'}</div>
+                <div class="blog-category">${blog.category ? blog.category.name : 'Mobitez Private Limited'}</div>
                 <h2 class="blog-title">${blog.title}</h2>
                 <div class="blog-excerpt">${stripHtml(blog.content || '').substring(0, 150)}...</div>
             </div>
@@ -161,6 +161,6 @@ function stripHtml(html) {
 
 // Initial Load
 document.addEventListener('DOMContentLoaded', () => {
-    fetchBlogs(1, 'mobitez');
+    fetchBlogs(1, 'Mobitez Private Limited');
     fetchCategories();
 });

@@ -27,8 +27,8 @@ body .product-main .product-container #productContent .product-images-wrapper .p
     position: relative !important;
     z-index: 101 !important;
     background: white !important;
-    /* Ensure it doesn't break out of grid column */
-    overflow: hidden !important;
+    /* Ensure it doesn't break out of grid column but allows hover transforms and shadows */
+    overflow: visible !important;
 }
 
 /* CRITICAL: Ensure product-images-wrapper constrains width */

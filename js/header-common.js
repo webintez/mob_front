@@ -4,7 +4,8 @@
 (function injectHeaderResources() {
     // Inject header styles if not already present
     const cssResources = [
-        '/css/style.css'
+        '/css/style.css',
+        '/css/search-suggestions-fix.css'
     ];
 
     cssResources.forEach(href => {
@@ -32,7 +33,7 @@ function loadHeader() {
         <!-- Logo -->
         <div class="logo">
             <a href="/">
-                <img src="${logoSrc}" alt="Mobitez" class="logo-image">
+                <img src="${logoSrc}" alt="Mobitez Private Limited" class="logo-image">
             </a>
         </div>
 
@@ -67,7 +68,7 @@ function loadHeader() {
                     </a>
                     <a href="/coming-soon.html" class="dropdown-item">
                         <i class="fas fa-star"></i>
-                        Mobitez Plus Zone
+                        Mobitez Private Limited Plus Zone
                     </a>
                     <a href="/orders.html" class="dropdown-item">
                         <i class="fas fa-shopping-bag"></i>
@@ -88,11 +89,11 @@ function loadHeader() {
                 </div>
             </div>
             <div class="header-item">
-                <a href="https://seller.mobitez.webintez.com/" class="become-seller" target="_blank" rel="noopener">Sell with Us</a>
+                <a href="https://seller.mobitez.com/" class="become-seller" target="_blank" rel="noopener">Sell with Us</a>
             </div>
             <div class="header-item more-dropdown-wrapper">
-                <a href="/coming-soon.html" class="more-options">
-                    More
+                <a href="/coming-soon.html" class="more-options" aria-label="View more site options">
+                    Help & More
                     <i class="fas fa-chevron-down"></i>
                 </a>
                 <div class="more-dropdown">

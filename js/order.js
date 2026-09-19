@@ -263,7 +263,7 @@ function displayOrderItems(items, order = null) {
                     <a href="/product.html?slug=${productSlug}" class="order-item-name-link">
                         ${escapeHtml(productName)}
                     </a>
-                    <div class="order-item-seller">Seller: ${product.seller || 'Mobitez'}</div>
+                    <div class="order-item-seller">Seller: ${product.seller || 'Mobitez Private Limited'}</div>
                     <div class="order-item-specs">
                         ${[product.color, product.ram ? `${product.ram}GB RAM` : '', product.storage ? `${product.storage}GB ROM` : ''].filter(Boolean).join(', ')}
                     </div>
@@ -1458,18 +1458,18 @@ async function showOrderReviewModal(productSlug, productName) {
             selectedRating = index + 1;
             document.getElementById('orderOverallRating').value = selectedRating;
             starInputs.forEach((s, i) => {
-                s.style.color = i < selectedRating ? '#ff9f00' : '#ddd';
+                s.style.color = i < selectedRating ? '#24db65' : '#ddd';
             });
         });
         star.addEventListener('mouseenter', () => {
             starInputs.forEach((s, i) => {
-                s.style.color = i <= index ? '#ff9f00' : '#ddd';
+                s.style.color = i <= index ? '#24db65' : '#ddd';
             });
         });
     });
     overallRatingSection.querySelector('.star-rating-input').addEventListener('mouseleave', () => {
         starInputs.forEach((s, i) => {
-            s.style.color = i < selectedRating ? '#ff9f00' : '#ddd';
+            s.style.color = i < selectedRating ? '#24db65' : '#ddd';
         });
     });
 
@@ -1502,7 +1502,7 @@ async function showOrderReviewModal(productSlug, productName) {
                     const categoryId = categoryStars.dataset.categoryId;
                     const stars = categoryStars.querySelectorAll('span');
                     stars.forEach((s, idx) => {
-                        s.style.color = idx < i ? '#ff9f00' : '#ddd';
+                        s.style.color = idx < i ? '#24db65' : '#ddd';
                     });
                     const hiddenInput = document.getElementById(`orderCategoryRating_${categoryId}`);
                     if (hiddenInput) {

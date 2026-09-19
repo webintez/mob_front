@@ -185,7 +185,7 @@
         gap: 3px;
     }
 
-    .product-card .flipkart-rating-badge {
+    .product-card .mobitez-rating-badge {
         background-color: #388e3c;
         color: #fff;
         font-size: 11px;
@@ -198,7 +198,7 @@
         line-height: 1;
     }
 
-    .product-card .flipkart-rating-badge i {
+    .product-card .mobitez-rating-badge i {
         font-size: 9px;
     }
 
@@ -208,7 +208,7 @@
         font-weight: 400;
     }
 
-    .product-card .flipkart-assured-badge {
+    .product-card .mobitez-assured-badge {
         height: 16px;
         margin-left: 4px;
     }

@@ -5,6 +5,14 @@ const SectionRenderer = {
     // State for carousels
     carouselState: {},
 
+    // Reflow-free viewport width utilities
+    isMobile() {
+        return window.matchMedia('(max-width: 768px)').matches;
+    },
+    isDesktop() {
+        return window.matchMedia('(min-width: 1025px)').matches;
+    },
+
     /**
      * Renders a section into the specified container.
      */
@@ -67,7 +75,7 @@ const SectionRenderer = {
      * Renders the actual content of the section.
      */
     async renderContent(section, sectionWrapper) {
-        if (window.innerWidth <= 768) {
+        if (SectionRenderer.isMobile()) {
             console.log(`[Loaded Section Data] ${section.name || section.type} (ID: ${section.id}):`, section);
         }
         switch (section.type) {
@@ -82,6 +90,9 @@ const SectionRenderer = {
                 break;
             case 'category_grid':
                 await this.renderCategoryGrid(section, sectionWrapper);
+                break;
+            case 'secondary_menu_grid':
+                await this.renderSecondaryMenuGrid(section, sectionWrapper);
                 break;
             case 'banner':
                 await this.renderBanner(section, sectionWrapper);
@@ -169,33 +180,33 @@ const SectionRenderer = {
         const slidesData = Array.isArray(items) ? items : Object.values(items);
         const layout = section.layout || {};
         const carouselId = `hero-slider-${section.id}`;
-        const isMobile = window.innerWidth <= 768;
+        const isMobile = SectionRenderer.isMobile();
 
         if (isMobile) {
             // New Flipkart Style for Mobile
             const outer = document.createElement('div');
-            outer.className = 'hero-slider-flipkart';
+            outer.className = 'hero-slider-mobitez';
             outer.id = carouselId;
 
             const sliderOuter = document.createElement('div');
-            sliderOuter.className = 'flipkart-slider-outer';
+            sliderOuter.className = 'mobitez-slider-outer';
 
             const containerEl = document.createElement('div');
-            containerEl.className = 'flipkart-slider-container';
+            containerEl.className = 'mobitez-slider-container';
 
             slidesData.forEach((slide, index) => {
                 if (!slide.image) return; // Skip slides without images
 
                 const slideItem = document.createElement('div');
-                slideItem.className = 'flipkart-slide-item';
+                slideItem.className = 'mobitez-slide-item';
                 slideItem.dataset.index = index;
 
                 const content = document.createElement('div');
-                content.className = 'flipkart-slide-content';
+                content.className = 'mobitez-slide-content';
 
                 const link = document.createElement('a');
                 link.href = slide.cta_url || slide.url || '#';
-                link.className = 'flipkart-aspect-ratio';
+                link.className = 'mobitez-aspect-ratio';
 
                 const img = document.createElement('img');
                 img.src = slide.image;
@@ -218,7 +229,7 @@ const SectionRenderer = {
                 autoplay: layout.autoplay !== false,
                 delay: parseInt(layout.autoplay_delay || 3000),
                 interval: null,
-                type: 'flipkart'
+                type: 'Mobitez Private Limited'
             };
 
             // Dots
@@ -383,8 +394,8 @@ const SectionRenderer = {
 
         state.currentIndex = index;
 
-        if (state.type === 'flipkart') {
-            const container = document.querySelector(`#${carouselId} .flipkart-slider-container`);
+        if (state.type === 'Mobitez Private Limited') {
+            const container = document.querySelector(`#${carouselId} .mobitez-slider-container`);
             if (container && !isFromScroll) {
                 container.scrollTo({
                     left: index * container.clientWidth,
@@ -414,15 +425,15 @@ const SectionRenderer = {
 
     addFlipkartDots(container, carouselId, count) {
         const dots = document.createElement('div');
-        dots.className = 'flipkart-pagination';
+        dots.className = 'mobitez-pagination';
 
         for (let i = 0; i < count; i++) {
             const dot = document.createElement('div');
-            dot.className = `flipkart-dot ${i === 0 ? 'active' : ''}`;
+            dot.className = `mobitez-dot ${i === 0 ? 'active' : ''}`;
             dot.dataset.index = i;
 
             const progress = document.createElement('div');
-            progress.className = 'flipkart-progress';
+            progress.className = 'mobitez-progress';
             if (i === 0 && this.carouselState[carouselId].autoplay) {
                 progress.style.transition = `width ${this.carouselState[carouselId].delay}ms linear`;
                 // Trigger reflow to ensure transition runs
@@ -438,13 +449,13 @@ const SectionRenderer = {
 
     updateFlipkartDots(carouselId, index) {
         const state = this.carouselState[carouselId];
-        const dots = document.querySelectorAll(`#${carouselId} .flipkart-dot`);
+        const dots = document.querySelectorAll(`#${carouselId} .mobitez-dot`);
 
         dots.forEach((dot, idx) => {
             const isActive = idx === index;
             dot.classList.toggle('active', isActive);
 
-            const progress = dot.querySelector('.flipkart-progress');
+            const progress = dot.querySelector('.mobitez-progress');
             if (progress) {
                 progress.style.transition = 'none';
                 progress.style.width = '0%';
@@ -481,7 +492,7 @@ const SectionRenderer = {
         const products = section.payload || [];
         if (!products || products.length === 0) return;
 
-        const isMobile = window.innerWidth <= 768;
+        const isMobile = SectionRenderer.isMobile();
 
         if (isMobile) {
             this.renderFlipkartMobileCarousel(section, container);
@@ -491,7 +502,7 @@ const SectionRenderer = {
         const layout = section.layout || {};
         const style = section.style || layout;
         const title = ''; // Hidden per user request
-        const isDesktop = window.innerWidth > 1024;
+        const isDesktop = SectionRenderer.isDesktop();
         const bg = layout.background || {};
         const sectionId = section.id;
 
@@ -612,11 +623,11 @@ const SectionRenderer = {
         
         container.style.setProperty('padding', '0', 'important');
         container.style.setProperty('margin', '0', 'important');
-        container.classList.add('flipkart-mobile-carousel-outer');
+        container.classList.add('mobitez-mobile-carousel-outer');
 
         container.innerHTML = `
-            <div class="flipkart-mobile-carousel-container" style="${bgStyle}">
-                <div class="flipkart-carousel-scroll">
+            <div class="mobitez-mobile-carousel-container" style="${bgStyle}">
+                <div class="mobitez-carousel-scroll">
                     ${products.map(p => {
                         const name = p.name || 'Product';
                         const rating = parseFloat(p.rating) || 0;
@@ -628,7 +639,7 @@ const SectionRenderer = {
                         const formattedPrice = `₹${Number(price).toLocaleString('en-IN')}`;
 
                         return `
-                        <a href="/product.html?slug=${p.slug}" class="flipkart-carousel-item">
+                        <a href="/product.html?slug=${p.slug}" class="mobitez-carousel-item">
                             <div class="trends-item-image-wrapper">
                                 <img src="${p.image_url}" alt="${p.name}" class="trends-item-image" loading="lazy">
                                 ${rating > 0 ? `
@@ -665,7 +676,7 @@ const SectionRenderer = {
         const products = section.payload || [];
         if (!products || products.length === 0) return;
 
-        const isMobile = window.innerWidth <= 768;
+        const isMobile = SectionRenderer.isMobile();
         const layout = section.layout || {};
         const style = section.style || layout;
 
@@ -820,11 +831,56 @@ const SectionRenderer = {
             ${headerHtml}
             <div class="category-grid">
                 ${categories.map(cat => `
-                    <a href="/products.html?category=${cat.slug}" class="category-item">
+                    <a href="/categories.html?category=${cat.slug}" class="category-item">
                         <div class="category-icon">
                             <img src="${cat.image_url || cat.icon}" alt="${cat.name}">
                         </div>
                         <span class="category-name">${cat.name}</span>
+                    </a>
+                `).join('')}
+            </div>
+        `;
+    },
+
+    /**
+     * Renders a Secondary Menu Grid section.
+     */
+    async renderSecondaryMenuGrid(section, container) {
+        const items = section.payload || [];
+        if (!items || items.length === 0) return;
+
+        const layout = section.layout || {};
+        const style = section.style || {};
+        const combined = { ...layout, ...style };
+
+        this.applyLayoutStyles(container, combined);
+
+        const ipv = combined.items_per_view || { desktop: '6', tablet: '4', mobile: '4' };
+        container.style.setProperty('--cat-cols-desktop', ipv.desktop || '6');
+        container.style.setProperty('--cat-cols-tablet', ipv.tablet || '4');
+        container.style.setProperty('--cat-cols-mobile', ipv.mobile || '4');
+
+        const title = ''; // Hidden per user request
+        const viewAllUrl = combined.view_all_url || '';
+        let headerHtml = '';
+        if (title) {
+            headerHtml = `
+                <div class="category-grid-header">
+                    <h3 class="category-grid-title">${title}</h3>
+                    ${viewAllUrl ? `<a href="${viewAllUrl}" class="view-all-btn">VIEW ALL</a>` : ''}
+                </div>
+            `;
+        }
+
+        container.innerHTML = `
+            ${headerHtml}
+            <div class="secondary-menu-grid category-grid">
+                ${items.map(item => `
+                    <a href="${item.value || '#'}" class="secondary-menu-item category-item">
+                        <div class="secondary-menu-icon category-icon">
+                            <img src="${item.image}" alt="${item.name}">
+                        </div>
+                        <span class="secondary-menu-name category-name">${item.name}</span>
                     </a>
                 `).join('')}
             </div>
@@ -850,11 +906,11 @@ const SectionRenderer = {
             const url = banner.url || banner.cta_url || banner.link || '#';
 
             if (style === 'overlay') {
-                const isMobile = window.innerWidth <= 768;
+                const isMobile = SectionRenderer.isMobile();
                 
                 if (isMobile) {
                     html += `
-                        <div class="banner-item overlay flipkart-mobile-banner" style="position: relative; border-radius: 12px; overflow: hidden; margin: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); min-height: 180px;">
+                        <div class="banner-item overlay mobitez-mobile-banner" style="position: relative; border-radius: 12px; overflow: hidden; margin: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); min-height: 180px;">
                             <img src="${img}" alt="${banner.title || ''}" style="width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; z-index: 1;">
                             <div class="banner-overlay-gradient" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.1) 100%); z-index: 2;"></div>
                             <div class="banner-content" style="position: absolute; bottom: 0; left: 0; width: 100%; padding: 20px; z-index: 3; display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-start; box-sizing: border-box;">
@@ -924,7 +980,7 @@ const SectionRenderer = {
         const style = section.style || {};
         const combined = { ...layout, ...style };
         
-        const isMobile = window.innerWidth <= 768;
+        const isMobile = SectionRenderer.isMobile();
         this.applyLayoutStyles(container, combined);
 
         // Define items per view and gap
@@ -946,12 +1002,12 @@ const SectionRenderer = {
         container.style.backgroundColor = '#FFFFFF';
         container.style.setProperty('background', '#FFFFFF', 'important');
         
-        let html = '<div class="flipkart-img-carousel-container" style="background: transparent; margin: 12px 0; width: 100%;">';
+        let html = '<div class="mobitez-img-carousel-container" style="background: transparent; margin: 12px 0; width: 100%;">';
         
         // Only show title if there is one and not a placeholder
         if (title && title.toLowerCase() !== 'untitled section' && title.toLowerCase() !== 'banner') {
             html += `
-                <div class="flipkart-img-carousel-header" style="padding: 0 16px 12px; text-align: center;">
+                <div class="mobitez-img-carousel-header" style="padding: 0 16px 12px; text-align: center;">
                     <h2 style="font-size: 16px; font-weight: 500; color: #212121; margin: 0; font-family: inherit; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${title}</h2>
                 </div>
             `;
@@ -960,8 +1016,8 @@ const SectionRenderer = {
         const flexBasisCalc = `calc((100% - (${gap}px * (${ipv} - 1))) / ${ipv})`;
 
         html += `
-            <div class="flipkart-img-carousel-wrapper" style="width: 100%; box-sizing: border-box; padding-left: 0px; padding-right: 0px;">
-                <div class="flipkart-img-carousel-scroll" style="display: flex; width: 100%; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; -ms-overflow-style: none; gap: ${gap}px; padding: 0 16px 2px 16px; box-sizing: border-box; scroll-padding-inline: 16px;">
+            <div class="mobitez-img-carousel-wrapper" style="width: 100%; box-sizing: border-box; padding-left: 0px; padding-right: 0px;">
+                <div class="mobitez-img-carousel-scroll" style="display: flex; width: 100%; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; -ms-overflow-style: none; gap: ${gap}px; padding: 0 16px 2px 16px; box-sizing: border-box; scroll-padding-inline: 16px;">
         `;
         
         items.forEach((item) => {
@@ -971,7 +1027,7 @@ const SectionRenderer = {
             const url = item.cta_url || item.link || item.url || '#';
             
             html += `
-                    <div class="flipkart-img-carousel-item" style="scroll-snap-align: center; flex: 0 0 ${flexBasisCalc}; min-width: 0;">
+                    <div class="mobitez-img-carousel-item" style="scroll-snap-align: center; flex: 0 0 ${flexBasisCalc}; min-width: 0;">
                         <a href="${url}" style="display: flex; align-items: center; justify-content: center; border-radius: 16px; overflow: hidden; position: relative; width: 100%; height: 100%;">
                             <img src="${imgUrl}" loading="lazy" style="width: 100%; height: 100%; object-fit: contain; display: block; margin: 0 auto;">
                         </a>
@@ -988,11 +1044,11 @@ const SectionRenderer = {
         container.innerHTML = html;
         
         // Add CSS to hide scrollbar for webkit browsers
-        if (!document.getElementById('flipkart-img-carousel-css')) {
+        if (!document.getElementById('mobitez-img-carousel-css')) {
             const styleEl = document.createElement('style');
-            styleEl.id = 'flipkart-img-carousel-css';
+            styleEl.id = 'mobitez-img-carousel-css';
             styleEl.textContent = `
-                .flipkart-img-carousel-scroll::-webkit-scrollbar {
+                .mobitez-img-carousel-scroll::-webkit-scrollbar {
                     display: none;
                 }
             `;

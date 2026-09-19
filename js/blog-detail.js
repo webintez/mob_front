@@ -34,7 +34,7 @@ async function fetchBlogDetail(slug) {
         renderBlogDetail(blog);
 
         // Update Title
-        document.title = `${blog.title} - Mobitez Blog`;
+        document.title = `${blog.title} - Mobitez Private Limited Blog`;
 
     } catch (error) {
         console.error('Error fetching blog detail:', error);
@@ -64,7 +64,7 @@ function renderBlogDetail(blog) {
                 <h1 class="blog-detail-title">${blog.title}</h1>
                 <div class="blog-detail-meta">
                     <span><i class="far fa-calendar-alt"></i> ${date}</span>
-                    <span><i class="far fa-user"></i> ${blog.author || 'Mobitez Team'}</span>
+                    <span><i class="far fa-user"></i> ${blog.author || 'Mobitez Private Limited Team'}</span>
                 </div>
             </header>
 

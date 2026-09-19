@@ -6,6 +6,7 @@
 // Global state for tags page
 let currentTagSlug = null;
 let currentTagName = '';
+let listingCurrentPage = 1;
 
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', () => {
@@ -114,7 +115,7 @@ function displayFlatTags(tags) {
 /**
  * Load products for a specific tag
  */
-async function loadTagProducts(tagSlug) {
+async function loadTagProducts(tagSlug, page = 1) {
     const tagsDisplaySection = document.getElementById('tagsDisplaySection');
     const productsSection = document.getElementById('productsSection');
     const productsGrid = document.getElementById('allProducts');
@@ -127,30 +128,49 @@ async function loadTagProducts(tagSlug) {
     tagsDisplaySection.style.display = 'none';
     productsSection.style.display = 'block';
 
-    productsGrid.innerHTML = `
-        <div class="loading-spinner">
-            <div class="spinner"></div>
-            <p>Loading products for tag: ${tagSlug}...</p>
-        </div>
-    `;
+    if (page === 1) {
+        productsGrid.innerHTML = `
+            <div class="loading-spinner">
+                <div class="spinner"></div>
+                <p>Loading products for tag: ${tagSlug}...</p>
+            </div>
+        `;
+    }
 
     try {
-        // Use app.js loadProductsByTag to ensure centralized state
-        if (typeof loadProductsByTag === 'function') {
-            await loadProductsByTag(tagSlug);
-        }
-
-        // API call to get tag details
-        const result = await makeApiCall(`/tags/${tagSlug}`, { timeout: 10000 });
-
+        // API call to get tag details and products
+        const result = await makeApiCall(`/tags/${tagSlug}/products?page=${page}&per_page=20`, { timeout: 10000 });
+        console.log('Tag Products API Response:', result);
+        
         if (result && result.success && result.data) {
-            // Depending on API structure, data might be a flat array or { tag: {...}, products: [...] }
-            const products = Array.isArray(result.data) ? result.data : (result.data.products || []);
-            const tagInfo = Array.isArray(result.data) ? { name: tagSlug } : (result.data.tag || { name: tagSlug });
+            let products = [];
+            let pagination = null;
 
-            currentTagName = tagInfo.name;
+            // Robust data extraction for tag products
+            if (result.data) {
+                if (result.data.products) {
+                    if (Array.isArray(result.data.products)) {
+                        products = result.data.products;
+                        pagination = result.data.pagination || result.pagination || null;
+                    } else if (result.data.products.data && Array.isArray(result.data.products.data)) {
+                        products = result.data.products.data;
+                        pagination = result.data.products;
+                    }
+                } else if (Array.isArray(result.data.data)) {
+                    products = result.data.data;
+                    pagination = result.data;
+                } else if (Array.isArray(result.data)) {
+                    products = result.data;
+                    pagination = result.pagination || null;
+                }
+            }
 
-            // Update UI
+            console.log(`Extracted ${products.length} products for tag ${tagSlug}`);
+
+            const tagInfo = result.data.tag || { name: tagSlug };
+            currentTagName = tagInfo.name || tagSlug;
+
+            // Update UI title and breadcrumbs
             if (sectionTitle) sectionTitle.textContent = `Tag: ${currentTagName}`;
             if (tagBreadcrumb) {
                 tagBreadcrumb.innerHTML = `
@@ -160,14 +180,33 @@ async function loadTagProducts(tagSlug) {
                 `;
             }
 
-            document.title = `${currentTagName} - Mobitez`;
+            document.title = `${currentTagName} - Mobitez Private Limited`;
 
+            // Clear loading spinner and render products
+            productsGrid.innerHTML = '';
+            
             if (products.length > 0) {
                 displayFilteredProducts(products);
                 
-                // Initialize filters
+                // Initialize filters (already loaded by app.js correctly)
                 if (typeof loadBrandsForFilter === 'function') loadBrandsForFilter();
                 if (typeof loadCategoriesForFilter === 'function') loadCategoriesForFilter();
+
+                // Update results count and display pagination
+                const paginationData = pagination || {
+                    current_page: page,
+                    per_page: 20,
+                    total: products.length,
+                    total_pages: 1
+                };
+
+                updateResultsCount(paginationData);
+                if (paginationData.total_pages > 1) {
+                    displayPagination(paginationData, tagSlug);
+                } else {
+                    const paginationDiv = document.getElementById('pagination');
+                    if (paginationDiv) paginationDiv.style.display = 'none';
+                }
             } else {
                 productsGrid.innerHTML = `
                     <div class="no-results-message" style="text-align: center; padding: 60px 20px; width: 100%; grid-column: 1 / -1; display: flex; flex-direction: column; align-items: center; justify-content: center; background-color: #fff; border-radius: 4px; box-shadow: 0 1px 2px 0 rgba(0,0,0,0.1); margin-top: 10px;">
@@ -176,16 +215,15 @@ async function loadTagProducts(tagSlug) {
                         </div>
                         <h3 style="font-size: 20px; font-weight: 500; color: #212121; margin: 0 0 10px 0;">Coming Soon</h3>
                         <p style="font-size: 14px; color: #878787; margin: 0 0 24px 0;">We are currently adding new products with this tag.</p>
-                        <a href="/" class="browse-btn" style="display: inline-block; background: #2874f0; color: #fff; padding: 12px 32px; border-radius: 2px; text-decoration: none; font-weight: 500; font-size: 14px; box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2);">Explore Other Products</a>
+                        <a href="/" class="browse-btn" style="display: inline-block; background: #1b5e20; color: #fff; padding: 12px 32px; border-radius: 2px; text-decoration: none; font-weight: 500; font-size: 14px; box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2);">Explore Other Products</a>
                     </div>
                 `;
             }
 
-            // Update results count
-            const resultsCount = document.getElementById('resultsCount');
-            if (resultsCount) {
-                resultsCount.textContent = `Showing 1 – ${products.length} of ${result.data.count || products.length} results`;
-            }
+            // Update dynamic meta tags (SEO/OG)
+            const totalCount = paginationData ? paginationData.total : products.length;
+            const firstProductImage = products.length > 0 ? (products[0].image_url || products[0].image) : null;
+            updateDynamicMetaTags(currentTagName, totalCount, firstProductImage);
 
         } else {
             throw new Error('Failed to load tag products');
@@ -195,6 +233,76 @@ async function loadTagProducts(tagSlug) {
         productsGrid.innerHTML = `<p class="error-message">Error: ${error.message}</p>`;
     }
 }
+
+/**
+ * Update results count
+ */
+function updateResultsCount(pagination) {
+    const resultsCount = document.getElementById('resultsCount');
+    if (resultsCount && pagination) {
+        const start = ((pagination.current_page - 1) * pagination.per_page) + 1;
+        const end = Math.min(start + pagination.per_page - 1, pagination.total);
+        resultsCount.textContent = `Showing ${start} - ${end} of ${pagination.total} results`;
+    }
+}
+
+/**
+ * Display pagination
+ */
+function displayPagination(pagination, tagSlug) {
+    const paginationDiv = document.getElementById('pagination');
+    if (!paginationDiv) return;
+
+    paginationDiv.style.display = 'flex';
+    paginationDiv.innerHTML = '';
+
+    // Previous button
+    if (pagination.current_page > 1) {
+        const prevBtn = document.createElement('button');
+        prevBtn.className = 'pagination-btn';
+        prevBtn.textContent = 'Previous';
+        prevBtn.addEventListener('click', () => {
+            listingCurrentPage--;
+            loadTagProducts(tagSlug, listingCurrentPage);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+        paginationDiv.appendChild(prevBtn);
+    }
+
+    // Page numbers
+    for (let i = 1; i <= pagination.total_pages; i++) {
+        if (i === 1 || i === pagination.total_pages || (i >= pagination.current_page - 2 && i <= pagination.current_page + 2)) {
+            const pageBtn = document.createElement('button');
+            pageBtn.className = `pagination-btn ${i === pagination.current_page ? 'active' : ''}`;
+            pageBtn.textContent = i;
+            pageBtn.addEventListener('click', () => {
+                listingCurrentPage = i;
+                loadTagProducts(tagSlug, listingCurrentPage);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+            paginationDiv.appendChild(pageBtn);
+        } else if (i === pagination.current_page - 3 || i === pagination.current_page + 3) {
+            const ellipsis = document.createElement('span');
+            ellipsis.className = 'pagination-ellipsis';
+            ellipsis.textContent = '...';
+            paginationDiv.appendChild(ellipsis);
+        }
+    }
+
+    // Next button
+    if (pagination.current_page < pagination.total_pages) {
+        const nextBtn = document.createElement('button');
+        nextBtn.className = 'pagination-btn';
+        nextBtn.textContent = 'Next';
+        nextBtn.addEventListener('click', () => {
+            listingCurrentPage++;
+            loadTagProducts(tagSlug, listingCurrentPage);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+        paginationDiv.appendChild(nextBtn);
+    }
+}
+
 
 /**
  * Display filtered products
@@ -242,4 +350,59 @@ async function makeApiCall(endpoint, options = {}) {
         }
     });
     return response.json();
+}
+
+/**
+ * Update dynamic meta tags for SEO and Social Sharing
+ * @param {string} tagName - The name of the tag
+ * @param {number} count - Number of products
+ * @param {string} imageUrl - Optional image URL from first product
+ */
+function updateDynamicMetaTags(tagName, count, imageUrl = null) {
+    const title = `${tagName} - Shop ${count} Products on Mobitez Private Limited`;
+    const description = `Discover ${count} best deals for ${tagName} at Mobitez Private Limited. High-quality products and accessories at affordable prices.`;
+    const url = window.location.href;
+    const defaultImage = '/PNG/logo-yw.png';
+    const finalImage = imageUrl || defaultImage;
+
+    // Update standard meta description
+    const metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) metaDesc.setAttribute('content', description);
+
+    // Update OG tags
+    const ogTags = {
+        'og:title': title,
+        'og:description': description,
+        'og:url': url,
+        'og:image': finalImage,
+        'og:type': 'website'
+    };
+
+    for (const [property, content] of Object.entries(ogTags)) {
+        let tag = document.querySelector(`meta[property="${property}"]`);
+        if (!tag) {
+            tag = document.createElement('meta');
+            tag.setAttribute('property', property);
+            document.head.appendChild(tag);
+        }
+        tag.setAttribute('content', content);
+    }
+
+    // Also update Twitter/X tags for good measure
+    const twitterTags = {
+        'twitter:card': 'summary_large_image',
+        'twitter:title': title,
+        'twitter:description': description,
+        'twitter:image': finalImage
+    };
+
+    for (const [name, content] of Object.entries(twitterTags)) {
+        let tag = document.querySelector(`meta[name="${name}"]`);
+        if (!tag) {
+            tag = document.createElement('meta');
+            tag.setAttribute('name', name);
+            document.head.appendChild(tag);
+        }
+        tag.setAttribute('content', content);
+    }
 }

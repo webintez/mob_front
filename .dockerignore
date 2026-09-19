@@ -1,0 +1,17 @@
+node_modules
+npm-debug.log
+.git
+.gitignore
+.env
+.cursor
+graphify-out
+tmp
+*.log
+*.md
+*.sh
+.htaccess
+apache.conf
+nginx*.conf
+api-proxy.php
+storage-proxy.php
+apply_cache_busting.*

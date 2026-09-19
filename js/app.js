@@ -41,6 +41,9 @@ async function initApp() {
         // Load featured products (non-blocking)
         loadFeaturedProducts().catch(err => console.error('Featured products load error:', err)); // Log enabled
 
+        // Load active flash sales (non-blocking)
+        loadFlashSales().catch(err => console.error('Flash sales load error:', err));
+
         // Load Dynamic Sections (Main Homepage Content)
         fetchAndRenderDynamicSections().catch(err => console.error('Dynamic sections render error:', err));
 
@@ -68,56 +71,143 @@ async function initApp() {
     }
 }
 
-// API Helper Function with timeout
+// In-flight request deduplication map
+const inFlightApiRequests = new Map();
+
+// API Helper Function with timeout, retries, and local storage fallback
 async function makeApiCall(endpoint, options = {}) {
-    const timeout = options.timeout || 10000; // Default 10 second timeout
+    const method = (options.method || 'GET').toUpperCase();
+    const requestKey = `${method}:${endpoint}`;
 
-    try {
-        const url = `${API_CONFIG.baseUrl}${endpoint}`;
-        const config = {
-            method: options.method || 'GET',
-            headers: {
-                ...API_CONFIG.headers,
-                ...(options.headers || {})
-            }
-        };
-
-        if (options.body) {
-            config.body = JSON.stringify(options.body);
-        }
-
-        // Create timeout promise
-        const timeoutPromise = new Promise((_, reject) => {
-            setTimeout(() => reject(new Error('Request timeout')), timeout);
-        });
-
-        // Race between fetch and timeout
-        const response = await Promise.race([
-            fetch(url, config),
-            timeoutPromise
-        ]);
-
-        // Handle non-JSON responses
-        const contentType = response.headers.get('content-type');
-        if (!contentType || !contentType.includes('application/json')) {
-            throw new Error('Invalid response format');
-        }
-
-        const result = await response.json();
-
-        // Log API response
-        // console.log(`App API Response [${endpoint}]:`, result);
-
-        if (!response.ok) {
-            throw new Error(result.message || `API request failed with status ${response.status}`);
-        }
-
-        return result;
-    } catch (error) {
-        console.error('API Call Failed:', endpoint, error.message);
-        throw error;
+    // Share identical concurrent GET requests
+    if (method === 'GET' && inFlightApiRequests.has(requestKey)) {
+        return inFlightApiRequests.get(requestKey);
     }
+
+    const executeCall = async () => {
+        const timeout = options.timeout || 15000; // Increased to 15s default
+        const maxRetries = options.maxRetries ?? (method === 'GET' ? 2 : 0);
+        const retryDelay = options.retryDelay || 1000;
+
+        // Map endpoints to local cache keys
+        const cacheMap = {
+            '/categories/index': 'cache_categories_index',
+            '/brands': 'cache_brands',
+            '/banners': 'cache_banners',
+            '/flash-sales/active': 'cache_flash_sales_active',
+            '/menus': 'cache_menus'
+        };
+        
+        // Check if endpoint has matching cache key
+        let cacheKey = options.cacheKey;
+        if (!cacheKey && method === 'GET') {
+            const cleanPath = endpoint.split('?')[0];
+            if (cacheMap[cleanPath]) {
+                cacheKey = cacheMap[cleanPath];
+            } else if (cleanPath.startsWith('/section-groups/')) {
+                cacheKey = `cache_sec_group_${cleanPath.replace('/section-groups/', '')}`;
+            }
+        }
+
+        let attempt = 0;
+        while (true) {
+            try {
+                const url = `${API_CONFIG.baseUrl}${endpoint}`;
+                const config = {
+                    method: options.method || 'GET',
+                    headers: {
+                        ...API_CONFIG.headers,
+                        ...(options.headers || {})
+                    }
+                };
+
+                if (options.body) {
+                    config.body = JSON.stringify(options.body);
+                }
+
+                // Create timeout promise
+                const timeoutPromise = new Promise((_, reject) => {
+                    setTimeout(() => reject(new Error('Request timeout')), timeout);
+                });
+
+                // Race between fetch and timeout
+                const response = await Promise.race([
+                    fetch(url, config),
+                    timeoutPromise
+                ]);
+
+                // Handle non-JSON responses
+                const contentType = response.headers.get('content-type');
+                if (!contentType || !contentType.includes('application/json')) {
+                    throw new Error('Invalid response format');
+                }
+
+                const result = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(result.message || `API request failed with status ${response.status}`);
+                }
+
+                // Save successful response to cache
+                if (cacheKey) {
+                    try {
+                        localStorage.setItem(cacheKey, JSON.stringify({
+                            data: result,
+                            timestamp: Date.now()
+                        }));
+                    } catch (e) {
+                        // Suppress local storage save error warnings
+                    }
+                }
+
+                return result;
+            } catch (error) {
+                attempt++;
+                const isRetryableError = error.message === 'Request timeout' || 
+                                         error.message.includes('Network') || 
+                                         error.message.includes('fetch');
+
+                if (attempt <= maxRetries && isRetryableError) {
+                    const backoff = retryDelay * Math.pow(2, attempt - 1);
+                    console.warn(`[API Retry] ${endpoint} failed (Attempt ${attempt}/${maxRetries}). Retrying in ${backoff}ms... Error: ${error.message}`);
+                    await new Promise(resolve => setTimeout(resolve, backoff));
+                    continue;
+                }
+
+                // Fallback to cached data if network fails/times out
+                if (cacheKey) {
+                    try {
+                        const cached = localStorage.getItem(cacheKey);
+                        if (cached) {
+                            const parsed = JSON.parse(cached);
+                            console.warn(`[API Fallback] Endpoint ${endpoint} failed. Loaded cached data from ${new Date(parsed.timestamp).toLocaleDateString()}`);
+                            return parsed.data;
+                        }
+                    } catch (e) {
+                        // Suppress cache read warnings
+                    }
+                }
+
+                console.error('API Call Failed:', endpoint, error.message);
+                throw error;
+            }
+        }
+    };
+
+    if (method === 'GET') {
+        const promise = executeCall().finally(() => {
+            inFlightApiRequests.delete(requestKey);
+        });
+        inFlightApiRequests.set(requestKey, promise);
+        return promise;
+    }
+
+    return executeCall();
 }
+
+// Expose globally
+window.makeApiCall = makeApiCall;
+
 
 // Load Categories using new Category Index API
 async function loadCategories() {
@@ -260,6 +350,12 @@ function updateCategoryNavigation() {
 async function loadHomepageMenus() {
     const categoriesNavContainer = document.getElementById('homepageCategoriesNav');
     if (!categoriesNavContainer) return;
+
+    // Skip client-side load if menus were already pre-rendered by Express SSR
+    if (categoriesNavContainer.querySelector('.homepage-category-item')) {
+        console.log('Categories pre-rendered by Express server. Skipping client fetch.');
+        return;
+    }
 
     try {
         const result = await makeApiCall('/menus', { timeout: 8000 });
@@ -790,6 +886,616 @@ async function loadBanners() {
 }
 
 // Load Featured Products (Carousel Style)
+async function loadFlashSales() {
+    const flashSaleSection = document.getElementById('flashSaleSection');
+    const container = document.getElementById('flashSaleCardContainer');
+    if (!flashSaleSection || !container) return;
+
+    // Use original console.log to bypass global override if present
+    const logFn = window.originalConsoleLog || console.log;
+
+    try {
+        const endpoint = '/flash-sales/active';
+        const fullUrl = `${API_CONFIG.baseUrl}${endpoint}`;
+        logFn('Flash Sale Request Endpoint:', endpoint);
+        logFn('Flash Sale Full API URL:', window.location.origin + fullUrl);
+        
+        const result = await makeApiCall(endpoint);
+        logFn('Flash Sale API Response:', result);
+        
+        const salesArray = Array.isArray(result) ? result : (result && result.data && Array.isArray(result.data) ? result.data : []);
+        
+        if (salesArray.length > 0) {
+            let allItems = [];
+            const now = Date.now();
+
+            // Loop through all sales to collect items from all valid active sales
+            for (const sale of salesArray) {
+                const endTime = sale.end_time ? new Date(sale.end_time).getTime() : 0;
+                if (endTime > 0 && endTime <= now) {
+                    continue; // Skip ended sales
+                }
+
+                const isCat = sale.scope === 'category';
+                let saleItems = [];
+                if (isCat) {
+                    if (sale.categories && sale.categories.length > 0) {
+                        saleItems = sale.categories;
+                    }
+                } else {
+                    if (sale.products && sale.products.length > 0) {
+                        saleItems = sale.products;
+                    }
+                }
+
+                // Add each item along with its associated flash sale metadata
+                for (const item of saleItems) {
+                    allItems.push({
+                        item: item,
+                        sale: sale,
+                        isCategoryScope: isCat
+                    });
+                }
+            }
+
+            if (allItems.length > 0) {
+                const displayItems = allItems.slice(0, 20); // Show up to 20 items across all sales
+                window.flashSaleProducts = displayItems;
+                window.currentFlashSaleIndex = 0;
+
+                // Render the static card framework with the first item's details
+                container.innerHTML = '';
+                container.appendChild(createPromoFeaturedCard(displayItems[0]));
+
+                // Set up the countdown timer using both start and end time of the first item's sale
+                setupFlashSaleTimer(displayItems[0].sale.start_time, displayItems[0].sale.end_time);
+                
+                // Set up carousel controls
+                initPromoCarousel();
+
+                // Show the section
+                flashSaleSection.style.display = 'block';
+                logFn('Flash sale section displayed! Total items across all sales:', displayItems.length);
+            } else {
+                logFn('No active or upcoming Flash Sales with items were found.');
+            }
+        } else {
+            logFn('Flash Sale response is not an array or is empty', result);
+        }
+    } catch (error) {
+        console.error('Failed to load flash sales from endpoint /flash-sales/active:', error);
+    }
+}
+
+function animateProductPrice(elementId, startPrice, endPrice) {
+    const priceEl = document.getElementById(elementId);
+    if (!priceEl) return;
+
+    let duration = 2500;
+    let startTime = null;
+
+    function step(timestamp) {
+        if (!startTime) startTime = timestamp;
+
+        const progress = Math.min((timestamp - startTime) / duration, 1);
+        const easeOut = 1 - Math.pow(1 - progress, 4);
+
+        const currentPrice = Math.floor(
+            startPrice - (startPrice - endPrice) * easeOut
+        );
+
+        priceEl.textContent = "₹" + currentPrice.toLocaleString("en-IN");
+
+        if (progress < 1) {
+            requestAnimationFrame(step);
+        } else {
+            priceEl.textContent = "₹" + endPrice.toLocaleString("en-IN");
+            priceEl.classList.add("hit");
+
+            setTimeout(() => {
+                priceEl.classList.remove("hit");
+            }, 500);
+        }
+    }
+
+    requestAnimationFrame(step);
+}
+
+function createPromoFeaturedCard(itemObj) {
+    const item = itemObj.item;
+    const activeSale = itemObj.sale;
+    const isCategory = itemObj.isCategoryScope;
+
+    const imageUrl = item.pivot?.custom_image ? '/' + item.pivot.custom_image : (item.image_url || '/img/placeholder-vertical.png');
+    const slug = item.slug || item.id;
+    const name = item.name || '';
+
+    if (isCategory) {
+        const discount = item.pivot?.discount_percentage ? Math.round(parseFloat(item.pivot.discount_percentage)) : 0;
+        const desc = item.description || `Enjoy amazing discounts on this limited time deal. Grab up to ${discount}% OFF on all products in this category!`;
+
+        const card = document.createElement('div');
+        card.className = 'promo-featured-card category-scoped';
+        
+        card.innerHTML = `
+          <div class="promo-left-column-wrapper" style="position: relative; display: flex; flex-direction: column; width: 100%;">
+              <button class="promo-nav-btn promo-nav-btn-left" id="promoPrevBtn" aria-label="Previous slide">
+                  <i class="fas fa-chevron-left"></i>
+              </button>
+              <a href="/flash-sale.html" class="promo-left-column" style="display: flex; flex-direction: column; gap: 15px; text-decoration: none; width: 100%;">
+                  <div class="promo-product-img">
+                    <img src="${escapeHtml(imageUrl)}" alt="${escapeHtml(name)}" onerror="this.src='/img/placeholder-vertical.png'">
+                  </div>
+                  <h2 class="promo-left-title" style="font-size: 16px; color: #555; line-height: 1.6; margin: 0; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; font-weight: normal; text-align: center;">${escapeHtml(name)}</h2>
+              </a>
+              <button class="promo-nav-btn promo-nav-btn-right" id="promoNextBtn" aria-label="Next slide">
+                  <i class="fas fa-chevron-right"></i>
+              </button>
+          </div>
+          <div class="promo-featured-content">
+            <a href="/flash-sale.html" class="promo-title-link" style="text-decoration: none;">
+              <div class="promo-sale-title">
+                ${activeSale.name || 'Hurry Up!'}
+              </div>
+            </a>
+            <div class="promo-countdown flash-sale-timer-dynamic">
+                <span class="timer-prefix">Loading Timer...</span>
+                <div class="timer-boxes-wrapper" style="display:none;">
+                    <div class="timer-card">
+                        <span class="timer-digit-animate timer-days">00</span>
+                        <span class="timer-label">DAYS</span>
+                    </div>
+                    <div class="timer-card">
+                        <span class="timer-digit-animate timer-hours">00</span>
+                        <span class="timer-label">HOURS</span>
+                    </div>
+                    <div class="timer-card">
+                        <span class="timer-digit-animate timer-minutes">00</span>
+                        <span class="timer-label">MINUTES</span>
+                    </div>
+                    <div class="timer-card">
+                        <span class="timer-digit-animate timer-seconds">00</span>
+                        <span class="timer-label">SECONDS</span>
+                    </div>
+                </div>
+            </div>
+            <p>${escapeHtml(desc)}</p>
+            <div class="promo-price-action-row" style="display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; margin-top: 15px;">
+              <div class="promo-price" style="margin: 0;">
+                <div class="drop-label">FLASH DISCOUNT</div>
+                <strong class="new-price" style="color: #ff3e6c;">FLAT ${discount}% OFF</strong>
+                <div class="save-label" style="background: #eafbe7; color: #2e7d32; font-weight: 500;">LIMITED TIME ONLY</div>
+              </div>
+              <div class="promo-action-buttons" style="display: flex; gap: 10px; align-items: center;">
+                <a href="/flash-sale.html" class="btn-buy-now" style="text-decoration: none; text-align: center; display: inline-block;">Shop Now</a>
+              </div>
+            </div>
+          </div>
+        `;
+        return card;
+    } else {
+        const flashPrice = item.pivot?.flash_price || item.price;
+        const originalPrice = item.price;
+        
+        // Fallback description, since API might not return it
+        const desc = item.description || item.short_description || "Enjoy amazing discounts on this limited time deal. Grab it before it's gone!";
+
+        const hasDiscount = originalPrice && parseFloat(originalPrice) > parseFloat(flashPrice);
+        const saving = hasDiscount ? parseFloat(originalPrice) - parseFloat(flashPrice) : 0;
+
+        const now = Date.now();
+        const startTime = activeSale.start_time ? new Date(activeSale.start_time).getTime() : 0;
+        const isStarted = now >= startTime;
+
+        const card = document.createElement('div');
+        card.className = 'promo-featured-card';
+        
+        card.innerHTML = `
+          <div class="promo-left-column-wrapper" style="position: relative; display: flex; flex-direction: column; width: 100%;">
+              <button class="promo-nav-btn promo-nav-btn-left" id="promoPrevBtn" aria-label="Previous slide">
+                  <i class="fas fa-chevron-left"></i>
+              </button>
+              <a href="/product.html?slug=${slug}" class="promo-left-column" style="display: flex; flex-direction: column; gap: 15px; text-decoration: none; width: 100%;">
+                  <div class="promo-product-img">
+                    <img src="${escapeHtml(imageUrl)}" alt="${escapeHtml(name)}" onerror="this.src='/img/placeholder-vertical.png'">
+                  </div>
+                  <h2 class="promo-left-title" style="font-size: 16px; color: #555; line-height: 1.6; margin: 0; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; font-weight: normal; text-align: center;">${escapeHtml(name)}</h2>
+              </a>
+              <button class="promo-nav-btn promo-nav-btn-right" id="promoNextBtn" aria-label="Next slide">
+                  <i class="fas fa-chevron-right"></i>
+              </button>
+          </div>
+          <div class="promo-featured-content">
+            <a href="/product.html?slug=${slug}" class="promo-title-link" style="text-decoration: none;">
+              <div class="promo-sale-title">
+                ${activeSale.name || 'Hurry Up!'}
+              </div>
+            </a>
+            <div class="promo-countdown flash-sale-timer-dynamic">
+                <span class="timer-prefix">Loading Timer...</span>
+                <div class="timer-boxes-wrapper" style="display:none;">
+                    <div class="timer-card">
+                        <span class="timer-digit-animate timer-days">00</span>
+                        <span class="timer-label">DAYS</span>
+                    </div>
+                    <div class="timer-card">
+                        <span class="timer-digit-animate timer-hours">00</span>
+                        <span class="timer-label">HOURS</span>
+                    </div>
+                    <div class="timer-card">
+                        <span class="timer-digit-animate timer-minutes">00</span>
+                        <span class="timer-label">MINUTES</span>
+                    </div>
+                    <div class="timer-card">
+                        <span class="timer-digit-animate timer-seconds">00</span>
+                        <span class="timer-label">SECONDS</span>
+                    </div>
+                </div>
+            </div>
+            <p>${escapeHtml(desc)}</p>
+            <div class="promo-price-action-row" style="display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; margin-top: 15px;">
+              <div class="promo-price" style="margin: 0;">
+                ${hasDiscount ? `<div class="drop-label">SALE PRICE</div>` : ''}
+                <strong id="salePrice-${item.id}" class="new-price" data-start-price="${hasDiscount ? originalPrice : flashPrice}" data-end-price="${flashPrice}">₹${parseFloat(hasDiscount ? originalPrice : flashPrice).toLocaleString('en-IN')}</strong>
+                ${hasDiscount ? `<span class="old-price">₹${parseFloat(originalPrice).toLocaleString('en-IN')}</span>` : ''}
+                ${hasDiscount ? `<div class="save-label">SAVE ₹${parseFloat(saving).toLocaleString('en-IN')}</div>` : ''}
+                <span class="confetti c1"></span>
+                <span class="confetti c2"></span>
+                <span class="confetti c3"></span>
+                <span class="confetti c4"></span>
+                <span class="confetti c5"></span>
+                <span class="confetti c6"></span>
+              </div>
+              <div class="promo-action-buttons" style="display: flex; gap: 10px; align-items: center;">
+                <a href="/flash-sale.html" class="btn-view-details">View All</a>
+                ${isStarted ? `<button class="btn-buy-now" onclick="addToCartAndRedirect(${item.id}, event)">Buy Now</button>` : ''}
+              </div>
+            </div>
+          </div>
+        `;
+        return card;
+    }
+}
+
+function createPromoSmallCard(product, activeSale) {
+    const flashPrice = product.pivot?.flash_price || product.price;
+    const originalPrice = product.price;
+    const imageUrl = product.pivot?.custom_image ? '/' + product.pivot.custom_image : (product.image_url || '/img/placeholder-vertical.png');
+    const slug = product.slug || product.id;
+    const name = product.name || '';
+    
+    const desc = product.short_description || "Special discounted price today.";
+
+    const a = document.createElement('a');
+    a.href = `/product.html?slug=${slug}`;
+    a.className = 'promo-small-card';
+    
+    a.innerHTML = `
+        <div class="promo-product-img">
+          <img src="${escapeHtml(imageUrl)}" alt="${escapeHtml(name)}" onerror="this.src='/img/placeholder-vertical.png'">
+        </div>
+        <div class="promo-small-content">
+          <h3>${escapeHtml(name)}</h3>
+          <p>${escapeHtml(desc)}</p>
+          <div class="promo-small-price">
+            ₹${parseFloat(flashPrice).toLocaleString('en-IN')}
+            ${originalPrice ? `<span>₹${parseFloat(originalPrice).toLocaleString('en-IN')}</span>` : ''}
+          </div>
+          <span class="promo-small-btn">Buy Now</span>
+        </div>
+    `;
+    return a;
+}
+
+function initPromoCarousel() {
+    console.log('[Flash Sale Carousel] initPromoCarousel started.');
+    const prevBtn = document.getElementById('promoPrevBtn');
+    const nextBtn = document.getElementById('promoNextBtn');
+    if (!prevBtn || !nextBtn) {
+        console.log('[Flash Sale Carousel] Prev/Next buttons not found in DOM.');
+        return;
+    }
+    
+    const products = window.flashSaleProducts || [];
+    console.log('[Flash Sale Carousel] Products count:', products.length);
+    if (products.length <= 1) {
+        prevBtn.style.display = 'none';
+        nextBtn.style.display = 'none';
+        console.log('[Flash Sale Carousel] Products count <= 1, auto-sliding disabled.');
+        return;
+    }
+    
+    let autoSlideInterval = null;
+    
+    function updateCarousel() {
+        const index = window.currentFlashSaleIndex;
+        console.log('[Flash Sale Carousel] Transitioning product to index:', index);
+        
+        prevBtn.disabled = index === 0;
+        nextBtn.disabled = index === products.length - 1;
+
+        const itemObj = products[index];
+        const card = document.querySelector('.promo-featured-card');
+        if (!card || !itemObj) return;
+
+        const item = itemObj.item;
+        const activeSale = itemObj.sale;
+        const isCategory = itemObj.isCategoryScope;
+
+        const leftColumn = card.querySelector('.promo-left-column');
+        const priceRow = card.querySelector('.promo-price');
+        const actionButtons = card.querySelector('.promo-action-buttons');
+        
+        // 1. Add transitioning class for fade out
+        if (leftColumn) leftColumn.classList.add('transitioning');
+        if (priceRow) priceRow.classList.add('transitioning');
+
+        // 2. Wait for fade out animation
+        setTimeout(() => {
+            const imageUrl = item.pivot?.custom_image ? '/' + item.pivot.custom_image : (item.image_url || '/img/placeholder-vertical.png');
+            const name = item.name || '';
+            const slug = item.slug || item.id;
+
+            // Update Sale Title
+            const saleTitle = card.querySelector('.promo-sale-title');
+            if (saleTitle) {
+                saleTitle.textContent = activeSale.name || 'Hurry Up!';
+            }
+
+            // Update Timer for the active item's sale
+            setupFlashSaleTimer(activeSale.start_time, activeSale.end_time);
+
+            // Update Left Column (Image & Name)
+            if (leftColumn) {
+                leftColumn.href = isCategory ? '/flash-sale.html' : `/product.html?slug=${slug}`;
+                const img = leftColumn.querySelector('.promo-product-img img');
+                if (img) {
+                    img.src = imageUrl;
+                    img.alt = name;
+                }
+                const title = leftColumn.querySelector('.promo-left-title');
+                if (title) {
+                    title.textContent = name;
+                }
+            }
+
+            // Update Title Link Href
+            const titleLink = card.querySelector('.promo-title-link');
+            if (titleLink) {
+                titleLink.href = isCategory ? '/flash-sale.html' : `/product.html?slug=${slug}`;
+            }
+
+            if (isCategory) {
+                // Update Price & Labels
+                if (priceRow) {
+                    const discount = item.pivot?.discount_percentage ? Math.round(parseFloat(item.pivot.discount_percentage)) : 0;
+                    priceRow.innerHTML = `
+                        <div class="drop-label">FLASH DISCOUNT</div>
+                        <strong class="new-price" style="color: #ff3e6c;">FLAT ${discount}% OFF</strong>
+                        <div class="save-label" style="background: #eafbe7; color: #2e7d32; font-weight: 500;">LIMITED TIME ONLY</div>
+                    `;
+                }
+                if (actionButtons) {
+                    actionButtons.innerHTML = `
+                        <a href="/flash-sale.html" class="btn-buy-now" style="text-decoration: none; text-align: center; display: inline-block;">Shop Now</a>
+                    `;
+                }
+            } else {
+                // Update Price & Labels
+                if (priceRow) {
+                    const flashPrice = item.pivot?.flash_price || item.price;
+                    const originalPrice = item.price;
+                    const hasDiscount = originalPrice && parseFloat(originalPrice) > parseFloat(flashPrice);
+                    const saving = hasDiscount ? parseFloat(originalPrice) - parseFloat(flashPrice) : 0;
+
+                    // Update drop label
+                    let dropLabel = priceRow.querySelector('.drop-label');
+                    if (hasDiscount) {
+                        if (!dropLabel) {
+                            dropLabel = document.createElement('div');
+                            dropLabel.className = 'drop-label';
+                            dropLabel.textContent = 'SALE PRICE';
+                            priceRow.insertBefore(dropLabel, priceRow.firstChild);
+                        }
+                    } else if (dropLabel) {
+                        dropLabel.remove();
+                    }
+
+                    // Update strong (price)
+                    const priceStrong = priceRow.querySelector('.new-price');
+                    if (priceStrong) {
+                        priceStrong.id = `salePrice-${item.id}`;
+                        priceStrong.setAttribute('data-start-price', hasDiscount ? originalPrice : flashPrice);
+                        priceStrong.setAttribute('data-end-price', flashPrice);
+                        priceStrong.textContent = `₹${parseFloat(hasDiscount ? originalPrice : flashPrice).toLocaleString('en-IN')}`;
+                    }
+
+                    // Update old price
+                    let oldPriceSpan = priceRow.querySelector('.old-price');
+                    if (hasDiscount) {
+                        if (!oldPriceSpan) {
+                            oldPriceSpan = document.createElement('span');
+                            oldPriceSpan.className = 'old-price';
+                            priceStrong.insertAdjacentElement('afterend', oldPriceSpan);
+                        }
+                        oldPriceSpan.textContent = `₹${parseFloat(originalPrice).toLocaleString('en-IN')}`;
+                        oldPriceSpan.classList.remove('active');
+                    } else if (oldPriceSpan) {
+                        oldPriceSpan.remove();
+                    }
+
+                    // Update save label
+                    let saveLabel = priceRow.querySelector('.save-label');
+                    if (hasDiscount) {
+                        if (!saveLabel) {
+                            saveLabel = document.createElement('div');
+                            saveLabel.className = 'save-label';
+                            priceRow.appendChild(saveLabel);
+                        }
+                        saveLabel.textContent = `SAVE ₹${parseFloat(saving).toLocaleString('en-IN')}`;
+                    } else if (saveLabel) {
+                        saveLabel.remove();
+                    }
+                }
+
+                // Update Action Buttons links & click handlers
+                if (actionButtons) {
+                    actionButtons.innerHTML = `
+                        <a href="/flash-sale.html" class="btn-view-details">View All</a>
+                        ${Date.now() >= (activeSale.start_time ? new Date(activeSale.start_time).getTime() : 0) ? `<button class="btn-buy-now" onclick="addToCartAndRedirect(${item.id}, event)">Buy Now</button>` : ''}
+                    `;
+                }
+            }
+
+            // 3. Remove transitioning class to fade back in
+            if (leftColumn) leftColumn.classList.remove('transitioning');
+            if (priceRow) priceRow.classList.remove('transitioning');
+
+            // 4. Trigger animations on new active slide
+            if (!isCategory && priceRow) {
+                const priceStrong = priceRow.querySelector('.new-price');
+                const oldPriceSpan = priceRow.querySelector('.old-price');
+                
+                if (priceStrong) {
+                    const startPrice = parseFloat(priceStrong.getAttribute('data-start-price') || 0);
+                    const endPrice = parseFloat(priceStrong.getAttribute('data-end-price') || 0);
+                    if (startPrice > endPrice) {
+                        animateProductPrice(priceStrong.id, startPrice, endPrice);
+                    }
+                }
+
+                if (oldPriceSpan) {
+                    void oldPriceSpan.offsetWidth;
+                    oldPriceSpan.classList.add('active');
+                }
+            }
+        }, 400); // Wait for transition out
+    }
+    
+    function startAutoSlide() {
+        stopAutoSlide();
+        console.log('[Flash Sale Carousel] startAutoSlide called.');
+        if (products.length > 1) {
+            console.log('[Flash Sale Carousel] Interval set for 10 seconds auto-slide.');
+            autoSlideInterval = setInterval(() => {
+                window.currentFlashSaleIndex = (window.currentFlashSaleIndex + 1) % products.length;
+                updateCarousel();
+            }, 10000); // 10 seconds
+        } else {
+            console.log('[Flash Sale Carousel] Conditions not met for auto-slide.');
+        }
+    }
+    
+    function stopAutoSlide() {
+        if (autoSlideInterval) {
+            console.log('[Flash Sale Carousel] Stopping auto-slide interval.');
+            clearInterval(autoSlideInterval);
+            autoSlideInterval = null;
+        }
+    }
+    
+    prevBtn.addEventListener('click', () => {
+        if (window.currentFlashSaleIndex > 0) {
+            console.log('[Flash Sale Carousel] User clicked Prev. Moving from:', window.currentFlashSaleIndex);
+            window.currentFlashSaleIndex--;
+            updateCarousel();
+            startAutoSlide(); // Reset the timer on user interaction
+        }
+    });
+    
+    nextBtn.addEventListener('click', () => {
+        if (window.currentFlashSaleIndex < products.length - 1) {
+            console.log('[Flash Sale Carousel] User clicked Next. Moving from:', window.currentFlashSaleIndex);
+            window.currentFlashSaleIndex++;
+            updateCarousel();
+            startAutoSlide(); // Reset the timer on user interaction
+        }
+    });
+    
+    updateCarousel();
+    startAutoSlide();
+}
+
+let activePromoTimerInterval;
+
+function setupFlashSaleTimer(startTimeStr, endTimeStr) {
+    if (activePromoTimerInterval) {
+        clearInterval(activePromoTimerInterval);
+    }
+
+    const timerElements = document.querySelectorAll('.flash-sale-timer-dynamic');
+    if (!timerElements.length || !endTimeStr) return;
+
+    const startTime = startTimeStr ? new Date(startTimeStr).getTime() : 0;
+    const endTime = new Date(endTimeStr).getTime();
+
+    function updateTimer() {
+        const now = new Date().getTime();
+        
+        let distance = 0;
+        let prefix = "";
+        
+        if (startTime > now) {
+            distance = startTime - now;
+            prefix = "Starting soon:";
+        } else if (endTime > now) {
+            distance = endTime - now;
+            prefix = "Ending soon:";
+        } else {
+            timerElements.forEach(el => {
+                const prefixEl = el.querySelector('.timer-prefix');
+                if (prefixEl) prefixEl.textContent = "Sale Ended";
+                const wrapper = el.querySelector('.timer-boxes-wrapper');
+                if (wrapper) wrapper.style.display = 'none';
+            });
+            if (activePromoTimerInterval) {
+                clearInterval(activePromoTimerInterval);
+            }
+            return;
+        }
+
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        // Pad with leading zeros
+        const d = days < 10 ? "0" + days : days.toString();
+        const h = hours < 10 ? "0" + hours : hours.toString();
+        const m = minutes < 10 ? "0" + minutes : minutes.toString();
+        const s = seconds < 10 ? "0" + seconds : seconds.toString();
+        
+        timerElements.forEach(el => {
+            const prefixEl = el.querySelector('.timer-prefix');
+            const wrapper = el.querySelector('.timer-boxes-wrapper');
+
+            if (prefixEl) prefixEl.textContent = prefix;
+            if (wrapper) wrapper.style.display = 'flex';
+
+            updateDigit(el.querySelector('.timer-days'), d);
+            updateDigit(el.querySelector('.timer-hours'), h);
+            updateDigit(el.querySelector('.timer-minutes'), m);
+            updateDigit(el.querySelector('.timer-seconds'), s);
+        });
+    }
+
+    function updateDigit(el, newValue) {
+        if (!el) return;
+        if (el.textContent !== newValue) {
+            el.textContent = newValue;
+            el.classList.remove('slide-down');
+            // Trigger reflow to restart animation
+            void el.offsetWidth;
+            el.classList.add('slide-down');
+        }
+    }
+
+    // Update immediately and then every second
+    updateTimer();
+    activePromoTimerInterval = setInterval(updateTimer, 1000);
+}
+
+// Load Featured Products (Carousel Style)
 async function loadFeaturedProducts() {
     const featuredSection = document.querySelector('.featured-section');
     const featuredContainer = document.getElementById('featuredProducts');
@@ -1023,75 +1729,36 @@ async function loadProducts(page = 1, filters = {}) {
         }
 
         if (result && result.success && result.data) {
-            // Handle different response structures
             let products = [];
             let pagination = {};
 
-            // Handle category products API response structure per documentation
-            // Category products API returns: { category: {...}, products: [...], count: number }
-            if (result.data.products && Array.isArray(result.data.products)) {
-                products = result.data.products;
-
-                // Client-side filtering by subcategory if provided
-                if (window.currentSubcategory && products.length > 0) {
-                    const subQuery = window.currentSubcategory.toLowerCase();
-                    products = products.filter(p =>
-                        (p.name && p.name.toLowerCase().includes(subQuery)) ||
-                        (p.description && p.description.toLowerCase().includes(subQuery)) ||
-                        (p.short_description && p.short_description.toLowerCase().includes(subQuery))
-                    );
+            // Robust data extraction
+            if (result.data.products) {
+                if (Array.isArray(result.data.products)) {
+                    products = result.data.products;
+                    pagination = {
+                        current_page: page,
+                        last_page: Math.ceil((result.data.count || products.length) / 20),
+                        per_page: 20,
+                        total: result.data.count || products.length
+                    };
+                } else if (result.data.products.data && Array.isArray(result.data.products.data)) {
+                    products = result.data.products.data;
+                    pagination = result.data.products;
                 }
-
-                pagination = {
-                    current_page: page,
-                    last_page: Math.ceil((result.data.count || products.length) / 20),
-                    per_page: 20,
-                    total: result.data.count || products.length
-                };
-            }
-            // Check if data is directly an array (fallback for other endpoints)
-            else if (Array.isArray(result.data)) {
-                products = result.data;
-
-                // Client-side filtering by subcategory if provided
-                if (window.currentSubcategory && products.length > 0) {
-                    const subQuery = window.currentSubcategory.toLowerCase();
-                    products = products.filter(p =>
-                        (p.name && p.name.toLowerCase().includes(subQuery)) ||
-                        (p.description && p.description.toLowerCase().includes(subQuery)) ||
-                        (p.short_description && p.short_description.toLowerCase().includes(subQuery))
-                    );
-                }
-
-                pagination = {
-                    current_page: page,
-                    last_page: 1,
-                    per_page: 20,
-                    total: products.length
-                };
-            }
-            // Check if data has data property with products
-            else if (result.data.data && Array.isArray(result.data.data)) {
+            } else if (Array.isArray(result.data.data)) {
                 products = result.data.data;
-
-                // Client-side filtering by subcategory if provided
-                if (window.currentSubcategory && products.length > 0) {
-                    const subQuery = window.currentSubcategory.toLowerCase();
-                    products = products.filter(p =>
-                        (p.name && p.name.toLowerCase().includes(subQuery)) ||
-                        (p.description && p.description.toLowerCase().includes(subQuery)) ||
-                        (p.short_description && p.short_description.toLowerCase().includes(subQuery))
-                    );
-                }
-                pagination = result.data.pagination || result.data || {
+                pagination = result.data;
+            } else if (Array.isArray(result.data)) {
+                products = result.data;
+                pagination = {
                     current_page: page,
                     last_page: 1,
                     per_page: 20,
                     total: products.length
                 };
-            }
-            // Check nested structure
-            else if (result.data.data && result.data.data.products && Array.isArray(result.data.data.products)) {
+            } else if (result.data.data && result.data.data.products && Array.isArray(result.data.data.products)) {
+                // Nested structure fallback
                 products = result.data.data.products;
                 pagination = result.data.data.pagination || result.data.pagination || {
                     current_page: page,
@@ -1101,12 +1768,28 @@ async function loadProducts(page = 1, filters = {}) {
                 };
             }
 
-            return {
-                data: products,
+            // Client-side filtering by subcategory if provided
+            if (window.currentSubcategory && window.currentSubcategory !== 'null' && window.currentSubcategory !== 'undefined' && products.length > 0) {
+                const subQuery = window.currentSubcategory.toLowerCase();
+                products = products.filter(p =>
+                    (p.name && p.name.toLowerCase().includes(subQuery)) ||
+                    (p.description && p.description.toLowerCase().includes(subQuery)) ||
+                    (p.short_description && p.short_description.toLowerCase().includes(subQuery))
+                );
+                console.log(`Filtered to ${products.length} products for subcategory: ${window.currentSubcategory}`);
+            }
+
+            // Ensure pagination object has necessary fields
+            const finalPagination = {
                 current_page: pagination.current_page || page,
                 last_page: pagination.last_page || 1,
                 per_page: pagination.per_page || 20,
                 total: pagination.total || products.length
+            };
+
+            return {
+                data: products,
+                ...finalPagination
             };
         }
 
@@ -1545,6 +2228,12 @@ function formatPrice(price) {
 
 // Initialize Infinite Scroll
 function initInfiniteScroll() {
+    // Disable infinite scroll on pages that use standard pagination or custom loading
+    const path = window.location.pathname;
+    if (path.includes('search.html') || path.includes('categories.html') || path.includes('flash-sale.html')) {
+        return;
+    }
+
     // Check if we should load initial products
     const urlParams = new URLSearchParams(window.location.search);
     
@@ -1692,7 +2381,7 @@ async function loadMoreProducts(filters = {}) {
                         </div>
                         <h3 style="font-size: 20px; font-weight: 500; color: #212121; margin: 0 0 10px 0;">Coming Soon</h3>
                         <p style="font-size: 14px; color: #878787; margin: 0 0 24px 0;">We are currently adding new products to this category.</p>
-                        <a href="/" class="browse-btn" style="display: inline-block; background: #2874f0; color: #fff; padding: 12px 32px; border-radius: 2px; text-decoration: none; font-weight: 500; font-size: 14px; box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2);">Explore Other Products</a>
+                        <a href="/" class="browse-btn" style="display: inline-block; background: #1b5e20; color: #fff; padding: 12px 32px; border-radius: 2px; text-decoration: none; font-weight: 500; font-size: 14px; box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2);">Explore Other Products</a>
                     </div>
                 `;
             }
@@ -1891,6 +2580,32 @@ async function addToCart(productId, event) {
         showNotification('Product added to cart!', 'success', true); // Show with "View Cart" button
     } else {
         // If unauthorized, redirect to login
+        if (result.unauthorized) {
+            window.location.href = '/login.html?return=' + encodeURIComponent(window.location.href);
+        } else {
+            showNotification(result.message || 'Failed to add to cart', 'error');
+        }
+    }
+}
+
+// Add to Cart and Redirect to Cart Page
+async function addToCartAndRedirect(productId, event) {
+    if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+    }
+
+    if (typeof isAuthenticated === 'undefined' || !isAuthenticated()) {
+        window.location.href = '/login.html?return=' + encodeURIComponent(window.location.href);
+        return;
+    }
+
+    const result = await CART_API.addToCart(productId, 1);
+
+    if (result.success) {
+        await updateCartCountInHeader();
+        window.location.href = '/cart.html';
+    } else {
         if (result.unauthorized) {
             window.location.href = '/login.html?return=' + encodeURIComponent(window.location.href);
         } else {
@@ -2099,6 +2814,7 @@ window.loadBanners = loadBanners;
 window.loadFeaturedProducts = loadFeaturedProducts;
 window.retryLoadProducts = retryLoadProducts;
 window.addToCart = addToCart;
+window.addToCartAndRedirect = addToCartAndRedirect;
 window.quickView = quickView;
 window.viewProduct = viewProduct;
 // Fetch and Render Dynamic Sections

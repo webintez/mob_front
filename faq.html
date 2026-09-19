@@ -5,15 +5,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="/favicon.png" type="image/png">
-    <title>Frequently Asked Questions - Mobitez</title>
+    <title>Frequently Asked Questions - Mobitez Private Limited</title>
     <!-- CSS Dependencies -->
     <link rel="stylesheet" href="/css/style.css?v=branding_fix_v11">
-    <link rel="stylesheet" href="/css/nav-menu-visible.css?v=nocache_1773128051">
-    <link rel="stylesheet" href="/css/flipkart-dropdown.css?v=nocache_1773128051">
-    <link rel="stylesheet" href="/css/mobile-responsive.css?v=nocache_1773128051">
-    <link rel="stylesheet" href="/css/flipkart-mobile-style.css?v=branding_fix_v11">
+    <link rel="stylesheet" href="/css/nav-menu-visible.css?v=fixed_nav">
+    <link rel="stylesheet" href="/css/mobitez-dropdown.css?v=1773128053">
+    <link rel="stylesheet" href="/css/mobile-responsive.css?v=1773128053">
+    <link rel="stylesheet" href="/css/mobitez-mobile-style.css?v=branding_fix_v11">
     <link rel="stylesheet" href="/css/mobile-header-consistent.css?v=branding_fix_v11">
-    <link rel="stylesheet" href="/css/flipkart-mobile-header.css?v=nocache_1773128051">
+    <link rel="stylesheet" href="/css/mobitez-mobile-header.css?v=1773128053">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
@@ -49,7 +49,7 @@
         .faq-hero-badge {
             display: inline-block;
             background: rgba(247, 162, 0, 0.15);
-            color: #f7a200;
+            color: #24db65;
             border: 1px solid rgba(247, 162, 0, 0.45);
             font-size: 11px;
             font-weight: 700;
@@ -69,7 +69,7 @@
         }
 
         .faq-hero h1 span {
-            color: #f7a200;
+            color: #24db65;
         }
 
         .faq-hero p {
@@ -130,7 +130,7 @@
             gap: 15px;
             margin-bottom: 25px;
             padding-bottom: 12px;
-            border-bottom: 2px solid #f7a200;
+            border-bottom: 2px solid #24db65;
         }
 
         .faq-section-header i {
@@ -181,7 +181,7 @@
 
         .faq-item i {
             font-size: 12px;
-            color: #f7a200;
+            color: #24db65;
             transition: transform 0.3s ease;
             background: rgba(247, 162, 0, 0.1);
             width: 28px;
@@ -285,7 +285,7 @@
             margin-top: 60px;
             position: relative;
             overflow: hidden;
-            border-bottom: 4px solid #f7a200;
+            border-bottom: 4px solid #24db65;
         }
 
         .faq-cta h3 {
@@ -301,7 +301,7 @@
 
         .faq-cta-btn {
             display: inline-block;
-            background: #f7a200;
+            background: #24db65;
             color: #011C08;
             padding: 14px 34px;
             border-radius: 8px;
@@ -330,8 +330,8 @@
             }
         }
     </style>
-    <script src="/js/auth.js?v=1769841025"></script>
-    <script src="/js/header-common.js?v=1769841025"></script>
+    <script src="/js/auth.js?v=1773128102"></script>
+    <script src="/js/header-common.js?v=1773128102"></script>
 </head>
 
 <body>
@@ -371,17 +371,17 @@
         </div>
     </main>
 
-    <script src="/js/footer-common.js?v=1769841025"></script>
-    <script src="/js/category-nav-common.js?v=1769841025"></script>
-    <script src="/js/mobile-menu.js?v=1769841025"></script>
-    <script src="/js/flipkart-mobile-header.js?v=1769841025"></script>
+    <script src="/js/footer-common.js?v=1773128102"></script>
+    <script src="/js/category-nav-common.js?v=1773128102"></script>
+    <script src="/js/mobile-menu.js?v=1773128102"></script>
+    <script src="/js/mobitez-mobile-header.js?v=1773128102"></script>
 
     <script>
         // API Configuration - Using global AUTH_CONFIG from auth.js
         const getFAQApiUrl = () => {
             const baseUrl = (typeof AUTH_CONFIG !== 'undefined' && AUTH_CONFIG.baseUrl)
                 ? AUTH_CONFIG.baseUrl
-                : 'https://seller.mobitez.webintez.com/api';
+                : 'https://seller.mobitez.com/api';
             return `${baseUrl}/faqs`;
         };
 

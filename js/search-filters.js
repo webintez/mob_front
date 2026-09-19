@@ -140,6 +140,7 @@
         if (!searchFilters.discounts) searchFilters.discounts = [];
         if (!searchFilters.categories) searchFilters.categories = [];
         if (!searchFilters.brands) searchFilters.brands = [];
+        if (!searchFilters.tags) searchFilters.tags = [];
 
         if (filterType === 'rating-filter') {
             if (checked) {
@@ -198,6 +199,17 @@
                     }
                 }
             }
+        } else if (filterType === 'tag-filter') {
+            const tagSlug = e.target.value;
+            if (checked) {
+                if (!searchFilters.tags.includes(tagSlug)) {
+                    searchFilters.tags.push(tagSlug);
+                }
+            } else {
+                searchFilters.tags = searchFilters.tags.filter(t => t !== tagSlug);
+            }
+            // Update tag array for search.js compatibility
+            searchFilters.tag = searchFilters.tags;
         }
 
         // Apply filters and reload results
@@ -205,16 +217,8 @@
             if (typeof window.currentPage !== 'undefined') {
                 window.currentPage = 1;
             }
-            // Apply client-side filters if needed
-            applyClientSideFilters();
             loadSearchResultsFunc();
         }
-    }
-
-    // Apply client-side filters (for discounts and availability)
-    function applyClientSideFilters() {
-        // This will be called after products are loaded
-        // We'll filter products in the displayProducts function
     }
 
     // Clear all filters
@@ -236,6 +240,8 @@
         searchFilters.rating = null;
         searchFilters.ratings = [];
         searchFilters.discounts = [];
+        searchFilters.tags = [];
+        searchFilters.tag = [];
         searchFilters.includeOutOfStock = false;
 
         // Reset UI
@@ -310,112 +316,84 @@
         return null;
     }
 
+    // Render nested category tree
+    function renderCategoryTree(nodes, container, level = 0) {
+        if (!Array.isArray(nodes)) return;
+
+        nodes.forEach(node => {
+            const itemWrapper = document.createElement('div');
+            itemWrapper.className = `category-filter-item-wrapper level-${level}`;
+            itemWrapper.style.paddingLeft = `${level * 16}px`;
+
+            const hasChildren = node.children && Array.isArray(node.children) && node.children.length > 0;
+            let toggleHTML = '';
+            if (hasChildren) {
+                toggleHTML = `<i class="fas fa-chevron-right toggle-children" style="cursor:pointer; margin-right: 6px; font-size: 10px; color: #878787;"></i>`;
+            } else {
+                toggleHTML = `<span style="display:inline-block; width: 16px;"></span>`;
+            }
+
+            itemWrapper.innerHTML = `
+                <div class="category-header-row" style="display: flex; align-items: center; padding: 4px 0;">
+                    ${toggleHTML}
+                    <label class="filter-checkbox" style="display: flex; align-items: center; cursor: pointer; flex: 1; font-size: 14px; margin-bottom: 0 !important;">
+                        <input type="checkbox" value="${node.slug}" class="category-filter" data-category-id="${node.id}" data-category="${node.name}" style="margin-right: 8px;">
+                        <span>${node.name}</span>
+                    </label>
+                </div>
+            `;
+
+            const checkbox = itemWrapper.querySelector('input');
+            checkbox.addEventListener('change', handleFilterChange);
+
+            if (hasChildren) {
+                const toggleIcon = itemWrapper.querySelector('.toggle-children');
+                const childrenContainer = document.createElement('div');
+                childrenContainer.className = 'category-children-container';
+                childrenContainer.style.display = 'none'; // Collapsed by default
+
+                renderCategoryTree(node.children, childrenContainer, level + 1);
+
+                toggleIcon.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const isCollapsed = childrenContainer.style.display === 'none';
+                    childrenContainer.style.display = isCollapsed ? 'block' : 'none';
+                    toggleIcon.className = isCollapsed ? 'fas fa-chevron-down toggle-children' : 'fas fa-chevron-right toggle-children';
+                });
+
+                itemWrapper.appendChild(childrenContainer);
+            }
+
+            container.appendChild(itemWrapper);
+        });
+    }
+
     // Load categories for filter
     async function loadCategoriesForFilter() {
         try {
             const makeApiCallFunc = getMakeApiCallFunc();
-            if (!makeApiCallFunc) {
-                // Fallback to fetch
-                const apiConfig = typeof API_CONFIG !== 'undefined' ? API_CONFIG : (typeof window.API_CONFIG !== 'undefined' ? window.API_CONFIG : { baseUrl: '/api', headers: {} });
-                const response = await fetch(`${apiConfig.baseUrl}/categories/index`, {
-                    headers: apiConfig.headers
-                });
-                if (response.ok) {
-                    const result = await response.json();
-                    if (result && result.success && result.data) {
-                        displayCategoriesForFilter(result.data);
-                    }
-                }
-                return;
-            }
+            if (!makeApiCallFunc) return;
 
-            // /* console.log */('API Call: GET /categories/index');
             const result = await makeApiCallFunc('/categories/index');
 
-            if (result && result.success && result.data) {
-                displayCategoriesForFilter(result.data);
+            if (result && result.success && result.data && result.data.tree) {
+                const categoryFilters = document.getElementById('categoryFilters');
+                if (categoryFilters) {
+                    categoryFilters.innerHTML = '';
+                    renderCategoryTree(result.data.tree, categoryFilters);
+                }
             }
         } catch (error) {
             // /* console.log */('Categories Fetch Failed:', error.message);
         }
     }
 
-    // Display categories in filter
-    function displayCategoriesForFilter(data) {
-        let categories = [];
-
-        // Use flat array from API response
-        if (data.flat && Array.isArray(data.flat)) {
-            categories = data.flat;
-        } else if (data.tree && Array.isArray(data.tree)) {
-            // Flatten tree structure if flat is not available
-            categories = flattenCategoryTree(data.tree);
-        }
-
-        // Filter active categories and get unique categories
-        const activeCategories = categories
-            .filter(cat => cat.is_active !== false)
-            .filter((cat, index, self) =>
-                index === self.findIndex(c => c.slug === cat.slug)
-            );
-
-        // Get root categories or categories without parent
-        const rootCategories = activeCategories.filter(cat =>
-            cat.is_root === true || cat.level === 0 || !cat.parent_id
-        );
-
-        const categoryFilters = document.getElementById('categoryFilters');
-        if (categoryFilters && rootCategories.length > 0) {
-            categoryFilters.innerHTML = '';
-            rootCategories.forEach(category => {
-                const label = document.createElement('label');
-                label.className = 'filter-checkbox';
-                label.innerHTML = `
-                    <input type="checkbox" value="${category.slug}" class="category-filter" data-category-id="${category.id}" data-category="${category.name}">
-                    <span>${escapeHtml(category.name)}</span>
-                `;
-                label.querySelector('input').addEventListener('change', handleFilterChange);
-                categoryFilters.appendChild(label);
-            });
-        }
-    }
-
-    // Flatten category tree structure to array
-    function flattenCategoryTree(tree, result = []) {
-        if (!Array.isArray(tree)) return result;
-
-        tree.forEach(category => {
-            if (category && category.slug) {
-                result.push(category);
-            }
-            if (category.children && Array.isArray(category.children)) {
-                flattenCategoryTree(category.children, result);
-            }
-        });
-
-        return result;
-    }
-
     // Load brands for filter
     async function loadBrandsForFilter() {
         try {
             const makeApiCallFunc = getMakeApiCallFunc();
-            if (!makeApiCallFunc) {
-                // Fallback to fetch
-                const apiConfig = typeof API_CONFIG !== 'undefined' ? API_CONFIG : (typeof window.API_CONFIG !== 'undefined' ? window.API_CONFIG : { baseUrl: '/api', headers: {} });
-                const response = await fetch(`${apiConfig.baseUrl}/brands`, {
-                    headers: apiConfig.headers
-                });
-                if (response.ok) {
-                    const result = await response.json();
-                    if (result && result.success && result.data) {
-                        displayBrandsForFilter(result.data);
-                    }
-                }
-                return;
-            }
+            if (!makeApiCallFunc) return;
 
-            // /* console.log */('API Call: GET /brands');
             const result = await makeApiCallFunc('/brands');
 
             if (result && result.success && result.data) {
@@ -461,6 +439,93 @@
         }
     }
 
+    // Load dynamic tag groups for filter
+    async function loadTagGroupsForFilter() {
+        const dynamicTagFilters = document.getElementById('dynamicTagFilters');
+        if (!dynamicTagFilters) return;
+
+        try {
+            const makeApiCallFunc = getMakeApiCallFunc();
+            if (!makeApiCallFunc) return;
+
+            const result = await makeApiCallFunc('/tag-groups');
+            
+            if (result && result.success && result.data && Array.isArray(result.data)) {
+                dynamicTagFilters.innerHTML = ''; // Clear prior
+
+                // Create a main SPECIFICATIONS filter group
+                const specGroup = document.createElement('div');
+                specGroup.className = 'filter-group';
+                specGroup.innerHTML = `
+                    <div class="filter-group-header">
+                        <span>SPECIFICATIONS</span>
+                        <i class="fas fa-chevron-down toggle-icon"></i>
+                    </div>
+                    <div class="filter-group-content" id="tagTreeContainer">
+                    </div>
+                `;
+
+                const container = specGroup.querySelector('#tagTreeContainer');
+
+                result.data.forEach(group => {
+                    if (!group.tags || !Array.isArray(group.tags) || group.tags.length === 0) return;
+
+                    const groupWrapper = document.createElement('div');
+                    groupWrapper.className = 'category-filter-item-wrapper level-0';
+                    
+                    groupWrapper.innerHTML = `
+                        <div class="category-header-row" style="display: flex; align-items: center; padding: 4px 0; cursor: pointer;">
+                            <i class="fas fa-chevron-right toggle-children" style="margin-right: 6px; font-size: 10px; color: #878787;"></i>
+                            <span style="font-size: 14px; font-weight: 600; color: #212121; text-transform: uppercase;">${group.name}</span>
+                        </div>
+                    `;
+
+                    const childrenContainer = document.createElement('div');
+                    childrenContainer.className = 'category-children-container';
+                    childrenContainer.style.display = 'none';
+
+                    group.tags.forEach(tag => {
+                        const tagWrapper = document.createElement('div');
+                        tagWrapper.className = 'category-filter-item-wrapper level-1';
+                        tagWrapper.style.paddingLeft = '16px';
+                        tagWrapper.innerHTML = `
+                            <div class="category-header-row" style="display: flex; align-items: center; padding: 4px 0;">
+                                <span style="display:inline-block; width: 16px;"></span>
+                                <label class="filter-checkbox" style="display: flex; align-items: center; cursor: pointer; flex: 1; font-size: 14px; margin-bottom: 0 !important;">
+                                    <input type="checkbox" value="${tag.slug}" class="tag-filter" style="margin-right: 8px;">
+                                    <span>${tag.name}</span>
+                                </label>
+                            </div>
+                        `;
+                        
+                        tagWrapper.querySelector('input').addEventListener('change', handleFilterChange);
+                        childrenContainer.appendChild(tagWrapper);
+                    });
+
+                    const toggleIcon = groupWrapper.querySelector('.toggle-children');
+                    const headerRow = groupWrapper.querySelector('.category-header-row');
+                    
+                    headerRow.addEventListener('click', () => {
+                        const isCollapsed = childrenContainer.style.display === 'none';
+                        childrenContainer.style.display = isCollapsed ? 'block' : 'none';
+                        toggleIcon.className = isCollapsed ? 'fas fa-chevron-down toggle-children' : 'fas fa-chevron-right toggle-children';
+                    });
+
+                    groupWrapper.appendChild(childrenContainer);
+                    container.appendChild(groupWrapper);
+                });
+
+                // Add collapsible toggle to main header
+                const mainHeader = specGroup.querySelector('.filter-group-header');
+                mainHeader.addEventListener('click', toggleFilterGroup);
+
+                dynamicTagFilters.appendChild(specGroup);
+            }
+        } catch (error) {
+            console.error('Error loading tag groups:', error);
+        }
+    }
+
     // Escape HTML to prevent XSS
     function escapeHtml(text) {
         if (!text) return '';
@@ -474,11 +539,13 @@
         document.addEventListener('DOMContentLoaded', () => {
             initFilters();
             loadCategoriesForFilter();
+            loadTagGroupsForFilter();
             loadBrandsForFilter();
         });
     } else {
         initFilters();
         loadCategoriesForFilter();
+        loadTagGroupsForFilter();
         loadBrandsForFilter();
     }
 
@@ -492,5 +559,3 @@
         }
     }, 100);
 })();
-
-

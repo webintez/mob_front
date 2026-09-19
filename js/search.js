@@ -10,6 +10,7 @@ const API_CONFIG = {
 };
 
 let currentPage = 1;
+window.currentPage = currentPage;
 let isLoading = false;
 let searchQuery = '';
 let selectedFilters = {
@@ -24,6 +25,15 @@ let selectedFilters = {
     discounts: [],
     includeOutOfStock: false,
     sort: 'relevance'
+};
+
+// Global state for suggestion pagination
+let searchPageSuggestionState = {
+    currentPage: 1,
+    currentQuery: '',
+    isLoadingMore: false,
+    hasMore: true,
+    perPage: 10
 };
 
 // Make selectedFilters globally accessible for search-filters.js
@@ -68,7 +78,20 @@ document.addEventListener('DOMContentLoaded', () => {
 function setupSearch() {
     const searchInput = document.getElementById('searchInput');
     const searchBtn = document.getElementById('searchBtn');
-    const searchSuggestions = document.getElementById('searchSuggestions');
+    let searchSuggestions = document.getElementById('searchSuggestions');
+
+    // Dynamically create suggestions container if it was wiped out by header-common.js
+    if (!searchSuggestions && searchInput) {
+        const searchContainer = searchInput.closest('.search-container');
+        if (searchContainer) {
+            searchSuggestions = document.createElement('div');
+            searchSuggestions.className = 'search-suggestions';
+            searchSuggestions.id = 'searchSuggestions';
+            searchSuggestions.style.display = 'none';
+            searchSuggestions.innerHTML = '<div class="search-suggestions-content" id="searchSuggestionsContent"></div>';
+            searchContainer.appendChild(searchSuggestions);
+        }
+    }
 
     if (searchBtn) {
         searchBtn.addEventListener('click', handleSearch);
@@ -104,30 +127,61 @@ function setupSearch() {
                 searchSuggestions.style.display = 'none';
             }
         });
+
+        // Handle scroll for infinite loading in suggestions
+        searchSuggestions.addEventListener('scroll', () => {
+            if (!searchPageSuggestionState.hasMore || searchPageSuggestionState.isLoadingMore) return;
+
+            const { scrollTop, scrollHeight, clientHeight } = searchSuggestions;
+            if (scrollTop + clientHeight >= scrollHeight - 20) {
+                loadSearchSuggestions(searchPageSuggestionState.currentQuery, searchPageSuggestionState.currentPage + 1);
+            }
+        });
     }
 }
 
-// Load search suggestions
-async function loadSearchSuggestions(query) {
+// Load search suggestions with pagination
+async function loadSearchSuggestions(query, page = 1) {
     const searchSuggestions = document.getElementById('searchSuggestions');
     const searchSuggestionsContent = document.getElementById('searchSuggestionsContent');
 
     if (!searchSuggestions || !searchSuggestionsContent) return;
 
+    if (page === 1) {
+        searchPageSuggestionState.currentPage = 1;
+        searchPageSuggestionState.currentQuery = query;
+        searchPageSuggestionState.hasMore = true;
+        searchSuggestionsContent.innerHTML = '<div class="suggestion-loading">Searching for items...</div>';
+    }
+
+    if (searchPageSuggestionState.isLoadingMore || !searchPageSuggestionState.hasMore) return;
+
+    searchPageSuggestionState.isLoadingMore = true;
+    searchPageSuggestionState.currentPage = page;
+
     try {
-        searchSuggestionsContent.innerHTML = '<div class="suggestion-loading">Searching...</div>';
         searchSuggestions.style.display = 'block';
 
-        // Search by product name - fetch more products to allow fuzzy matching for typos
-        const response = await fetch(`${API_CONFIG.baseUrl}/products?name=${encodeURIComponent(query)}&search=${encodeURIComponent(query)}&per_page=20`, {
+        if (page > 1) {
+            const loader = document.createElement('div');
+            loader.id = 'suggestionLoaderPage';
+            loader.className = 'suggestion-loading-more';
+            loader.textContent = 'Loading more results...';
+            searchSuggestionsContent.appendChild(loader);
+        }
+
+        // Search by product name
+        const response = await fetch(`${API_CONFIG.baseUrl}/products?name=${encodeURIComponent(query)}&search=${encodeURIComponent(query)}&page=${page}&per_page=${searchPageSuggestionState.perPage}`, {
             headers: API_CONFIG.headers
         });
+
+        const oldLoader = document.getElementById('suggestionLoaderPage');
+        if (oldLoader) oldLoader.remove();
 
         if (response.ok) {
             const result = await response.json();
 
             if (result.success && result.data) {
-                // Handle different API response structures
                 let products = [];
                 if (Array.isArray(result.data)) {
                     products = result.data;
@@ -138,41 +192,55 @@ async function loadSearchSuggestions(query) {
                 }
 
                 if (products.length > 0) {
-                    // Filter suggestions by product name with fuzzy matching for typos
-                    const queryLower = query.toLowerCase().trim();
-                    const matchingProducts = products.filter(product => {
-                        if (!product || !product.name) return false;
-                        return matchesProductName(product.name, queryLower);
+                    if (page === 1) searchSuggestionsContent.innerHTML = '';
+                    
+                    products.forEach(product => {
+                        const suggestionItem = document.createElement('div');
+                        suggestionItem.className = 'search-suggestion-item';
+                        suggestionItem.style.padding = '10px 16px';
+                        suggestionItem.style.cursor = 'pointer';
+                        suggestionItem.style.display = 'flex';
+                        suggestionItem.style.alignItems = 'center';
+
+                        const imgUrl = product.image_url || '/images/placeholder.jpg';
+                        const highlightedName = highlightMatchInSearch(escapeHtml(product.name), query);
+
+                        suggestionItem.innerHTML = `
+                            <div style="width: 32px; height: 32px; margin-right: 12px; flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
+                                <img src="${imgUrl}" style="max-width: 100%; max-height: 100%; object-fit: contain;" onerror="this.src='/images/placeholder.jpg'">
+                            </div>
+                            <div style="flex: 1; min-width: 0;">
+                                <div class="suggestion-text" style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden; font-size: 14px; color: #212121;">${highlightedName}</div>
+                                <div style="font-size: 12px; color: #878787;">in ${product.category ? (typeof product.category === 'object' ? (product.category.name || 'Category') : product.category) : 'All Categories'}</div>
+                            </div>
+                        `;
+                        
+                        suggestionItem.addEventListener('click', () => {
+                            window.location.href = `/product.html?slug=${product.slug}`;
+                        });
+                        searchSuggestionsContent.appendChild(suggestionItem);
                     });
 
-                    if (matchingProducts.length > 0) {
-                        searchSuggestionsContent.innerHTML = '';
-                        matchingProducts.forEach(product => {
-                            const suggestionItem = document.createElement('div');
-                            suggestionItem.className = 'search-suggestion-item';
-                            suggestionItem.innerHTML = `
-                                <i class="fas fa-search suggestion-icon"></i>
-                                <span class="suggestion-text">${escapeHtml(product.name)}</span>
-                            `;
-                            suggestionItem.addEventListener('click', () => {
-                                document.getElementById('searchInput').value = product.name;
-                                searchSuggestions.style.display = 'none';
-                                handleSearch();
-                            });
-                            searchSuggestionsContent.appendChild(suggestionItem);
-                        });
-                    } else {
-                        searchSuggestionsContent.innerHTML = '<div class="suggestion-empty">No suggestions found</div>';
+                    if (products.length < searchPageSuggestionState.perPage) {
+                        searchPageSuggestionState.hasMore = false;
                     }
                 } else {
-                    searchSuggestionsContent.innerHTML = '<div class="suggestion-empty">No suggestions found</div>';
+                    searchPageSuggestionState.hasMore = false;
+                    if (page === 1) {
+                        searchSuggestionsContent.innerHTML = '<div class="suggestion-empty">No products found matching your search.</div>';
+                    }
                 }
             } else {
-                searchSuggestionsContent.innerHTML = '<div class="suggestion-empty">No suggestions found</div>';
+                searchPageSuggestionState.hasMore = false;
+                if (page === 1) {
+                    searchSuggestionsContent.innerHTML = '<div class="suggestion-empty">No products found matching your search.</div>';
+                }
             }
         }
     } catch (error) {
-        // /* console.error */('Error loading search suggestions:', error);
+        // console.error('Error loading search suggestions:', error);
+    } finally {
+        searchPageSuggestionState.isLoadingMore = false;
     }
 }
 
@@ -193,6 +261,7 @@ function setupSort() {
         sortSelect.addEventListener('change', (e) => {
             selectedFilters.sort = e.target.value;
             currentPage = 1;
+            window.currentPage = currentPage;
             loadSearchResults();
         });
     }
@@ -218,7 +287,7 @@ async function loadSearchResults() {
         params.append('name', searchQuery.trim());
         // Fetch more products per page to allow for better fuzzy matching
         params.append('page', currentPage);
-        params.append('per_page', '50'); // Increased to allow fuzzy matching to find more results
+        params.append('per_page', '20'); // Matches backend pagination
 
         // /* console.log */('Searching for products with query:', searchQuery);
         // /* console.log */('API URL:', `${API_CONFIG.baseUrl}/products?${params.toString()}`);
@@ -255,53 +324,55 @@ async function loadSearchResults() {
 
         if (response.ok) {
             const result = await response.json();
+            let products = [];
+            let pagination = null;
 
-            // /* console.log */('Search API Response:', result);
+            console.log('Search Results API Response:', result);
 
             if (result.success && result.data) {
                 // Handle different API response structures
                 // API might return: {success: true, data: [...]} or {success: true, data: {data: [...], pagination: {...}}}
-                let products = [];
-                let pagination = null;
-
-                // Check if result.data is an array
-                if (Array.isArray(result.data)) {
-                    products = result.data;
-                    pagination = result.pagination || null;
-                }
-                // Check if result.data is an object with a data property
-                else if (result.data && Array.isArray(result.data.data)) {
-                    products = result.data.data;
-                    pagination = result.data.pagination || result.pagination || null;
-                }
-                // Check if result.data is an object with products property
-                else if (result.data && Array.isArray(result.data.products)) {
-                    products = result.data.products;
-                    pagination = result.data.pagination || result.pagination || null;
-                }
-                // Fallback: try to extract array from result.data
-                else {
-                    // /* console.warn */('Unexpected API response structure:', result.data);
-                    // Try to find any array in the data object
-                    for (const key in result.data) {
-                        if (Array.isArray(result.data[key])) {
-                            products = result.data[key];
-                            break;
+                // Robust data extraction for search results
+                if (result.data) {
+                    if (Array.isArray(result.data)) {
+                        products = result.data;
+                        pagination = result.pagination || null;
+                    } else if (Array.isArray(result.data.data)) {
+                        products = result.data.data;
+                        pagination = result.data;
+                    } else if (result.data.products) {
+                        if (Array.isArray(result.data.products)) {
+                            products = result.data.products;
+                            pagination = result.data.pagination || result.pagination || null;
+                        } else if (result.data.products.data && Array.isArray(result.data.products.data)) {
+                            products = result.data.products.data;
+                            pagination = result.data.products;
+                        }
+                    } else {
+                        // Fallback: try to extract array from result.data
+                        for (const key in result.data) {
+                            if (Array.isArray(result.data[key])) {
+                                products = result.data[key];
+                                break;
+                            }
                         }
                     }
                 }
 
-                // /* console.log */('Extracted products:', products.length, 'items');
+                console.log(`Extracted ${products.length} products for search query: ${searchQuery}`);
 
                 // Ensure products match the search query in their name (with typo tolerance)
                 if (searchQuery.trim() && products.length > 0) {
                     const queryLower = searchQuery.trim().toLowerCase();
                     products = products.filter(product => {
                         if (!product || !product.name) return false;
-                        return matchesProductName(product.name, queryLower);
+                        const match = matchesProductName(product.name, queryLower);
+                        if (!match) {
+                            // console.log(`Filtered out by name match: ${product.name}`);
+                        }
+                        return match;
                     });
                 }
-
                 // /* console.log */(`Found ${products.length} products matching "${searchQuery}"`);
 
                 // Apply client-side filters (discounts, availability)
@@ -314,12 +385,7 @@ async function loadSearchResults() {
                     });
                 }
 
-                if (!selectedFilters.includeOutOfStock) {
-                    products = products.filter(product => {
-                        const stockQuantity = parseInt(product.stock_quantity || 0);
-                        return stockQuantity > 0;
-                    });
-                }
+                // All products shown regardless of stock status
 
                 // If no results with fuzzy matching, try fetching all products and filtering client-side
                 if (products.length === 0 && searchQuery.trim()) {
@@ -358,8 +424,14 @@ async function loadSearchResults() {
                 }
 
                 if (products.length > 0) {
-                    displayProducts(products, pagination || { current_page: 1, per_page: 24, total: products.length, total_pages: 1 });
-                    updateResultsCount(pagination || { current_page: 1, per_page: 24, total: products.length, total_pages: 1 });
+                    const paginationFallback = {
+                        current_page: currentPage,
+                        per_page: 20,
+                        total: products.length,
+                        last_page: 1
+                    };
+                    displayProducts(products, pagination || paginationFallback);
+                    updateResultsCount(pagination || paginationFallback);
                 } else {
                     displayNoResults();
                 }
@@ -371,7 +443,7 @@ async function loadSearchResults() {
             displayNoResults();
         }
     } catch (error) {
-        // /* console.error */('Error loading search results:', error);
+        console.error('Error loading search results:', error);
         displayNoResults();
     } finally {
         isLoading = false;
@@ -384,9 +456,8 @@ function displayProducts(products, pagination) {
     const productsGrid = document.getElementById('productsGrid');
     if (!productsGrid) return;
 
-    if (currentPage === 1) {
-        productsGrid.innerHTML = '';
-    }
+    // Always clear the grid for general pagination
+    productsGrid.innerHTML = '';
 
     products.forEach(product => {
         // Only display products that have a name
@@ -402,95 +473,50 @@ function displayProducts(products, pagination) {
     });
 
     // Display pagination
-    if (pagination && pagination.total_pages > 1) {
+    const totalPages = pagination.total_pages || pagination.last_page || 1;
+    if (totalPages > 1) {
         displayPagination(pagination);
+    } else {
+        const paginationDiv = document.getElementById('pagination');
+        if (paginationDiv) paginationDiv.style.display = 'none';
     }
 }
 
 // Create product card
 function createProductCard(product) {
-    const card = document.createElement('div');
-    card.className = 'product-card';
+    const card = document.createElement('a');
+    card.href = `/product.html?slug=${product.slug}`;
+    // Use desktop-product-card class for specific desktop grid styles if needed, 
+    // but the base structure is now the same for both.
+    card.className = window.innerWidth > 768 ? 'product-card desktop-product-card' : 'product-card';
 
-    // Get image
+    // Get image URL from various possible API response structures
     const imageUrl = product.image_url ||
         (product.gallery_images && product.gallery_images.length > 0 ? product.gallery_images[0].image_url : null) ||
         (product.images && product.images.length > 0 ? product.images[0].url : null) ||
-        '/images/placeholder.png';
+        '/images/placeholder.svg';
 
+    const title = product.name || 'Product Name';
     const currentPrice = parseInt(product.price || 0);
     const originalPrice = parseInt(product.original_price || product.originalPrice || 0);
-    const discount = originalPrice > currentPrice
+    const discountPercentage = originalPrice > currentPrice
         ? Math.round(((originalPrice - currentPrice) / originalPrice) * 100)
         : 0;
 
-    const rating = parseFloat(product.rating || 0).toFixed(1);
-    const ratingCount = parseInt(product.rating_count || 0); // Use real count or 0
-
-    // Specs for feature list
-    let specsHTML = '';
-    const specs = getProductSpecsList(product); // New helper function
-    if (specs.length > 0) {
-        specsHTML = '<ul class="product-features-list">';
-        specs.slice(0, 4).forEach(spec => { // Show up to 4 specs
-            specsHTML += `<li>${spec}</li>`;
-        });
-        specsHTML += '</ul>';
-    }
-
-    // Status logic - Fully dynamic based on product data
-    let statusHTML = '';
-    const isOutOfStock = parseInt(product.stock_quantity || 0) === 0;
-    const hasFreeDelivery = product.free_delivery || currentPrice >= 500; // Free delivery if flagged or price >= 500
-    const hasBankOffer = product.bank_offer || product.has_bank_offer; // Check for bank offer flag
-
-    if (isOutOfStock) {
-        statusHTML = '<div class="status-label-container">Not Deliverable</div>';
-    } else {
-        // Build status based on actual product attributes
-        let offers = [];
-        if (hasFreeDelivery) {
-            offers.push('<div class="free-delivery">Free delivery</div>');
-        }
-        if (hasBankOffer) {
-            offers.push('<div class="bank-offer">Bank Offer</div>');
-        }
-        statusHTML = offers.join('');
-    }
-
     card.innerHTML = `
-        <div class="product-image">
-            <div class="mobile-wishlist-icon">
-                <i class="fas fa-heart"></i>
-            </div>
-            <a href="/product.html?slug=${product.slug}">
-                <img src="${imageUrl}" alt="${escapeHtml(product.name)}" loading="lazy" onerror="this.src='/images/placeholder.png'">
-            </a>
-        </div>
+        <img src="${imageUrl}" alt="${escapeHtml(title)}" class="product-image" onerror="this.src='/images/placeholder.svg'">
         <div class="product-info">
-            <h3 class="product-title">
-                <a href="/product.html?slug=${product.slug}">${escapeHtml(product.name)}</a>
-            </h3>
-            
-            <div class="product-meta-row">
-                ${rating > 0 ? `
-                <div class="flipkart-rating-badge">
-                    ${rating} <i class="fas fa-star"></i>
-                </div>
-                <span class="rating-count-text">(${ratingCount.toLocaleString()})</span>
-                ` : '<span class="rating-count-text">Not Rated</span>'}
+            <div class="product-title">${escapeHtml(title)}</div>
+            <div class="product-price">
+                <span class="price-current">${formatPrice(currentPrice)}</span>
+                ${originalPrice > currentPrice ? `
+                    <span class="price-original">${formatPrice(originalPrice)}</span>
+                ` : ''}
+                ${discountPercentage ? `
+                    <span class="discount-badge">${discountPercentage}% off</span>
+                ` : ''}
             </div>
-
-    ${specsHTML}
-
-<div class="product-price-container">
-    <span class="current-price">${formatPrice(currentPrice)}</span>
-    ${originalPrice > currentPrice ? `<span class="original-price">${formatPrice(originalPrice)}</span>` : ''}
-    ${discount > 0 ? `<span class="discount">${discount}% off</span>` : ''}
-</div>
-            
-            ${statusHTML}
-        </div >
+        </div>
     `;
 
     return card;
@@ -745,30 +771,38 @@ function displayPagination(pagination) {
     paginationDiv.style.display = 'flex';
     paginationDiv.innerHTML = '';
 
+    const totalPages = pagination.total_pages || pagination.last_page || 1;
+    const currentPageValue = pagination.current_page || 1;
+
     // Previous button
-    if (pagination.current_page > 1) {
+    if (currentPageValue > 1) {
         const prevBtn = document.createElement('button');
         prevBtn.className = 'pagination-btn';
         prevBtn.textContent = 'Previous';
         prevBtn.addEventListener('click', () => {
-            currentPage--;
+            currentPage = currentPageValue - 1;
+            window.currentPage = currentPage;
             loadSearchResults();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         });
         paginationDiv.appendChild(prevBtn);
     }
 
     // Page numbers
-    for (let i = 1; i <= pagination.total_pages; i++) {
-        if (i === 1 || i === pagination.total_pages || (i >= pagination.current_page - 2 && i <= pagination.current_page + 2)) {
+    for (let i = 1; i <= totalPages; i++) {
+        // Show first, last, and pages around current
+        if (i === 1 || i === totalPages || (i >= currentPageValue - 2 && i <= currentPageValue + 2)) {
             const pageBtn = document.createElement('button');
-            pageBtn.className = `pagination - btn ${i === pagination.current_page ? 'active' : ''} `;
+            pageBtn.className = `pagination-btn ${i === currentPageValue ? 'active' : ''}`;
             pageBtn.textContent = i;
             pageBtn.addEventListener('click', () => {
                 currentPage = i;
+                window.currentPage = currentPage;
                 loadSearchResults();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             });
             paginationDiv.appendChild(pageBtn);
-        } else if (i === pagination.current_page - 3 || i === pagination.current_page + 3) {
+        } else if (i === currentPageValue - 3 || i === currentPageValue + 3) {
             const ellipsis = document.createElement('span');
             ellipsis.className = 'pagination-ellipsis';
             ellipsis.textContent = '...';
@@ -777,13 +811,15 @@ function displayPagination(pagination) {
     }
 
     // Next button
-    if (pagination.current_page < pagination.total_pages) {
+    if (currentPageValue < totalPages) {
         const nextBtn = document.createElement('button');
         nextBtn.className = 'pagination-btn';
         nextBtn.textContent = 'Next';
         nextBtn.addEventListener('click', () => {
-            currentPage++;
+            currentPage = currentPageValue + 1;
+            window.currentPage = currentPage;
             loadSearchResults();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         });
         paginationDiv.appendChild(nextBtn);
     }
@@ -794,18 +830,19 @@ function displayNoResults() {
     const productsGrid = document.getElementById('productsGrid');
     if (productsGrid) {
         productsGrid.innerHTML = `
-    < div class="no-results" >
-                <i class="fas fa-search"></i>
-                <h2>No products found</h2>
-                <p>Try adjusting your search or filters</p>
-            </div >
+    <div class="no-results" style="text-align: center; padding: 60px 20px; width: 100%; grid-column: 1 / -1; display: flex; flex-direction: column; align-items: center; justify-content: center; background-color: #fff; border-radius: 4px; box-shadow: 0 1px 2px 0 rgba(0,0,0,0.1); margin-top: 10px;">
+                <i class="fas fa-search" style="font-size: 64px; color: #f0f0f0; margin-bottom: 20px;"></i>
+                <h2 style="font-size: 20px; font-weight: 500; color: #212121; margin: 0 0 10px 0;">No products found</h2>
+                <p style="font-size: 14px; color: #878787; margin: 0 0 24px 0;">Try adjusting your search or filters</p>
+                <a href="/" class="browse-btn" style="display: inline-block; background: #1b5e20; color: #fff; padding: 12px 32px; border-radius: 2px; text-decoration: none; font-weight: 500; font-size: 14px; box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2);">Explore Other Products</a>
+            </div>
     `;
     }
 }
 
 // Handle compare toggle
 function handleCompareToggle(product, isChecked) {
-    const COMPARE_STORAGE_KEY = 'mobitez.webintez.compare_products';
+    const COMPARE_STORAGE_KEY = 'mobitez.compare_products';
     const MAX_COMPARE_PRODUCTS = 4;
 
     let compareList = [];
@@ -898,5 +935,13 @@ min - width: 200px;
             }
         }, 300);
     }, 3000);
+}
+
+// Highlight match in search suggestions
+function highlightMatchInSearch(text, query) {
+    if (!query) return text;
+    const safeQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const regex = new RegExp(`(${safeQuery})`, 'gi');
+    return text.replace(regex, '<b>$1</b>');
 }
 

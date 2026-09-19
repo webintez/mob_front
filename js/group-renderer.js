@@ -83,7 +83,7 @@ async function loadGroupContent(baseSlug) {
  */
 function displayGroup(groupData) {
     // Update page title
-    document.title = `${groupData.name} - Mobitez`;
+    document.title = `${groupData.name} - Mobitez Private Limited`;
 
     // Update group title in header if needed
     const titleEl = document.getElementById('group-title');

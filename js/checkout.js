@@ -793,7 +793,7 @@ function openRazorpayCheckout(orderData, paymentData) {
         "key": paymentData.key_id, // Received from backend
         "amount": paymentData.amount, // Amount in paisa
         "currency": paymentData.currency,
-        "name": "Mobitez",
+        "name": "Mobitez Private Limited",
         "description": "Order #" + orderData.order_number,
         "image": "/2.png", // Use site logo
         "order_id": paymentData.id, // The Razorpay Order ID
@@ -808,7 +808,7 @@ function openRazorpayCheckout(orderData, paymentData) {
             "contact": orderData.shipping_address.phone
         },
         "theme": {
-            "color": "#2874f0" // Mobitez blue
+            "color": "#2874f0" // Mobitez Private Limited blue
         },
         "modal": {
             "ondismiss": function () {

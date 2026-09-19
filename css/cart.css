@@ -605,7 +605,7 @@
     }
 }
 
-/* CRITICAL: Override flipkart-mobile-header.css padding specifically for the cart page */
+/* CRITICAL: Override mobitez-mobile-header.css padding specifically for the cart page */
 @media (max-width: 768px) {
 
     html body:not(.homepage) main.main-content[class],
@@ -753,7 +753,7 @@
 }
 
 .btn-place-order-mobile {
-    background: #fb641b;
+    background: #FF8400;
     color: white;
     border: none;
     border-radius: 2px;

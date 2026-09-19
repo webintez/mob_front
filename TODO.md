@@ -48,8 +48,8 @@
 ✅ Roboto font family throughout
 ✅ Flipkart blue (#2874f0) for links and accents
 ✅ Green (#26a541) for ratings and success states
-✅ Orange (#ff9f00) for ADD TO CART button
-✅ Red (#fb641b) for BUY NOW button
+✅ Orange (#24db65) for ADD TO CART button
+✅ Red (#FF8400) for BUY NOW button
 ✅ Gray backgrounds (#f1f3f6, #fafafa) for sections
 
 ### Components:

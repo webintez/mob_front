@@ -1,6 +1,12 @@
 // Authentication Module
 // Handles OTP-based login, logout, and JWT token management
 
+// Disable all console logs in production, but preserve a copy for explicit debug/flash-sale logging
+if (typeof window !== 'undefined' && window.console) {
+    window.originalConsoleLog = window.console.log;
+    window.console.log = function() {};
+}
+
 const AUTH_CONFIG = {
     baseUrl: '/api',
     tokenKey: 'mobitez_auth_token',

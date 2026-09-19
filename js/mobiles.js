@@ -71,6 +71,9 @@ function renderSection(section, container) {
         case 'category_grid':
             renderCategoryGrid(section, container);
             break;
+        case 'secondary_menu_grid':
+            renderSecondaryMenuGrid(section, container);
+            break;
         case 'hero_slider':
             renderHeroSlider(section, container);
             break;
@@ -124,7 +127,7 @@ function renderCategoryGrid(section, parentContainer) {
     `;
 
     items.forEach(item => {
-        const url = item.slug ? `/products.html?category=${item.slug}` : 'javascript:void(0)';
+        const url = item.slug ? `/categories.html?category=${item.slug}` : 'javascript:void(0)';
         const imageUrl = item.image_url || item.icon;
 
         html += `
@@ -136,6 +139,60 @@ function renderCategoryGrid(section, parentContainer) {
             }
                 </div>
                 <span class="category-name">${item.name}</span>
+            </a>
+        `;
+    });
+
+    html += `</div>`;
+    sectionDiv.innerHTML = html;
+    parentContainer.appendChild(sectionDiv);
+}
+
+function renderSecondaryMenuGrid(section, parentContainer) {
+    const sectionTitle = section.name && !section.name.includes('(category section)') && section.name !== 'Untitled Section' ? section.name : null;
+    const items = section.payload || [];
+    if (items.length === 0) return;
+
+    // Read style and layout for items_per_view and background
+    const layout = section.layout || {};
+    const style = section.style || {};
+    const combined = { ...layout, ...style };
+    const ipv = combined.items_per_view || { desktop: '6', tablet: '4', mobile: '4' };
+
+    // Build background style string
+    let bgStyle = 'background: #fff;';
+    const bg = combined.background;
+    if (bg && bg.type === 'color' && bg.color && bg.color !== 'none') {
+        bgStyle = `background: ${bg.color};`;
+    }
+
+    const sectionDiv = document.createElement('div');
+    sectionDiv.className = 'secondary-menu-display-section mt-4 mb-5 shadow-sm';
+    sectionDiv.style.cssText = `${bgStyle} padding: 15px; border-radius: 8px;`;
+
+    // Set CSS variables for responsive columns
+    sectionDiv.style.setProperty('--cat-cols-desktop', ipv.desktop || '6');
+    sectionDiv.style.setProperty('--cat-cols-tablet', ipv.tablet || '4');
+    sectionDiv.style.setProperty('--cat-cols-mobile', ipv.mobile || '4');
+
+    let html = `
+        ${sectionTitle ? `<h3 class="mb-3" style="font-weight: 600; font-size: 18px;">${sectionTitle}</h3>` : ''}
+        <div class="secondary-menu-grid category-grid">
+    `;
+
+    items.forEach(item => {
+        const url = item.value || 'javascript:void(0)';
+        const imageUrl = item.image;
+
+        html += `
+            <a href="${url}" class="secondary-menu-item category-item">
+                <div class="secondary-menu-icon category-icon">
+                    ${imageUrl ?
+                `<img src="${imageUrl}" alt="${item.name}" loading="lazy" onerror="this.outerHTML='<i class=&quot;fas fa-th-large&quot; style=&quot;font-size:32px;color:#666;&quot;></i>'">` :
+                `<i class="fas fa-th-large" style="font-size:32px;color:#666;"></i>`
+            }
+                </div>
+                <span class="secondary-menu-name category-name">${item.name}</span>
             </a>
         `;
     });

@@ -11,8 +11,28 @@
     height: auto !important;
     min-height: 56px !important;
     overflow: visible !important;
-    position: relative !important;
-    z-index: 1000 !important;
+    z-index: 9999 !important;
+}
+
+@media (min-width: 769px) {
+    .nav-menu:not(.homepage-hidden) {
+        position: fixed !important;
+        top: 72px !important;
+        left: 0 !important;
+        right: 0 !important;
+    }
+    
+    body:not(.homepage) .main-content,
+    body:not(.homepage) .product-main {
+        padding-top: 128px !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .nav-menu:not(.homepage-hidden) {
+        position: relative !important;
+        top: 0 !important;
+    }
 }
 
 /* Ensure nav-container is visible and has content */

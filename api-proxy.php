@@ -71,8 +71,11 @@ if ($request_method === 'GET') {
         exit;
     }
 }
+$segments = explode('/', $path);
+$encoded_segments = array_map('rawurlencode', $segments);
+$encoded_path = implode('/', $encoded_segments);
 
-$url = "https://seller.mobitez.webintez.com/api/" . $path;
+$url = "https://seller.mobitez.com/api/" . $encoded_path;
 if (!empty($clean_query)) {
     $url .= "?" . $clean_query;
 }
@@ -103,6 +106,7 @@ curl_setopt($ch, CURLOPT_ENCODING, "");
 // Determine the headers based on the request
 $headers = [];
 $content_type_set = false;
+$is_multipart = false;
 
 // fallback function if getallheaders is missing in this PHP environment
 if (!function_exists('getallheaders')) {
@@ -124,6 +128,13 @@ if (!function_exists('getallheaders')) {
 // Forward appropriate incoming headers to the destination API
 foreach (getallheaders() as $key => $value) {
     $lower_key = strtolower($key);
+    
+    if ($lower_key === 'content-type' && strpos(strtolower($value), 'multipart/form-data') !== false) {
+        $is_multipart = true;
+        // Do not forward the original Content-Type header, let cURL generate it with its own boundary
+        continue;
+    }
+
     // Exclude host, content-length, accept-encoding (cURL handles this), and any spoofed x-api-key
     if (!in_array($lower_key, ['host', 'content-length', 'accept-encoding', 'x-api-key'])) {
         $headers[] = "$key: $value";
@@ -137,7 +148,7 @@ foreach (getallheaders() as $key => $value) {
 $headers[] = "X-API-Key: mHRT3jvUD7tqSVy+iPIn3DE+wyuJXcBeLaPIjBGVHMo=";
 
 // Ensure JSON Content-Type if not set for POST/PUT requests
-if (!$content_type_set && in_array($request_method, ['POST', 'PUT', 'PATCH'])) {
+if (!$content_type_set && !$is_multipart && in_array($request_method, ['POST', 'PUT', 'PATCH'])) {
     $headers[] = "Content-Type: application/json";
 }
 
@@ -145,8 +156,26 @@ curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 
 // Pass request body for non-GET/HEAD methods
 if ($request_method != 'GET' && $request_method != 'HEAD') {
-    $body = file_get_contents('php://input');
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
+    if ($is_multipart) {
+        $post_fields = $_POST;
+        foreach ($_FILES as $key => $file) {
+            if (is_array($file['tmp_name'])) {
+                foreach ($file['tmp_name'] as $i => $tmp_name) {
+                    if ($file['error'][$i] === UPLOAD_ERR_OK) {
+                        $post_fields["{$key}[$i]"] = new CURLFile($tmp_name, $file['type'][$i], $file['name'][$i]);
+                    }
+                }
+            } else {
+                if ($file['error'] === UPLOAD_ERR_OK) {
+                    $post_fields[$key] = new CURLFile($file['tmp_name'], $file['type'], $file['name']);
+                }
+            }
+        }
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $post_fields);
+    } else {
+        $body = file_get_contents('php://input');
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
+    }
 }
 
 // Get the response
@@ -159,6 +188,17 @@ if (curl_errno($ch)) {
     header("Content-Type: application/json");
     echo json_encode(["success" => false, "message" => "Proxy Error: " . curl_error($ch)]);
 } else {
+    // Rewrite image storage and uploads URLs from seller.mobitez.com to mobitez.com to handle caching locally
+    if ($httpCode === 200 && !empty($response) && str_contains($contentType, 'application/json')) {
+        // First rewrite uploads/ (which maps to /storage/uploads/)
+        $response = str_replace('https://seller.mobitez.com/uploads/', 'https://mobitez.com/storage/uploads/', $response);
+        $response = str_replace('https:\/\/seller.mobitez.com\/uploads\/', 'https:\/\/mobitez.com\/storage\/uploads\/', $response);
+        
+        // Then rewrite storage/ (which maps to /storage/)
+        $response = str_replace('https://seller.mobitez.com/storage/', 'https://mobitez.com/storage/', $response);
+        $response = str_replace('https:\/\/seller.mobitez.com\/storage\/', 'https:\/\/mobitez.com\/storage\/', $response);
+    }
+
     // Forward the original Content-Type
     if ($contentType) {
         header("Content-Type: " . $contentType);

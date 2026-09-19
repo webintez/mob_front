@@ -11,6 +11,8 @@ if (typeof window.API_CONFIG === 'undefined' && typeof API_CONFIG === 'undefined
     };
 }
 
+let listingCurrentPage = 1;
+
 // API Helper Function - use existing if available, otherwise create
 if (typeof window.makeApiCall === 'undefined' && typeof makeApiCall === 'undefined') {
     window.makeApiCall = async function (endpoint, options = {}) {
@@ -157,36 +159,8 @@ document.addEventListener('DOMContentLoaded', () => {
             categoriesSection.style.display = 'none';
         }
 
-        // Load products by category - wait for app.js to load
-        const loadCategoryProducts = async () => {
-            if (typeof loadProductsBySubcategory === 'function') {
-                await loadProductsBySubcategory(categorySlug, subcategoryName);
-            } else if (typeof loadProductsByCategory === 'function') {
-                await loadProductsByCategory(categorySlug, subcategoryName);
-            } else {
-                // Fallback: load products directly using category API
-                await loadCategoryProductsDirect(categorySlug, subcategoryName);
-            }
-        };
-
-        // Try immediately, then wait a bit if needed
-        if (typeof loadProductsByCategory === 'function') {
-            loadCategoryProducts();
-        } else {
-            // Wait for app.js to load (check every 100ms, max 3 seconds)
-            let attempts = 0;
-            const maxAttempts = 30;
-            const checkInterval = setInterval(() => {
-                attempts++;
-                if (typeof loadProductsByCategory === 'function') {
-                    clearInterval(checkInterval);
-                    loadCategoryProducts();
-                } else if (attempts >= maxAttempts) {
-                    clearInterval(checkInterval);
-                    loadCategoryProductsDirect(categorySlug);
-                }
-            }, 100);
-        }
+        // Always use local loadCategoryProductsDirect for categories page to ensure pagination works
+        loadCategoryProductsDirect(categorySlug, subcategoryName);
     }
 });
 
@@ -421,7 +395,7 @@ function setupMoreDropdown() {
 }
 
 // Fallback function to load category products directly
-async function loadCategoryProductsDirect(categorySlug, subcategoryName = null) {
+async function loadCategoryProductsDirect(categorySlug, subcategoryName = null, page = 1) {
     const productsSection = document.getElementById('productsSection');
     const allProducts = document.getElementById('allProducts');
     const productsSectionTitle = document.getElementById('productsSectionTitle');
@@ -433,18 +407,22 @@ async function loadCategoryProductsDirect(categorySlug, subcategoryName = null) 
     try {
         // Show loading state
         productsSection.style.display = 'block';
-        allProducts.innerHTML = '<div class="loading-spinner"><div class="spinner"></div><p>Loading products...</p></div>';
+        if (page === 1) {
+            allProducts.innerHTML = '<div class="loading-spinner"><div class="spinner"></div><p>Loading products...</p></div>';
+        }
 
         // Fetch category details first to get name
         try {
-            // /* console.log */('API Call: GET /categories/' + categorySlug);
+            const logFn = window.originalConsoleLog || console.log;
+            logFn(`Category Info Request Route: /categories/${categorySlug}`);
             const categoryResult = await getMakeApiCall()(`/categories/${categorySlug}`);
+            logFn('Category Info API Response:', categoryResult);
             if (categoryResult && categoryResult.success && categoryResult.data && categoryResult.data.name) {
                 const categoryName = categoryResult.data.name;
                 if (productsSectionTitle) {
                     productsSectionTitle.textContent = subcategoryName ? `${categoryName} - ${subcategoryName}` : categoryName;
                 }
-
+ 
                 // Update breadcrumb
                 const breadcrumb = document.getElementById('categoryBreadcrumb');
                 if (breadcrumb) {
@@ -454,40 +432,52 @@ async function loadCategoryProductsDirect(categorySlug, subcategoryName = null) 
         } catch (error) {
             // Silent error handling
         }
-
+ 
         // Fetch products using category products API
-        // /* console.log */('API Call: GET /categories/' + categorySlug + '/products');
-        const productsResult = await getMakeApiCall()(`/categories/${categorySlug}/products`);
+        const logFn = window.originalConsoleLog || console.log;
+        logFn(`Category Products Request Route: /categories/${categorySlug}/products?page=${page}&per_page=20`);
+        const productsResult = await getMakeApiCall()(`/categories/${categorySlug}/products?page=${page}&per_page=20`);
+        logFn('Category Products API Response:', productsResult);
 
         if (productsResult && productsResult.success && productsResult.data) {
             let products = [];
+            let pagination = null;
 
-            // Handle category products API response structure
-            if (productsResult.data.products && Array.isArray(productsResult.data.products)) {
-                products = productsResult.data.products;
-            } else if (Array.isArray(productsResult.data)) {
-                products = productsResult.data;
+            // Robust data extraction for category products
+            if (productsResult.data) {
+                if (productsResult.data.products) {
+                    if (Array.isArray(productsResult.data.products)) {
+                        products = productsResult.data.products;
+                        pagination = productsResult.data.pagination || productsResult.pagination || null;
+                    } else if (productsResult.data.products.data && Array.isArray(productsResult.data.products.data)) {
+                        products = productsResult.data.products.data;
+                        pagination = productsResult.data.products;
+                    }
+                } else if (Array.isArray(productsResult.data.data)) {
+                    products = productsResult.data.data;
+                    pagination = productsResult.data;
+                } else if (Array.isArray(productsResult.data)) {
+                    products = productsResult.data;
+                    pagination = productsResult.pagination || null;
+                }
             }
 
+            console.log(`Extracted ${products.length} products for category ${categorySlug}`);
+
             // Client-side filtering by subcategory if provided
-            if (subcategoryName && products.length > 0) {
+            if (subcategoryName && subcategoryName !== 'null' && subcategoryName !== 'undefined' && products.length > 0) {
                 const subQuery = subcategoryName.toLowerCase();
                 products = products.filter(p =>
                     (p.name && p.name.toLowerCase().includes(subQuery)) ||
                     (p.description && p.description.toLowerCase().includes(subQuery)) ||
                     (p.short_description && p.short_description.toLowerCase().includes(subQuery))
                 );
+                console.log(`Filtered to ${products.length} products for subcategory ${subcategoryName}`);
             }
 
             if (products.length > 0) {
                 // Clear loading spinner completely
                 allProducts.innerHTML = '';
-
-                // Update results count
-                const resultsCount = document.getElementById('resultsCount');
-                if (resultsCount) {
-                    resultsCount.textContent = `Showing 1 - ${products.length} of ${products.length} products`;
-                }
 
                 // Store products for filtering
                 if (typeof window.storeProductsForFilter === 'function') {
@@ -495,24 +485,55 @@ async function loadCategoryProductsDirect(categorySlug, subcategoryName = null) 
                 }
 
                 // Use app.js createProductCard if available, otherwise create simple cards
-                if (typeof createProductCard === 'function') {
-                    products.forEach(product => {
+                products.forEach(product => {
+                    if (typeof createProductCard === 'function') {
                         const card = createProductCard(product);
                         allProducts.appendChild(card);
-                    });
-                } else {
-                    // Simple product card creation
-                    products.forEach(product => {
-                        const cardHTML = `
-                            <a href="/product.html?slug=${encodeURIComponent(product.slug)}" class="product-card">
-                                <img src="${product.image_url || '/images/placeholder.svg'}" alt="${product.name || 'Product'}" onerror="this.src='/images/placeholder.svg'">
-                                <h3>${product.name || 'Product Name'}</h3>
-                                <p class="price">₹${(parseFloat(product.price) || 0).toLocaleString('en-IN')}</p>
-                            </a>
+                    } else {
+                        // Standardized product card structure
+                        const currentPrice = parseFloat(product.price) || 0;
+                        const originalPrice = parseFloat(product.original_price || product.originalPrice) || 0;
+                        const discount = originalPrice > currentPrice
+                            ? Math.round(((originalPrice - currentPrice) / originalPrice) * 100)
+                            : 0;
+
+                        const card = document.createElement('a');
+                        card.href = `/product.html?slug=${product.slug}`;
+                        card.className = 'product-card';
+                        
+                        card.innerHTML = `
+                            <img src="${product.image_url || '/images/placeholder.svg'}" alt="${product.name || 'Product'}" class="product-image" onerror="this.src='/images/placeholder.svg'">
+                            <div class="product-info">
+                                <div class="product-title">${product.name || 'Product Name'}</div>
+                                <div class="product-price">
+                                    <span class="price-current">₹${currentPrice.toLocaleString('en-IN')}</span>
+                                    ${originalPrice > currentPrice ? `<span class="price-original">₹${originalPrice.toLocaleString('en-IN')}</span>` : ''}
+                                    ${discount > 0 ? `<span class="discount-badge">${discount}% off</span>` : ''}
+                                </div>
+                            </div>
                         `;
-                        allProducts.insertAdjacentHTML('beforeend', cardHTML);
-                    });
+                        allProducts.appendChild(card);
+                    }
+                });
+
+                // Update results count and display pagination
+                const totalCount = pagination ? pagination.total : products.length;
+                const paginationData = pagination || {
+                    current_page: page,
+                    per_page: 20,
+                    total: products.length,
+                    total_pages: 1
+                };
+
+                updateResultsCount(paginationData);
+                const totalPages = paginationData.total_pages || paginationData.last_page || 1;
+                if (totalPages > 1) {
+                    displayPagination(paginationData, categorySlug, subcategoryName);
+                } else {
+                    const paginationDiv = document.getElementById('pagination');
+                    if (paginationDiv) paginationDiv.style.display = 'none';
                 }
+
             } else {
                 allProducts.innerHTML = `
                     <div class="no-results-message" style="text-align: center; padding: 60px 20px; width: 100%; grid-column: 1 / -1; display: flex; flex-direction: column; align-items: center; justify-content: center; background-color: #fff; border-radius: 4px; box-shadow: 0 1px 2px 0 rgba(0,0,0,0.1); margin-top: 10px;">
@@ -521,7 +542,7 @@ async function loadCategoryProductsDirect(categorySlug, subcategoryName = null) 
                         </div>
                         <h3 style="font-size: 20px; font-weight: 500; color: #212121; margin: 0 0 10px 0;">Coming Soon</h3>
                         <p style="font-size: 14px; color: #878787; margin: 0 0 24px 0;">We are currently adding new products to this category.</p>
-                        <a href="/" class="browse-btn" style="display: inline-block; background: #2874f0; color: #fff; padding: 12px 32px; border-radius: 2px; text-decoration: none; font-weight: 500; font-size: 14px; box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2);">Explore Other Products</a>
+                        <a href="/" class="browse-btn" style="display: inline-block; background: #1b5e20; color: #fff; padding: 12px 32px; border-radius: 2px; text-decoration: none; font-weight: 500; font-size: 14px; box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2);">Explore Other Products</a>
                     </div>
                 `;
             }
@@ -529,10 +550,78 @@ async function loadCategoryProductsDirect(categorySlug, subcategoryName = null) 
             allProducts.innerHTML = '<div class="error-message"><p>Failed to load products. Please try again.</p></div>';
         }
     } catch (error) {
-        // /* console.log */('Category Products Fetch Failed:', categorySlug, error.message);
         allProducts.innerHTML = `<div class="error-message"><p>Error loading products: ${error.message}</p><button onclick="loadCategoryProductsDirect('${categorySlug}')">Retry</button></div>`;
     }
 }
+
+// Update results count
+function updateResultsCount(pagination) {
+    const resultsCount = document.getElementById('resultsCount');
+    if (resultsCount && pagination) {
+        const start = ((pagination.current_page - 1) * pagination.per_page) + 1;
+        const end = Math.min(start + pagination.per_page - 1, pagination.total);
+        resultsCount.textContent = `Showing ${start} - ${end} of ${pagination.total} products`;
+    }
+}
+
+// Display pagination
+function displayPagination(pagination, categorySlug, subcategoryName) {
+    const paginationDiv = document.getElementById('pagination');
+    if (!paginationDiv) return;
+
+    paginationDiv.style.display = 'flex';
+    paginationDiv.innerHTML = '';
+
+    const totalPages = pagination.total_pages || pagination.last_page || 1;
+    const currentPageValue = pagination.current_page || 1;
+
+    // Previous button
+    if (currentPageValue > 1) {
+        const prevBtn = document.createElement('button');
+        prevBtn.className = 'pagination-btn';
+        prevBtn.textContent = 'Previous';
+        prevBtn.addEventListener('click', () => {
+            listingCurrentPage = currentPageValue - 1;
+            loadCategoryProductsDirect(categorySlug, subcategoryName, listingCurrentPage);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+        paginationDiv.appendChild(prevBtn);
+    }
+
+    // Page numbers
+    for (let i = 1; i <= totalPages; i++) {
+        if (i === 1 || i === totalPages || (i >= currentPageValue - 2 && i <= currentPageValue + 2)) {
+            const pageBtn = document.createElement('button');
+            pageBtn.className = `pagination-btn ${i === currentPageValue ? 'active' : ''}`;
+            pageBtn.textContent = i;
+            pageBtn.addEventListener('click', () => {
+                listingCurrentPage = i;
+                loadCategoryProductsDirect(categorySlug, subcategoryName, listingCurrentPage);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+            paginationDiv.appendChild(pageBtn);
+        } else if (i === currentPageValue - 3 || i === currentPageValue + 3) {
+            const ellipsis = document.createElement('span');
+            ellipsis.className = 'pagination-ellipsis';
+            ellipsis.textContent = '...';
+            paginationDiv.appendChild(ellipsis);
+        }
+    }
+
+    // Next button
+    if (currentPageValue < totalPages) {
+        const nextBtn = document.createElement('button');
+        nextBtn.className = 'pagination-btn';
+        nextBtn.textContent = 'Next';
+        nextBtn.addEventListener('click', () => {
+            listingCurrentPage = currentPageValue + 1;
+            loadCategoryProductsDirect(categorySlug, subcategoryName, listingCurrentPage);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+        paginationDiv.appendChild(nextBtn);
+    }
+}
+
 
 // Export for global access
 window.loadCategoriesDisplay = loadCategoriesDisplay;

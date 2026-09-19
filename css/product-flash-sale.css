@@ -1,0 +1,220 @@
+/* Product Page Flash Sale Styling & Animations */
+
+.product-flash-sale-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    padding: 12px 18px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    color: white;
+    position: relative;
+    overflow: hidden;
+    gap: 12px;
+    z-index: 1;
+}
+
+.product-flash-sale-banner.active-sale {
+    background: linear-gradient(135deg, #e30613 0%, #ff5a00 50%, #ff8c00 100%);
+    box-shadow: 0 4px 15px rgba(227, 6, 19, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.product-flash-sale-banner.upcoming-sale {
+    background: linear-gradient(135deg, #ff9800 0%, #ffb700 100%);
+    box-shadow: 0 4px 15px rgba(255, 152, 0, 0.25);
+    color: #111827;
+    border: 1px solid rgba(17, 24, 39, 0.08);
+}
+
+.product-flash-sale-banner .flash-sale-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 800;
+    font-size: 15px;
+    letter-spacing: 0.8px;
+    z-index: 2;
+}
+
+.product-flash-sale-banner .flash-icon {
+    font-size: 18px;
+    animation: flashPulse 1.2s infinite alternate;
+}
+
+.product-flash-sale-banner.active-sale .flash-icon {
+    color: #ffd700;
+}
+
+.product-flash-sale-banner.upcoming-sale .flash-icon {
+    color: #111827;
+}
+
+.product-flash-sale-banner .flash-sale-timer-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    z-index: 2;
+}
+
+.product-flash-sale-banner .timer-label {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+}
+
+.product-flash-sale-banner .timer-boxes {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.product-flash-sale-banner .timer-box-unit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #111827;
+    color: white;
+    border-radius: 5px;
+    padding: 4px 6px;
+    min-width: 32px;
+    box-shadow: inset 0 -1.5px 0 rgba(255, 255, 255, 0.1), 0 2px 4px rgba(0,0,0,0.15);
+}
+
+.product-flash-sale-banner.upcoming-sale .timer-box-unit {
+    background: rgba(17, 24, 39, 0.9);
+}
+
+.product-flash-sale-banner .timer-num {
+    font-size: 14px;
+    font-weight: 800;
+    line-height: 1;
+    display: inline-block;
+}
+
+.product-flash-sale-banner .timer-unit {
+    font-size: 8px;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-top: 2px;
+    opacity: 0.75;
+}
+
+.product-flash-sale-banner .timer-colon {
+    font-size: 15px;
+    font-weight: 800;
+    opacity: 0.8;
+}
+
+/* Floating background sparks */
+.product-flash-sale-banner .banner-spark {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.55);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.product-flash-sale-banner.upcoming-sale .banner-spark {
+    background: rgba(17, 24, 39, 0.12);
+}
+
+.product-flash-sale-banner .banner-spark.s1 { top: 15%; left: 20%; animation: floatSpark 4s infinite linear; }
+.product-flash-sale-banner .banner-spark.s2 { top: 65%; left: 45%; animation: floatSpark 6s infinite linear 1s; }
+.product-flash-sale-banner .banner-spark.s3 { top: 25%; left: 75%; animation: floatSpark 5s infinite linear 2s; }
+.product-flash-sale-banner .banner-spark.s4 { top: 75%; left: 15%; animation: floatSpark 7s infinite linear 0.5s; }
+.product-flash-sale-banner .banner-spark.s5 { top: 35%; left: 90%; animation: floatSpark 4.5s infinite linear 1.5s; }
+
+/* Price Section Flashy Decoration - Reverted to Standard Inline Style */
+
+.slide-down-timer {
+    animation: slideDownTimerAnim 0.25s ease-out forwards;
+}
+
+@keyframes slideDownTimerAnim {
+    0% { transform: translateY(-6px); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+    .product-flash-sale-banner {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 10px;
+        margin-bottom: 12px;
+        border-radius: 6px;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+    
+    .product-flash-sale-banner .flash-sale-timer-wrapper {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    /* Left align the first child of productDetailsSection (product-main-info-container) */
+    #productDetailsSection > .product-main-info-container {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        justify-content: flex-start !important;
+        text-align: left !important;
+        width: 100% !important;
+        margin-left: 0 !important;
+        margin-right: auto !important;
+        box-sizing: border-box !important;
+    }
+
+    #productDetailsSection > .product-main-info-container .product-header-row {
+        align-items: flex-start !important;
+        justify-content: flex-start !important;
+        text-align: left !important;
+        width: 100% !important;
+    }
+
+    #productDetailsSection > .product-main-info-container .breadcrumbs-inline {
+        justify-content: flex-start !important;
+        text-align: left !important;
+    }
+
+    #productDetailsSection > .product-main-info-container .product-title {
+        text-align: left !important;
+        width: 100% !important;
+    }
+
+    #productDetailsSection > .product-main-info-container .product-rating {
+        justify-content: flex-start !important;
+        align-items: center !important;
+        width: 100% !important;
+    }
+
+    #productRating > div {
+        display: none !important;
+    }
+
+    /* Remove padding top from product-info in mobile view */
+    html body .product-main .product-container #productContent .product-right-column .product-info,
+    body main.product-main .product-container .product-content .product-right-column .product-info,
+    body main.product-main .product-container #productContent .product-right-column .product-info,
+    body .product-main .product-container .product-content .product-right-column .product-info,
+    body .product-main .product-container #productContent .product-right-column .product-info,
+    .product-main .product-container .product-content .product-right-column .product-info,
+    .product-main .product-container #productContent .product-right-column .product-info,
+    #productDetailsSection > .product-info,
+    .product-info {
+        padding-top: 0px !important;
+    }
+
+    #productDetailsSection > .product-main-info-container .product-price-section {
+        justify-content: flex-start !important;
+        align-items: center !important;
+        width: 100% !important;
+    }
+}
+

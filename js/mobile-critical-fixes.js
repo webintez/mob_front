@@ -51,7 +51,7 @@
 
         const productMain = document.querySelector('.product-main');
         if (productMain) {
-            // /* console.log */('✓ product-main found, letting flipkart-mobile-header.js handle padding');
+            // /* console.log */('✓ product-main found, letting mobitez-mobile-header.js handle padding');
         }
 
         const productContainer = document.querySelector('.product-container');
@@ -85,7 +85,7 @@
 
         const productInfo = document.querySelector('.product-info');
         if (productInfo) {
-            productInfo.style.padding = '8px 12px'; // Compact vertical padding
+            productInfo.style.padding = '0px 12px 8px 12px'; // Compact vertical padding (no top padding)
             // /* console.log */('✓ Fixed product info');
         }
 

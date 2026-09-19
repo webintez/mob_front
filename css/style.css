@@ -87,9 +87,13 @@ body.homepage .header .search-input {
     border: 1px solid #e0e0e0;
 }
 
-body.homepage .header .search-btn {
-    background: linear-gradient(135deg, var(--mobitez-orange) 0%, var(--mobitez-orange-dark) 100%);
-    color: white;
+/* Desktop override: If we are on desktop, ensure search button is transparent and integrated */
+@media (min-width: 769px) {
+    body.homepage .header .search-btn {
+        background: transparent !important;
+        color: var(--mobitez-purple) !important;
+        box-shadow: none !important;
+    }
 }
 
 body.homepage .header .cart {
@@ -149,43 +153,83 @@ body.homepage .header .cart-count {
 /* Base styles are now unified; homepage overrides no longer needed for alignment */
 
 
-.search-container {
-    flex: 1;
-    max-width: 600px;
-    min-width: 200px;
-    display: flex;
-    position: relative;
-    margin: 0;
-    box-sizing: border-box;
-    overflow: visible;
+/* Desktop Search Bar Redesign - Mobile Aesthetic (Pill-shaped & Integrated) */
+@media (min-width: 769px) {
+    .search-container {
+        flex: 1;
+        max-width: 580px;
+        min-width: 200px;
+        display: flex;
+        align-items: center;
+        position: relative;
+        margin: 0 20px;
+        padding: 0 4px 0 12px;
+        box-sizing: border-box;
+        overflow: visible;
+        background-color: #fff;
+        border: 1.6px solid var(--mobitez-purple);
+        border-radius: 12px;
+        height: 44px;
+        transition: all 0.3s ease;
+    }
+
+    .search-container:focus-within {
+        border-color: var(--mobitez-purple);
+        box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .search-input {
+        flex: 1;
+        padding: 0 12px;
+        border: none !important;
+        border-radius: 0 !important;
+        font-size: 15px;
+        outline: none !important;
+        background: transparent !important;
+        height: 100%;
+        color: #212121;
+    }
+
+    .search-btn {
+        flex-shrink: 0;
+        background: transparent !important;
+        border: none !important;
+        padding: 0;
+        margin: 0;
+        width: 36px;
+        height: 36px;
+        line-height: 1;
+        cursor: pointer;
+        color: var(--mobitez-purple) !important;
+        font-size: 18px;
+        transition: all 0.2s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        order: -1;
+        /* Keep icon on the left like mobile */
+    }
+
+    .search-btn:hover {
+        color: var(--mobitez-orange-dark) !important;
+        transform: scale(1.1);
+    }
+
+    .search-btn i {
+        font-size: 18px;
+        color: inherit;
+    }
 }
 
-.search-input {
-    width: 100%;
-    padding: 10px 16px;
-    border: none;
-    border-radius: 2px 0 0 2px;
-    font-size: 14px;
-    outline: none;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+/* Global Button Styles */
+.browse-btn {
+    background: #1b5e20 !important;
+    transition: all 0.3s ease;
 }
 
-.search-btn {
-    background: linear-gradient(135deg, var(--mobitez-orange) 0%, var(--mobitez-orange-dark) 100%);
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-    border-radius: 0 2px 2px 0;
-    color: white;
-    font-size: 16px;
-    transition: all 0.3s;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.search-btn:hover {
-    background: linear-gradient(135deg, var(--mobitez-orange-dark) 0%, var(--mobitez-orange) 100%);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+.browse-btn:hover {
+    background: #0d3b14 !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
 }
 
 /* Search Suggestions Dropdown */
@@ -258,7 +302,7 @@ body.homepage .header .cart-count {
     flex-shrink: 0;
     margin-left: 0;
     position: relative;
-    z-index: 10002;
+    z-index: 50;
 }
 
 .header-item a {
@@ -572,7 +616,7 @@ body.homepage .header .cart-count {
     border-bottom: 1px solid var(--mobitez-gray-light);
     padding: 0;
     position: fixed !important;
-    top: 56px !important;
+    top: 72px !important;
     left: 0 !important;
     right: 0 !important;
     width: 100% !important;
@@ -1590,4 +1634,45 @@ body.homepage .products-grid {
 
 ::-webkit-scrollbar-thumb:hover {
     background: linear-gradient(135deg, var(--mobitez-orange) 0%, var(--mobitez-purple) 100%);
+}
+
+/* Pagination Styles - Global Listing Pages */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid #e0e0e0;
+}
+
+.pagination-btn {
+    padding: 8px 16px;
+    border: 1px solid #e0e0e0;
+    background: #ffffff;
+    color: #212121;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    font-family: 'Roboto', sans-serif;
+    transition: all 0.2s;
+}
+
+.pagination-btn:hover {
+    background: #f5f5f5;
+    border-color: #0a4409;
+}
+
+.pagination-btn.active {
+    background: #1b5e20; /* Primary Brand Green */
+    color: #ffffff;
+    border-color: #052b05;
+}
+
+.pagination-ellipsis {
+    padding: 8px 4px;
+    color: #878787;
+    font-size: 14px;
 }

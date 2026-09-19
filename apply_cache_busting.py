@@ -1,7 +1,7 @@
 import os
 import re
 
-VERSION = "1769841025"
+VERSION = "1773128063"
 DIRECTORIES = [
     "/home/u934861248/domains/mobitez.com/public_html",
     "/home/u934861248/domains/mobitez.com/public_html/public"

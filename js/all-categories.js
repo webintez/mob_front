@@ -41,8 +41,8 @@
 
     // Fetch and process category data
     async function loadCategories() {
-        const CACHE_KEY = 'mobitez_categories_tree';
-        const CACHE_TIME_KEY = 'mobitez_categories_tree_time';
+        const CACHE_KEY = 'Mobitez Private Limited_categories_tree';
+        const CACHE_TIME_KEY = 'Mobitez Private Limited_categories_tree_time';
         const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
 
         let loadedFromCache = false;
@@ -70,7 +70,7 @@
             try {
                 const indexResult = await apiCall('/categories/index');
                 if (indexResult && indexResult.success && indexResult.data && indexResult.data.tree) {
-                    categoryTree = indexResult.data.tree;
+                    categoryTree = sortCategoryTree(indexResult.data.tree);
                     
                     // Save to Cache
                     try {
@@ -88,6 +88,9 @@
                 renderError('Unable to load categories. Please try again.');
                 return;
             }
+        } else if (categoryTree && Array.isArray(categoryTree)) {
+            // Even if loaded from cache, ensure it's sorted
+            categoryTree = sortCategoryTree(categoryTree);
         }
 
         if (categoryTree && categoryTree.length > 0) {
@@ -104,6 +107,24 @@
             renderError('No categories found.');
         }
     }
+
+    // Sort categories recursively by sort_order
+    function sortCategoryTree(tree) {
+        if (!Array.isArray(tree)) return [];
+        
+        return tree
+            .sort((a, b) => (a.sort_order || 999) - (b.sort_order || 999))
+            .map(category => {
+                if (category.children && Array.isArray(category.children) && category.children.length > 0) {
+                    return {
+                        ...category,
+                        children: sortCategoryTree(category.children)
+                    };
+                }
+                return category;
+            });
+    }
+
 
     // Render Left Sidebar (L0)
     function renderSidebar() {

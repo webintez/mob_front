@@ -293,6 +293,9 @@ function setupEventListeners() {
 
         showReviewForm();
     });
+
+    // Initialize EMI Request application system
+    initEmiApplication();
 }
 
 // Toggle wishlist
@@ -531,7 +534,7 @@ function shareToPlatform(platform) {
 }
 
 // Compare functionality - Flipkart style
-const COMPARE_STORAGE_KEY = 'mobitez.webintez.compare_products';
+const COMPARE_STORAGE_KEY = 'mobitez.compare_products';
 const MAX_COMPARE_PRODUCTS = 4;
 
 // Get compare list from localStorage
@@ -678,11 +681,10 @@ async function loadProduct(slug) {
             showError('Product slug is required');
             return;
         }
-
+        const logFn = window.originalConsoleLog || console.log;
+        logFn(`Product Request Route: /products/${slug}`);
         const result = await makeApiCall(`/products/${slug}`);
-
-        // Log product API response
-        // /* console.log */('Product API Response:', result);
+        logFn('Product API Response:', result);
 
         if (result && result.success && result.data) {
             currentProduct = result.data;
@@ -779,6 +781,45 @@ async function loadProduct(slug) {
     }
 }
 
+// Animate product price roll-down
+function animateProductDetailsPrice(startPrice, endPrice) {
+    const priceEl = document.getElementById('currentPrice');
+    if (!priceEl) return;
+
+    priceEl.classList.add('animating');
+
+    let duration = 2500;
+    let startTime = null;
+
+    function step(timestamp) {
+        if (!startTime) startTime = timestamp;
+
+        const progress = Math.min((timestamp - startTime) / duration, 1);
+        const easeOut = 1 - Math.pow(1 - progress, 4);
+
+        const currentVal = Math.floor(
+            startPrice - (startPrice - endPrice) * easeOut
+        );
+
+        priceEl.textContent = formatPrice(currentVal);
+
+        if (progress < 1) {
+            requestAnimationFrame(step);
+        } else {
+            priceEl.textContent = formatPrice(endPrice);
+            priceEl.classList.remove('animating');
+            
+            // Trigger "hit" animation like homepage
+            priceEl.classList.add('hit');
+            setTimeout(() => {
+                priceEl.classList.remove('hit');
+            }, 500);
+        }
+    }
+
+    requestAnimationFrame(step);
+}
+
 // Display product
 function displayProduct(product) {
     // Update breadcrumbs (all locations) - use API breadcrumbs if available, otherwise build from flat categories
@@ -845,17 +886,59 @@ function displayProduct(product) {
 
     displayRating(rating, ratingsCount, reviewsCount);
 
-    // Price - Convert to numbers
-    const currentPrice = parseFloat(product.price) || 0;
-    const originalPrice = parseFloat(product.original_price || product.price) || 0;
-    const discount = originalPrice > currentPrice
+    // Price - Convert to numbers (supports flash sale override)
+    let currentPrice = parseFloat(product.price) || 0;
+    let originalPrice = parseFloat(product.original_price || product.price) || 0;
+    let discount = originalPrice > currentPrice
         ? Math.round(((originalPrice - currentPrice) / originalPrice) * 100)
         : 0;
+
+    const flashData = product.flash_sale_data || (product.is_on_flash_sale ? product : null);
+    const nowTime = new Date().getTime();
+    const startTimeVal = flashData && (flashData.start_time || flashData.flash_sale_starts_at) ? new Date(flashData.start_time || flashData.flash_sale_starts_at).getTime() : 0;
+    const endTimeVal = flashData && (flashData.end_time || flashData.flash_sale_ends_at) ? new Date(flashData.end_time || flashData.flash_sale_ends_at).getTime() : 0;
+    
+    const isFlashSaleLive = flashData && (flashData.is_live || ((startTimeVal === 0 || nowTime >= startTimeVal) && (endTimeVal === 0 || nowTime <= endTimeVal)));
+    
+    const priceSectionEl = document.querySelector('.product-price-section');
+    
+    if (isFlashSaleLive) {
+        const flashPriceVal = flashData.flash_sale_price || flashData.flash_price || product.flash_sale_price || product.flash_price;
+        const flashPrice = parseFloat(flashPriceVal);
+        if (flashPrice > 0) {
+            currentPrice = flashPrice;
+            
+            // Calculate original price robustly using original_price, price, or flashPrice + savings
+            const savingsVal = parseFloat(flashData.savings || flashData.flash_sale_savings || product.savings || product.flash_sale_savings || 0);
+            originalPrice = parseFloat(product.original_price) || parseFloat(product.price) || 0;
+            if (originalPrice <= currentPrice && savingsVal > 0) {
+                originalPrice = currentPrice + savingsVal;
+            }
+            
+            const discVal = flashData.discount_percentage || product.discount_percentage;
+            discount = discVal ? parseFloat(discVal) : (originalPrice > currentPrice ? ((originalPrice - currentPrice) / originalPrice * 100) : 0);
+        }
+        
+        if (priceSectionEl) {
+            priceSectionEl.classList.remove('flash-sale-active');
+            priceSectionEl.querySelectorAll('.drop-label, .save-label, .confetti, .price-spark').forEach(el => el.remove());
+        }
+    } else {
+        if (priceSectionEl) {
+            priceSectionEl.classList.remove('flash-sale-active');
+            priceSectionEl.querySelectorAll('.drop-label, .save-label, .confetti, .price-spark').forEach(el => el.remove());
+        }
+    }
+    
     const extraDiscount = discount > 0 ? Math.round((originalPrice - currentPrice) / 1000) : 0;
 
     const currentPriceEl = document.getElementById('currentPrice');
     if (currentPriceEl) {
-        currentPriceEl.textContent = formatPrice(currentPrice);
+        if (isFlashSaleLive) {
+            animateProductDetailsPrice(originalPrice, currentPrice);
+        } else {
+            currentPriceEl.textContent = formatPrice(currentPrice);
+        }
     }
 
     const originalPriceEl = document.getElementById('originalPrice');
@@ -865,14 +948,17 @@ function displayProduct(product) {
     if (originalPrice > currentPrice) {
         if (originalPriceEl) {
             originalPriceEl.textContent = formatPrice(originalPrice);
-            originalPriceEl.style.display = 'block';
+            originalPriceEl.style.display = 'inline-block';
+            originalPriceEl.classList.remove('active');
         }
         if (discountBadgeEl) {
-            discountBadgeEl.textContent = `${discount}% off`;
+            // Precision-formatted discount text: integer if whole, decimal up to 2 decimal places otherwise
+            const discountText = discount % 1 === 0 ? Math.round(discount) + '% off' : parseFloat(discount.toFixed(2)) + '% off';
+            discountBadgeEl.textContent = discountText;
             discountBadgeEl.style.display = 'inline-block';
         }
         if (extraOfferEl) {
-            if (extraDiscount > 0) {
+            if (extraDiscount > 0 && !isFlashSaleLive) {
                 extraOfferEl.textContent = `Extra ₹${extraDiscount * 1000} off`;
                 extraOfferEl.style.display = 'block';
             } else {
@@ -882,6 +968,7 @@ function displayProduct(product) {
     } else {
         if (originalPriceEl) {
             originalPriceEl.style.display = 'none';
+            originalPriceEl.classList.remove('active');
         }
         if (discountBadgeEl) {
             discountBadgeEl.style.display = 'none';
@@ -1048,8 +1135,8 @@ function displayProduct(product) {
         productDetailsSection.style.display = 'block';
         populateProductDetails(product);
 
-        // Handle Mobile Stock Status (Notify Me / Restocking) - Hotfix
-        handleMobileStockStatus(product);
+        // Handle Stock Status (Notify Me / Restocking) - Unified for Mobile & Desktop
+        handleStockStatus(product);
     }
 
     // Force mobile layout after product is displayed
@@ -1126,62 +1213,344 @@ function forceMobileLayout() {
 }
 
 /**
- * Handle Mobile-specific Stock Status (Out of Stock / Restocking)
+ * Handle Stock Status (Out of Stock / Restocking) - Unified for Mobile & Desktop
  * Requirements: 
- * - If out of stock on mobile: replace buttons with "Notify me" (#1b5e20)
+ * - If out of stock: replace buttons with "Notify me" (#1b5e20)
  * - If restocking: show pulsating sonar dot in price section
  * - Else if out of stock: show "Out of Stock" label
  */
-function handleMobileStockStatus(product) {
-    const isMobile = window.innerWidth <= 768;
-    if (!isMobile) return;
+let productFlashSaleTimerInterval = null;
 
-    if (product.is_out_of_stock || product.stock_quantity <= 0) {
-        // 1. Handle Buttons (productContent > div[1] > div[3])
-        const buttonsContainer = document.querySelector('.product-actions-left');
-        if (buttonsContainer) {
-            buttonsContainer.innerHTML = `
-                <button class="btn-notify-me" id="notifyMeBtn">
-                    <i class="fas fa-bell"></i>
-                    NOTIFY ME
-                </button>
-            `;
+function setupFlashSaleTimerUI(targetTimeStr, label) {
+    const priceSection = document.querySelector('.product-price-section');
+    if (!priceSection) return;
 
-            // Re-apply sticky properties because we just replaced the innerHTML
-            if (typeof makeButtonsStickyOnMobile === 'function') {
-                makeButtonsStickyOnMobile();
-            }
+    // Remove existing timer if any
+    const existingTimer = priceSection.querySelector('.product-flash-timer-wrapper');
+    if (existingTimer) existingTimer.remove();
+    if (productFlashSaleTimerInterval) clearInterval(productFlashSaleTimerInterval);
 
-            // Click listener for Notify Me
-            document.getElementById('notifyMeBtn')?.addEventListener('click', () => {
-                // If authenticated, show success, else could prompt login
-                if (typeof showNotification === 'function') {
-                    showNotification('We will notify you when this product is back in stock!', 'success');
-                } else {
-                    alert('We will notify you when this product is back in stock!');
-                }
-            });
+    return;
+
+    const timerEl = document.getElementById('productFlashTimerDetails');
+    const targetTime = new Date(targetTimeStr).getTime();
+
+    function updateT() {
+        const distance = targetTime - new Date().getTime();
+        if (distance < 0) {
+            if (timerEl) timerEl.textContent = '00:00:00';
+            clearInterval(productFlashSaleTimerInterval);
+            setTimeout(() => window.location.reload(), 1000); // Reload to get fresh state
+            return;
         }
 
-        // 2. Handle Status in Price Section (productDetailsSection > div[1] > div[3])
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        let tStr = '';
+        if (days > 0) tStr += days + 'd ';
+        tStr += (hours < 10 ? '0' : '') + hours + ':';
+        tStr += (minutes < 10 ? '0' : '') + minutes + ':';
+        tStr += (seconds < 10 ? '0' : '') + seconds;
+
+        if (timerEl) timerEl.textContent = tStr;
+    }
+    
+    updateT();
+    productFlashSaleTimerInterval = setInterval(updateT, 1000);
+}
+
+let productPageFlashTimerInterval = null;
+
+function setupProductPageFlashSaleTimer(targetTimeStr) {
+    if (productPageFlashTimerInterval) {
+        clearInterval(productPageFlashTimerInterval);
+    }
+
+    const timerBoxes = document.getElementById('productPageFlashTimer');
+    if (!timerBoxes || !targetTimeStr) return;
+
+    const targetTime = new Date(targetTimeStr).getTime();
+
+    function updateTimer() {
+        const now = new Date().getTime();
+        const distance = targetTime - now;
+
+        if (distance < 0) {
+            clearInterval(productPageFlashTimerInterval);
+            const banner = timerBoxes.closest('.product-flash-sale-banner');
+            const timerLabel = banner ? banner.querySelector('.timer-label') : null;
+            if (timerLabel) timerLabel.textContent = 'Sale Ended';
+            timerBoxes.style.display = 'none';
+            setTimeout(() => window.location.reload(), 1000);
+            return;
+        }
+
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        const dStr = days < 10 ? "0" + days : days.toString();
+        const hStr = hours < 10 ? "0" + hours : hours.toString();
+        const mStr = minutes < 10 ? "0" + minutes : minutes.toString();
+        const sStr = seconds < 10 ? "0" + seconds : seconds.toString();
+
+        const daysUnit = timerBoxes.querySelector('.days')?.closest('.timer-box-unit');
+        const daysColon = timerBoxes.querySelector('.days-colon');
+        if (days === 0) {
+            if (daysUnit) daysUnit.style.display = 'none';
+            if (daysColon) daysColon.style.display = 'none';
+        } else {
+            if (daysUnit) daysUnit.style.display = 'flex';
+            if (daysColon) daysColon.style.display = 'inline-block';
+            updateDigit(timerBoxes.querySelector('.days'), dStr);
+        }
+
+        updateDigit(timerBoxes.querySelector('.hours'), hStr);
+        updateDigit(timerBoxes.querySelector('.minutes'), mStr);
+        updateDigit(timerBoxes.querySelector('.seconds'), sStr);
+    }
+
+    function updateDigit(el, val) {
+        if (!el) return;
+        if (el.textContent !== val) {
+            el.textContent = val;
+            el.classList.remove('slide-down-timer');
+            void el.offsetWidth; // Force reflow
+            el.classList.add('slide-down-timer');
+        }
+    }
+
+    updateTimer();
+    productPageFlashTimerInterval = setInterval(updateTimer, 1000);
+}
+
+function handleStockStatus(product) {
+    let overrideButtonsHTML = null;
+
+    if (product.is_out_of_stock || product.stock_quantity <= 0) {
+        const bannerContainer = document.getElementById('productFlashSaleBanner');
+        if (bannerContainer) {
+            bannerContainer.style.display = 'none';
+        }
+        if (productPageFlashTimerInterval) {
+            clearInterval(productPageFlashTimerInterval);
+            productPageFlashTimerInterval = null;
+        }
+
+        overrideButtonsHTML = `
+            <button class="btn-notify-me" id="notifyMeBtn">
+                <i class="fas fa-bell"></i>
+                NOTIFY ME
+            </button>
+        `;
+
         const priceSection = document.querySelector('.product-price-section');
         if (priceSection) {
-            // Remove existing stock status elements if any
             const existingStatus = priceSection.querySelector('.restocking-status, .out-of-stock-label');
             if (existingStatus) existingStatus.remove();
 
             if (product.is_restocking) {
-                const sonarHTML = `
+                priceSection.insertAdjacentHTML('beforeend', `
                     <div class="restocking-status">
                         <div class="sonar-dot"></div>
                         <span class="status-text">Restocking Soon</span>
                     </div>
-                `;
-                priceSection.insertAdjacentHTML('beforeend', sonarHTML);
+                `);
             } else {
-                const oosHTML = `<div class="out-of-stock-label">Out of Stock</div>`;
-                priceSection.insertAdjacentHTML('beforeend', oosHTML);
+                priceSection.insertAdjacentHTML('beforeend', `<div class="out-of-stock-label">Out of Stock</div>`);
             }
+        }
+    } else {
+        // Flash sale handling
+        const hasFlashSale = product.is_on_flash_sale || product.flash_sale_data;
+        if (hasFlashSale) {
+            const flashData = product.flash_sale_data || product;
+            const now = new Date().getTime();
+            
+            const startTimeStr = flashData.start_time || flashData.flash_sale_starts_at;
+            const startTime = startTimeStr ? new Date(startTimeStr).getTime() : 0;
+            
+            const endTimeStr = flashData.end_time || flashData.flash_sale_ends_at;
+            const endTime = endTimeStr ? new Date(endTimeStr).getTime() : 0;
+            
+            // Default to true if undefined, but explicit false means false
+            const canBuyBefore = flashData.can_buy_before_sale !== false;
+            const canBuyAfter = flashData.can_buy_after_sale !== false;
+            
+            let btnText = "BUY NOW";
+            let btnDisabled = false;
+            let showTimerStr = null;
+            let timerLabel = '';
+
+            const isUpcoming = startTime > 0 && now < startTime;
+            const isLive = (startTime === 0 || now >= startTime) && (endTime === 0 || now <= endTime);
+
+            if (isUpcoming) {
+                showTimerStr = startTimeStr;
+                timerLabel = 'Sale starts in';
+                if (!canBuyBefore) {
+                    btnText = "Sale starts soon";
+                    btnDisabled = true;
+                }
+            } else if (endTime > 0 && now > endTime) {
+                if (!canBuyAfter) {
+                    btnText = "Restocking soon";
+                    btnDisabled = true;
+                }
+            } else if (isLive) {
+                showTimerStr = endTimeStr;
+                timerLabel = 'Sale ends in';
+            }
+
+            if (btnDisabled) {
+                overrideButtonsHTML = `
+                    <button class="btn-notify-me" style="background-color: #878787; cursor: not-allowed; opacity: 0.8;" disabled>
+                        <i class="fas fa-clock"></i>
+                        ${btnText.toUpperCase()}
+                    </button>
+                `;
+            } else {
+                overrideButtonsHTML = `
+                    <button class="btn-add-cart" id="addToCartBtn">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span>ADD TO CART</span>
+                    </button>
+                    <button type="button" id="applyEmiBtn" class="btn-apply-emi" style="display: none;">
+                        <span class="emi-title">Buy with EMI</span>
+                    </button>
+                    <button class="btn-buy-now" id="buyNowBtn">
+                        <i class="fas fa-bolt"></i>
+                        <span>${btnText.toUpperCase()}</span>
+                    </button>
+                `;
+            }
+
+            setupFlashSaleTimerUI(showTimerStr, timerLabel);
+
+            // Render premium custom flash sale banner
+            const bannerContainer = document.getElementById('productFlashSaleBanner');
+            if (bannerContainer) {
+                if (isUpcoming || isLive) {
+                    bannerContainer.style.display = 'flex';
+                    bannerContainer.className = `product-flash-sale-banner ${isLive ? 'active-sale' : 'upcoming-sale'}`;
+                    
+                    bannerContainer.innerHTML = `
+                        <div class="banner-spark s1"></div>
+                        <div class="banner-spark s2"></div>
+                        <div class="banner-spark s3"></div>
+                        <div class="banner-spark s4"></div>
+                        <div class="banner-spark s5"></div>
+                        
+                        <div class="flash-sale-badge">
+                            <i class="${isLive ? 'fas fa-bolt' : 'fas fa-clock'} flash-icon"></i>
+                            <span>${isLive ? 'FLASH SALE LIVE' : 'FLASH SALE UPCOMING'}</span>
+                        </div>
+                        
+                        <div class="flash-sale-timer-wrapper">
+                            <span class="timer-label">${isLive ? 'Ends in:' : 'Starts in:'}</span>
+                            <div class="timer-boxes" id="productPageFlashTimer">
+                                <div class="timer-box-unit">
+                                    <span class="timer-num days">00</span>
+                                    <span class="timer-unit">Days</span>
+                                </div>
+                                <span class="timer-colon days-colon">:</span>
+                                <div class="timer-box-unit">
+                                    <span class="timer-num hours">00</span>
+                                    <span class="timer-unit">Hrs</span>
+                                </div>
+                                <span class="timer-colon">:</span>
+                                <div class="timer-box-unit">
+                                    <span class="timer-num minutes">00</span>
+                                    <span class="timer-unit">Mins</span>
+                                </div>
+                                <span class="timer-colon">:</span>
+                                <div class="timer-box-unit">
+                                    <span class="timer-num seconds">00</span>
+                                    <span class="timer-unit">Secs</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    
+                    setupProductPageFlashSaleTimer(isLive ? endTimeStr : startTimeStr);
+                } else {
+                    bannerContainer.style.display = 'none';
+                    if (productPageFlashTimerInterval) {
+                        clearInterval(productPageFlashTimerInterval);
+                        productPageFlashTimerInterval = null;
+                    }
+                }
+            }
+            
+            const priceSection = document.querySelector('.product-price-section');
+            if (priceSection) {
+                const existingStatus = priceSection.querySelector('.restocking-status, .out-of-stock-label');
+                if (existingStatus) existingStatus.remove();
+            }
+        } else {
+            // Standard in-stock product
+            overrideButtonsHTML = `
+                <button class="btn-add-cart" id="addToCartBtn">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>ADD TO CART</span>
+                </button>
+                <button type="button" id="applyEmiBtn" class="btn-apply-emi" style="display: none;">
+                    <span class="emi-title">Buy with EMI</span>
+                </button>
+                <button class="btn-buy-now" id="buyNowBtn">
+                    <i class="fas fa-bolt"></i>
+                    <span>BUY NOW</span>
+                </button>
+            `;
+            
+            const bannerContainer = document.getElementById('productFlashSaleBanner');
+            if (bannerContainer) {
+                bannerContainer.style.display = 'none';
+            }
+            if (productPageFlashTimerInterval) {
+                clearInterval(productPageFlashTimerInterval);
+                productPageFlashTimerInterval = null;
+            }
+
+            // Cleanup flash sale timers / out of stock labels
+            setupFlashSaleTimerUI(null, '');
+            const priceSection = document.querySelector('.product-price-section');
+            if (priceSection) {
+                const existingStatus = priceSection.querySelector('.restocking-status, .out-of-stock-label');
+                if (existingStatus) existingStatus.remove();
+            }
+        }
+    }
+
+    if (overrideButtonsHTML) {
+        const buttonsContainer = document.querySelector('.product-actions-left');
+        if (buttonsContainer) {
+            buttonsContainer.innerHTML = overrideButtonsHTML;
+            if (typeof makeButtonsStickyOnMobile === 'function') {
+                makeButtonsStickyOnMobile();
+            }
+
+            // Re-bind standard events
+            document.getElementById('addToCartBtn')?.addEventListener('click', addToCart);
+            document.getElementById('buyNowBtn')?.addEventListener('click', buyNow);
+            document.getElementById('notifyMeBtn')?.addEventListener('click', () => {
+                if (document.getElementById('notifyMeBtn').disabled) return;
+                
+                if (typeof isAuthenticated === 'undefined' || !isAuthenticated()) {
+                    showNotification('Please login to get restock notifications', 'info');
+                    setTimeout(() => {
+                        window.location.href = '/login.html?return=' + encodeURIComponent(window.location.href);
+                    }, 1500);
+                    return;
+                }
+                if (currentProduct && (currentProduct.slug || currentProduct.id)) {
+                    requestRestockNotification(currentProduct.slug || currentProduct.id);
+                }
+            });
         }
     }
 }
@@ -1416,6 +1785,39 @@ function populateProductDetails(product) {
             const price = parseFloat(product.price) || 0;
             const monthlyEMI = Math.round(price / 12);
             emiAmount.textContent = formatPrice(monthlyEMI);
+        }
+
+        // Toggle EMI Apply Button based on emi_available flag
+        const applyEmiBtn = document.getElementById('applyEmiBtn');
+        const actionsContainer = document.querySelector('.product-actions-left');
+        if (applyEmiBtn) {
+            if (product.emi_available) {
+                applyEmiBtn.style.display = 'inline-flex';
+                actionsContainer?.classList.add('has-emi');
+                
+                // Update Buy Now button text/subtext
+                const buyNowBtn = document.getElementById('buyNowBtn');
+                if (buyNowBtn && product.price) {
+                    const price = parseFloat(product.price) || 0;
+                    buyNowBtn.innerHTML = `
+                        <span class="buy-now-title">Buy now</span>
+                        <span class="buy-now-subtitle">at ₹${formatPrice(price)}</span>
+                    `;
+                }
+
+            } else {
+                applyEmiBtn.style.display = 'none';
+                actionsContainer?.classList.remove('has-emi');
+                
+                // Restore standard Buy Now text
+                const buyNowBtn = document.getElementById('buyNowBtn');
+                if (buyNowBtn) {
+                    buyNowBtn.innerHTML = `
+                        <i class="fas fa-bolt"></i>
+                        <span>BUY NOW</span>
+                    `;
+                }
+            }
         }
     }
 
@@ -3147,6 +3549,42 @@ function updateProductForVariation(variationProduct) {
                 const monthlyEMI = Math.round(price / 12);
                 emiAmount.textContent = formatPrice(monthlyEMI);
             }
+
+            // Toggle EMI Apply Button for variations
+            const applyEmiBtn = document.getElementById('applyEmiBtn');
+            const actionsContainer = document.querySelector('.product-actions-left');
+            if (applyEmiBtn) {
+                const isEmiAvailable = variationProduct.emi_available !== undefined 
+                    ? variationProduct.emi_available 
+                    : (currentProduct ? currentProduct.emi_available : false);
+                if (isEmiAvailable) {
+                    applyEmiBtn.style.display = 'inline-flex';
+                    actionsContainer?.classList.add('has-emi');
+                    
+                    // Update Buy Now button text/subtext
+                    const buyNowBtn = document.getElementById('buyNowBtn');
+                    if (buyNowBtn && variationProduct.price) {
+                        const price = parseFloat(variationProduct.price) || 0;
+                        buyNowBtn.innerHTML = `
+                            <span class="buy-now-title">Buy now</span>
+                            <span class="buy-now-subtitle">at ₹${formatPrice(price)}</span>
+                        `;
+                    }
+
+                } else {
+                    applyEmiBtn.style.display = 'none';
+                    actionsContainer?.classList.remove('has-emi');
+                    
+                    // Restore standard Buy Now text
+                    const buyNowBtn = document.getElementById('buyNowBtn');
+                    if (buyNowBtn) {
+                        buyNowBtn.innerHTML = `
+                            <i class="fas fa-bolt"></i>
+                            <span>BUY NOW</span>
+                        `;
+                    }
+                }
+            }
         }
     }
 
@@ -3161,10 +3599,12 @@ function updateProductForVariation(variationProduct) {
         displaySpecificationsInDetails(variationProduct.simple_attribute_values);
     }
 
-    // Update current product reference to maintain state
     if (currentProduct) {
         currentProduct = { ...currentProduct, ...variationProduct };
     }
+
+    // Update stock status UI for the new variation
+    handleStockStatus(variationProduct || currentProduct);
 }
 
 // Display grouped specifications (new format from API)
@@ -4096,6 +4536,48 @@ async function addToCart() {
 }
 
 // Buy now
+/**
+ * Request Restock Notification for a product
+ * @param {string|number} productIdentifier - Product slug or ID
+ */
+async function requestRestockNotification(productIdentifier) {
+    if (!productIdentifier) return;
+
+    try {
+        // Show loading notification
+        showNotification('Adding you to the notification list...', 'info');
+
+        // Note: makeApiCall will throw an error for non-2xx responses
+        const result = await makeApiCall(`/products/${productIdentifier}/notify-restock`, {
+            method: 'POST',
+            headers: typeof getAuthHeaders === 'function' ? getAuthHeaders() : {}
+        });
+
+        if (result && result.success) {
+            showNotification(result.message || 'We will notify you when this product is back in stock!', 'success');
+        } else {
+            showNotification(result.message || 'Failed to register for notification.', 'error');
+        }
+    } catch (error) {
+        const message = error.message || '';
+        
+        // Handle specific error messages based on API documentation
+        if (message.includes('Unauthorized') || message.includes('401')) {
+            showNotification('Please login to get restock notifications', 'error');
+            if (typeof clearAuth === 'function') clearAuth();
+            setTimeout(() => {
+                window.location.href = '/login.html?return=' + encodeURIComponent(window.location.href);
+            }, 1000);
+        } else if (message.includes('already in stock')) {
+            showNotification(message, 'warning');
+        } else if (message.includes('No query results') || message.includes('404')) {
+            showNotification('Product not found.', 'error');
+        } else {
+            showNotification(message || 'Failed to register for restock notification. Please try again.', 'error');
+        }
+    }
+}
+
 async function buyNow() {
     if (!isAuthenticated()) {
         window.location.href = '/login.html?return=' + encodeURIComponent(window.location.href);
@@ -5903,18 +6385,18 @@ function createReviewModal() {
             selectedRating = index + 1;
             document.getElementById('overallRating').value = selectedRating;
             starInputs.forEach((s, i) => {
-                s.style.color = i < selectedRating ? '#ff9f00' : '#ddd';
+                s.style.color = i < selectedRating ? '#24db65' : '#ddd';
             });
         });
         star.addEventListener('mouseenter', () => {
             starInputs.forEach((s, i) => {
-                s.style.color = i <= index ? '#ff9f00' : '#ddd';
+                s.style.color = i <= index ? '#24db65' : '#ddd';
             });
         });
     });
     overallRatingSection.querySelector('.star-rating-input').addEventListener('mouseleave', () => {
         starInputs.forEach((s, i) => {
-            s.style.color = i < selectedRating ? '#ff9f00' : '#ddd';
+            s.style.color = i < selectedRating ? '#24db65' : '#ddd';
         });
     });
 
@@ -5947,7 +6429,7 @@ function createReviewModal() {
                     const categoryId = categoryStars.dataset.categoryId;
                     const stars = categoryStars.querySelectorAll('span');
                     stars.forEach((s, idx) => {
-                        s.style.color = idx < i ? '#ff9f00' : '#ddd';
+                        s.style.color = idx < i ? '#24db65' : '#ddd';
                     });
                     // Store rating
                     const hiddenInput = document.getElementById(`categoryRating_${categoryId}`);
@@ -6488,4 +6970,33 @@ function switchMobileTab(tabId, clickedBtn) {
 // Add check to re-init on resize if needed
 // This might be tricky if we move DOM elements. 
 // For now, focus on initial load mobile view.
+
+
+// ==========================================================================
+// EMI APPLICATION FLOW IMPLEMENTATION
+// ==========================================================================
+
+function initEmiApplication() {
+    document.addEventListener('click', (e) => {
+        const applyEmiBtn = e.target.closest('#applyEmiBtn');
+        if (!applyEmiBtn) return;
+        
+        e.preventDefault();
+
+        // 1. Authentication Check
+        if (typeof isAuthenticated === 'undefined' || !isAuthenticated()) {
+            showNotification('Please login to apply for EMI', 'error');
+            setTimeout(() => {
+                const prodId = (currentProduct && currentProduct.id) ? currentProduct.id : '';
+                window.location.href = '/login.html?return=' + encodeURIComponent('/emi-checkout.html?id=' + prodId);
+            }, 1500);
+            return;
+        }
+
+        // Redirect directly to emi-checkout page
+        if (currentProduct && currentProduct.id) {
+            window.location.href = '/emi-checkout.html?id=' + currentProduct.id;
+        }
+    });
+}
 

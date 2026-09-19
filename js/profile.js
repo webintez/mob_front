@@ -6,7 +6,7 @@ let isEditingEmail = false;
 let isEditingPhone = false;
 
 const urlParams = new URLSearchParams(window.location.search);
-const allowedSections = new Set(['landing', 'personal', 'addresses', 'pan', 'upi', 'reviews', 'giftcards', 'cards', 'coupons', 'notifications']);
+const allowedSections = new Set(['landing', 'personal', 'addresses', 'pan', 'upi', 'reviews', 'giftcards', 'cards', 'coupons', 'notifications', 'emi']);
 let activeSection = urlParams.get('section') || (window.innerWidth < 768 ? 'landing' : 'personal');
 
 if (!allowedSections.has(activeSection)) {
@@ -48,6 +48,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         await initUpiSection();
     } else if (activeSection === 'reviews') {
         await initReviewsSection();
+    } else if (activeSection === 'emi') {
+        await initEmiSection();
     }
 
     // Load profile
@@ -122,6 +124,61 @@ function displayProfile(data) {
         } else {
             profileActionBanner.style.setProperty('display', 'flex', 'important');
         }
+    }
+
+    // Check account deletion status
+    checkDeletionRequestStatus(data);
+}
+
+function checkDeletionRequestStatus(data) {
+    const user = data.user || data;
+    const deletionRequest = data.deletion_request || user.deletion_request;
+    const isPending = (deletionRequest && deletionRequest.status === 'pending') || 
+                      data.deletion_pending === true || 
+                      user.deletion_pending === true ||
+                      data.has_pending_deletion === true ||
+                      user.has_pending_deletion === true ||
+                      (data.deletion_status && data.deletion_status === 'pending') ||
+                      (user.deletion_status && user.deletion_status === 'pending');
+                      
+    if (isPending) {
+        showDeletionPendingUI();
+    } else {
+        const banner = document.getElementById('deletionPendingBanner');
+        if (banner) {
+            banner.style.display = 'none';
+        }
+        const deleteAccountBtn = document.getElementById('deleteAccountBtn');
+        if (deleteAccountBtn) {
+            deleteAccountBtn.style.display = 'inline-block';
+        }
+        const deactivateAccountBtn = document.getElementById('deactivateAccountBtn');
+        if (deactivateAccountBtn) {
+            deactivateAccountBtn.disabled = false;
+            deactivateAccountBtn.style.opacity = '1';
+            deactivateAccountBtn.style.cursor = 'pointer';
+        }
+    }
+}
+
+function showDeletionPendingUI() {
+    const banner = document.getElementById('deletionPendingBanner');
+    if (banner) {
+        banner.style.display = 'flex';
+    }
+    
+    // Hide Delete Account button
+    const deleteAccountBtn = document.getElementById('deleteAccountBtn');
+    if (deleteAccountBtn) {
+        deleteAccountBtn.style.display = 'none';
+    }
+
+    // Disable Deactivate Account button as well
+    const deactivateAccountBtn = document.getElementById('deactivateAccountBtn');
+    if (deactivateAccountBtn) {
+        deactivateAccountBtn.disabled = true;
+        deactivateAccountBtn.style.opacity = '0.5';
+        deactivateAccountBtn.style.cursor = 'not-allowed';
     }
 }
 
@@ -258,13 +315,99 @@ function setupEventListeners() {
         });
     }
 
-    // Delete account
+    // Delete account - Open Custom Modal
     const deleteAccountBtn = document.getElementById('deleteAccountBtn');
-    if (deleteAccountBtn) {
+    const deleteAccountModal = document.getElementById('deleteAccountModal');
+    if (deleteAccountBtn && deleteAccountModal) {
         deleteAccountBtn.addEventListener('click', () => {
-            if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
-                // TODO: Implement delete account API
-                showNotification('Account deletion feature coming soon', 'error');
+            // Reset textarea and counter
+            const reasonTextarea = document.getElementById('deleteAccountReason');
+            const counter = document.getElementById('deleteReasonCounter');
+            if (reasonTextarea) reasonTextarea.value = '';
+            if (counter) counter.textContent = '0 / 1000';
+            
+            // Open modal
+            deleteAccountModal.classList.add('open');
+        });
+    }
+
+    // Close Delete Account Modal
+    const closeDeleteModalBtn = document.getElementById('closeDeleteModalBtn');
+    const cancelDeleteModalBtn = document.getElementById('cancelDeleteModalBtn');
+    if (closeDeleteModalBtn && deleteAccountModal) {
+        closeDeleteModalBtn.addEventListener('click', () => {
+            deleteAccountModal.classList.remove('open');
+        });
+    }
+    if (cancelDeleteModalBtn && deleteAccountModal) {
+        cancelDeleteModalBtn.addEventListener('click', () => {
+            deleteAccountModal.classList.remove('open');
+        });
+    }
+    if (deleteAccountModal) {
+        deleteAccountModal.addEventListener('click', (e) => {
+            if (e.target === deleteAccountModal) {
+                deleteAccountModal.classList.remove('open');
+            }
+        });
+    }
+
+    // Character counter for textarea
+    const deleteAccountReason = document.getElementById('deleteAccountReason');
+    const deleteReasonCounter = document.getElementById('deleteReasonCounter');
+    if (deleteAccountReason && deleteReasonCounter) {
+        deleteAccountReason.addEventListener('input', () => {
+            const length = deleteAccountReason.value.length;
+            deleteReasonCounter.textContent = `${length} / 1000`;
+        });
+    }
+
+    // Confirm Delete Account Request
+    const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+    if (confirmDeleteBtn && deleteAccountModal) {
+        confirmDeleteBtn.addEventListener('click', async () => {
+            const reason = deleteAccountReason ? deleteAccountReason.value.trim() : '';
+            
+            // Show loading state
+            const btnText = confirmDeleteBtn.querySelector('.btn-text');
+            const btnSpinner = confirmDeleteBtn.querySelector('.btn-spinner');
+            
+            if (btnText) btnText.style.display = 'none';
+            if (btnSpinner) btnSpinner.style.display = 'inline-block';
+            confirmDeleteBtn.disabled = true;
+            if (cancelDeleteModalBtn) cancelDeleteModalBtn.disabled = true;
+            if (closeDeleteModalBtn) closeDeleteModalBtn.disabled = true;
+
+            try {
+                const result = await PROFILE_API.submitDeletionRequest(reason);
+                
+                if (result.success || result.status === 201) {
+                    showNotification(result.message || 'Your account deletion request has been submitted successfully.');
+                    deleteAccountModal.classList.remove('open');
+                    showDeletionPendingUI();
+                } else if (result.status === 422) {
+                    showNotification(result.message || 'A deletion request is already pending.', 'error');
+                    deleteAccountModal.classList.remove('open');
+                    showDeletionPendingUI();
+                } else if (result.status === 401 || result.unauthorized) {
+                    showNotification('Session expired. Please log in again.', 'error');
+                    deleteAccountModal.classList.remove('open');
+                    if (typeof logout === 'function') {
+                        logout();
+                    }
+                } else {
+                    showNotification(result.message || 'Something went wrong. Please try again.', 'error');
+                }
+            } catch (err) {
+                console.error(err);
+                showNotification('Connection error. Please try again.', 'error');
+            } finally {
+                // Restore state
+                if (btnText) btnText.style.display = 'inline-block';
+                if (btnSpinner) btnSpinner.style.display = 'none';
+                confirmDeleteBtn.disabled = false;
+                if (cancelDeleteModalBtn) cancelDeleteModalBtn.disabled = false;
+                if (closeDeleteModalBtn) closeDeleteModalBtn.disabled = false;
             }
         });
     }
@@ -1282,3 +1425,232 @@ function formatReviewDate(dateString) {
 }
 
 // setupLoginDropdown removed as it is now handled centrally in header-common.js
+
+
+// ==========================================================================
+// EMI APPLICATIONS DASHBOARD
+// ==========================================================================
+
+let emiApplicationsList = [];
+
+async function initEmiSection() {
+    await loadEmiApplications();
+}
+
+async function loadEmiApplications() {
+    const container = document.getElementById('emiContainer');
+    if (!container) return;
+
+    container.innerHTML = '<div style="text-align: center; padding: 40px; color: #878787;"><i class="fas fa-spinner fa-spin" style="font-size: 24px; margin-bottom: 12px;"></i><p>Loading your EMI applications...</p></div>';
+
+    try {
+        if (typeof PROFILE_API === 'undefined' || typeof PROFILE_API.getEmiRequests !== 'function') {
+            throw new Error('EMI API not loaded');
+        }
+
+        const result = await PROFILE_API.getEmiRequests(1, 50);
+        if (result.success && Array.isArray(result.data)) {
+            emiApplicationsList = result.data;
+            renderEmiApplications();
+        } else {
+            container.innerHTML = `<div style="text-align: center; padding: 40px; color: #f44336;"><i class="fas fa-exclamation-circle" style="font-size: 32px; margin-bottom: 12px;"></i><p>${result.message || 'Failed to load EMI applications'}</p></div>`;
+        }
+    } catch (error) {
+        container.innerHTML = `<div style="text-align: center; padding: 40px; color: #f44336;"><i class="fas fa-exclamation-circle" style="font-size: 32px; margin-bottom: 12px;"></i><p>${error.message || 'Failed to load EMI applications'}</p></div>`;
+    }
+}
+
+function renderEmiApplications() {
+    const container = document.getElementById('emiContainer');
+    if (!container) return;
+
+    if (emiApplicationsList.length === 0) {
+        container.innerHTML = `
+            <div style="text-align: center; padding: 60px 20px; background: #fff; border-radius: 2px; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .1);">
+                <i class="fas fa-file-invoice-dollar" style="font-size: 48px; color: #878787; margin-bottom: 20px;"></i>
+                <h3 style="font-size: 20px; margin-bottom: 10px; color: #212121;">No EMI Applications Found</h3>
+                <p style="color: #666; font-size: 14px; margin-bottom: 20px;">You have not applied for EMI on any products yet.</p>
+                <a href="/" class="btn-primary" style="display: inline-block; text-decoration: none; padding: 10px 24px; border-radius: 2px;">Shop Now</a>
+            </div>
+        `;
+        return;
+    }
+
+    const listHtml = emiApplicationsList.map(app => {
+        const product = app.product || {};
+        const status = (app.status || 'pending').toLowerCase();
+        let statusClass = 'emi-status-pending';
+        let statusLabel = 'Pending';
+        
+        if (status === 'processing') {
+            statusClass = 'emi-status-processing';
+            statusLabel = 'Under Verification';
+        } else if (status === 'approved') {
+            statusClass = 'emi-status-approved';
+            statusLabel = 'Approved';
+        } else if (status === 'rejected') {
+            statusClass = 'emi-status-rejected';
+            statusLabel = 'Rejected';
+        } else if (status === 'cancelled') {
+            statusClass = 'emi-status-cancelled';
+            statusLabel = 'Cancelled';
+        } else if (status === 'forwarded') {
+            statusClass = 'emi-status-processing';
+            statusLabel = 'Forwarded';
+        }
+
+        const canCancel = status === 'pending' || status === 'processing';
+        const cancelBtnHtml = canCancel 
+            ? `<button class="btn-emi-cancel" data-id="${app.id}">Cancel Request</button>`
+            : '';
+
+        const financialsHtml = status === 'approved' && app.tenure && app.emi_amount
+            ? `
+                <div class="emi-detail-financials" style="margin-top: 15px; padding: 12px; background: #eef7ee; border: 1px solid #c2e2c2; border-radius: 4px;">
+                    <p style="margin: 0; font-weight: 500; color: #2e7d32; font-size: 14px;">
+                        Approved Plan: ${app.tenure} Months EMI @ ₹${app.emi_amount}/month
+                    </p>
+                </div>
+            `
+            : '';
+
+        const notesHtml = app.status_notes
+            ? `
+                <div class="emi-detail-notes" style="margin-top: 15px; padding: 12px; background: #fdf6f6; border: 1px solid #f9e2e2; border-radius: 4px;">
+                    <p style="margin: 0; font-size: 13px; color: #c62828;">
+                        <strong>Notes:</strong> ${escapeHtml(app.status_notes)}
+                    </p>
+                </div>
+            `
+            : '';
+
+        return `
+            <div class="emi-card" data-app-id="${app.id}" style="background: #ffffff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 16px; transition: box-shadow 0.2s; font-family: 'Roboto', sans-serif;">
+                <div class="emi-card-header" style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px; margin-bottom: 15px;">
+                    <div>
+                        <span style="font-size: 12px; color: #878787; font-weight: 500;">Application ID: #${app.id}</span>
+                        <h4 style="margin: 4px 0 0 0; font-size: 16px; color: #212121; font-weight: 500;">Applied on: ${formatDate(app.created_at)}</h4>
+                    </div>
+                    <span class="emi-status-badge ${statusClass}" style="display: inline-block; padding: 4px 10px; border-radius: 4px; font-size: 12px; font-weight: 500; text-transform: uppercase;">
+                        ${statusLabel}
+                    </span>
+                </div>
+                
+                <div class="emi-card-product" style="display: flex; align-items: center; gap: 15px; padding: 15px 0; border-top: 1px solid #f0f0f0; border-bottom: 1px solid #f0f0f0;">
+                    <img src="${product.image_url || '/images/placeholder.jpg'}" alt="Product Image" style="width: 50px; height: 50px; object-fit: contain; background: #fff; border: 1px solid #e0e0e0; border-radius: 4px; padding: 2px;">
+                    <div>
+                        <h5 style="margin: 0; font-size: 14px; color: #212121; font-weight: 500;">${product.name || 'Product'}</h5>
+                        <p style="margin: 4px 0 0 0; font-size: 13px; color: #212121;">Price: <strong>₹${product.price ? parseFloat(product.price).toFixed(2) : '0.00'}</strong></p>
+                        <p style="margin: 2px 0 0 0; font-size: 13px; color: #878787;">Downpayment: <strong>₹${app.downpayment}</strong></p>
+                    </div>
+                </div>
+
+                <div class="emi-card-expandable" style="margin-top: 15px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;" onclick="toggleEmiDetails(this)">
+                        <span style="font-size: 13px; color: #2874f0; font-weight: 500;"><i class="fas fa-info-circle"></i> View Application Details</span>
+                        <i class="fas fa-chevron-down toggle-chevron" style="font-size: 12px; color: #878787; transition: transform 0.2s;"></i>
+                    </div>
+                    
+                    <div class="emi-details-drawer" style="display: none; padding-top: 15px; margin-top: 10px; border-top: 1px dashed #e0e0e0; font-size: 13px; color: #666; line-height: 1.5;">
+                        <p style="margin: 3px 0;"><strong>Applicant Name:</strong> ${escapeHtml(app.customer_name)}</p>
+                        <p style="margin: 3px 0;"><strong>Applicant Phone:</strong> +91 ${escapeHtml(app.customer_phone)}</p>
+                        <p style="margin: 3px 0;"><strong>Shipping Address:</strong> ${escapeHtml(app.customer_address)} - ${escapeHtml(app.customer_pincode)}</p>
+                        
+                        ${financialsHtml}
+                        ${notesHtml}
+                        
+                        <div style="margin-top: 15px; display: flex; justify-content: flex-end;">
+                            ${cancelBtnHtml}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }).join('');
+
+    if (!document.getElementById('emi-status-badge-styles')) {
+        const style = document.createElement('style');
+        style.id = 'emi-status-badge-styles';
+        style.textContent = `
+            .emi-status-badge.emi-status-pending { background: #fff3e0; color: #ef6c00; }
+            .emi-status-badge.emi-status-processing { background: #e3f2fd; color: #1565c0; }
+            .emi-status-badge.emi-status-approved { background: #e8f5e9; color: #2e7d32; }
+            .emi-status-badge.emi-status-rejected { background: #ffebee; color: #c62828; }
+            .emi-status-badge.emi-status-cancelled { background: #f5f5f5; color: #757575; }
+            
+            .btn-emi-cancel {
+                background: #ffffff;
+                color: #c62828;
+                border: 1px solid #c62828;
+                padding: 6px 14px;
+                border-radius: 4px;
+                cursor: pointer;
+                font-size: 12px;
+                font-weight: 500;
+                transition: all 0.2s;
+                font-family: 'Roboto', sans-serif;
+            }
+            .btn-emi-cancel:hover {
+                background: #ffebee;
+            }
+            .btn-emi-cancel:disabled {
+                border-color: #cccccc;
+                color: #cccccc;
+                cursor: not-allowed;
+                background: #ffffff;
+            }
+        `;
+        document.head.appendChild(style);
+    }
+
+    container.innerHTML = listHtml;
+
+    container.querySelectorAll('.btn-emi-cancel').forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+            e.stopPropagation();
+            const id = btn.dataset.id;
+            if (!id) return;
+            
+            if (!confirm('Are you sure you want to cancel this EMI Request?')) {
+                return;
+            }
+
+            btn.disabled = true;
+            btn.textContent = 'Cancelling...';
+
+            try {
+                if (typeof PROFILE_API === 'undefined' || typeof PROFILE_API.cancelEmiRequest !== 'function') {
+                    throw new Error('EMI API not loaded');
+                }
+
+                const result = await PROFILE_API.cancelEmiRequest(id);
+                if (result.success) {
+                    showNotification('EMI request cancelled successfully');
+                    await loadEmiApplications();
+                } else {
+                    showNotification(result.message || 'Failed to cancel request', 'error');
+                    btn.disabled = false;
+                    btn.textContent = 'Cancel Request';
+                }
+            } catch (err) {
+                showNotification(err.message || 'Failed to cancel request', 'error');
+                btn.disabled = false;
+                btn.textContent = 'Cancel Request';
+            }
+        });
+    });
+}
+
+window.toggleEmiDetails = function(trigger) {
+    const drawer = trigger.nextElementSibling;
+    const chevron = trigger.querySelector('.toggle-chevron');
+    
+    if (drawer) {
+        const isCollapsed = drawer.style.display === 'none';
+        drawer.style.display = isCollapsed ? 'block' : 'none';
+        
+        if (chevron) {
+            chevron.style.transform = isCollapsed ? 'rotate(180deg)' : 'rotate(0deg)';
+        }
+    }
+};

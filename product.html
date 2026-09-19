@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="/favicon.png" type="image/png">
-    <title>Product - Mobitez</title>
+    <title>Product - Mobitez Private Limited</title>
     <!-- Prevent scroll restoration on reload -->
     <script>
         // Prevent browser from restoring scroll position
@@ -33,32 +33,32 @@
         });
     </script>
     <link rel="stylesheet" href="/css/style.css?v=nocache_1773128051">
-    <link rel="stylesheet" href="/css/product.css">
-    <link rel="stylesheet" href="/css/nav-menu-visible.css">
-    <link rel="stylesheet" href="/css/flipkart-dropdown.css">
+    <link rel="stylesheet" href="/css/product.css?v=emi_buttons_v3">
+    <link rel="stylesheet" href="/css/nav-menu-visible.css?v=fixed_nav">
+    <link rel="stylesheet" href="/css/mobitez-dropdown.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- <link rel="stylesheet" href="/css/sticky-force.css"> -->
-    <link rel="stylesheet" href="/css/flipkart-spacing.css">
-    <link rel="stylesheet" href="/css/flipkart-exact-match.css">
+    <link rel="stylesheet" href="/css/mobitez-spacing.css">
+    <link rel="stylesheet" href="/css/mobitez-exact-match.css">
     <link rel="stylesheet" href="/css/product-visibility-fix.css">
-    <link rel="stylesheet" href="/css/flipkart-final-override.css">
-    <link rel="stylesheet" href="/css/flipkart-breadcrumbs-fix.css?v=branding_fix_v11">
+    <link rel="stylesheet" href="/css/mobitez-final-override.css">
+    <link rel="stylesheet" href="/css/mobitez-breadcrumbs-fix.css?v=branding_fix_v11">
     <link rel="stylesheet" href="/css/product-content-spacing-fix.css">
     <link rel="stylesheet" href="/css/remove-image-gap.css">
     <link rel="stylesheet" href="/css/category-section-visible.css">
     <link rel="stylesheet" href="/css/warranty-spacing-fix.css">
-    <link rel="stylesheet" href="/css/button-width-fix.css">
-    <link rel="stylesheet" href="/css/flipkart-variations-layout.css">
+    <link rel="stylesheet" href="/css/button-width-fix.css?v=visible_fix">
+    <link rel="stylesheet" href="/css/mobitez-variations-layout.css">
     <link rel="stylesheet" href="/css/variations-side-by-side-fix.css">
     <link rel="stylesheet" href="/css/ram-options-side-by-side.css">
     <link rel="stylesheet" href="/css/product-details-grid.css">
     <!-- CRITICAL: Frequently bought together - must load LAST -->
     <link rel="stylesheet" href="/css/frequently-bought-together.css">
-    <link rel="stylesheet" href="/css/nav-menu-visible.css">
+    <link rel="stylesheet" href="/css/nav-menu-visible.css?v=fixed_nav">
     <!-- Mobile Responsive Styles - Must load after all other styles -->
     <link rel="stylesheet" href="/css/mobile-responsive.css">
-    <link rel="stylesheet" href="/css/flipkart-mobile-style.css">
-    <link rel="stylesheet" href="/css/product-flipkart-mobile.css">
+    <link rel="stylesheet" href="/css/mobitez-mobile-style.css">
+    <link rel="stylesheet" href="/css/product-mobitez-mobile.css">
     <link rel="stylesheet" href="/css/product-mobile-fix.css">
     <link rel="stylesheet" href="/css/product-mobile-override.css">
     <link rel="stylesheet" href="/css/buy-together-fix.css">
@@ -70,7 +70,7 @@
     <!-- Product Variations Mobile Fix - Uniform spacing -->
     <link rel="stylesheet" href="/css/product-variations-mobile-fix.css">
     <link rel="stylesheet" href="/css/mobile-header-consistent.css">
-    <link rel="stylesheet" href="/css/flipkart-mobile-header.css?v=nocache_1773128051">
+    <link rel="stylesheet" href="/css/mobitez-mobile-header.css?v=nocache_1773128051">
     <!-- CRITICAL: Remove empty container under search bar - MUST load AFTER all header styles -->
     <link rel="stylesheet" href="/css/remove-empty-container-search.css">
     <!-- CRITICAL: Product buttons sticky at bottom - MUST load LAST to override all other styles -->
@@ -78,13 +78,13 @@
     <!-- NUCLEAR OPTION: Desktop Sticky Fix - MUST BE ABSOLUTELY LAST -->
     <link rel="stylesheet" href="css/product-desktop-sticky.css?v=fixed3">
     <!-- MOBILE FBT: Redesign Frequently Bought Together for Mobile Only -->
-    <link rel="stylesheet" href="css/fbt-flipkart-mobile.css">
+    <link rel="stylesheet" href="css/fbt-mobitez-mobile.css">
     <!-- FBT Mobile Vertical List - Matches reference screenshot -->
     <!-- <link rel="stylesheet" href="css/fbt-mobile.css"> -->
     <!-- Ratings & Reviews Mobile Styling -->
     <link rel="stylesheet" href="css/ratings-mobile.css">
     <!-- FLIPKART LHS SPACING: 10px left padding to match Flipkart exactly - MUST BE ABSOLUTELY LAST -->
-    <link rel="stylesheet" href="css/flipkart-lhs-spacing.css">
+    <link rel="stylesheet" href="css/mobitez-lhs-spacing.css">
     <!-- MOBILE CRITICAL FIXES: Gap, Title, FBT - MUST BE ABSOLUTELY LAST FOR MOBILE -->
     <link rel="stylesheet" href="css/mobile-critical-fixes.css">
     <!-- COMPACT LAYOUT: Flipkart-style compact spacing - MUST LOAD AFTER mobile-critical-fixes.css -->
@@ -92,12 +92,14 @@
     <!-- CRITICAL: Layout Fixes & Filter Back Button - MUST BE ABSOLUTELY LAST -->
     <link rel="stylesheet" href="/css/mobile-search-fixes.css">
     <link rel="stylesheet" href="/css/product-tabs-mobile.css">
-    <link rel="stylesheet" href="/css/product-specs-flipkart.css">
+    <link rel="stylesheet" href="/css/product-specs-mobitez.css">
 
     <!-- DESKTOP FULL WIDTH: Force 100% width on large screens -->
     <link rel="stylesheet" href="/css/desktop-full-width.css?v=nocache_1773128051">
     <!-- Secondary Menu (Dynamic) -->
     <link rel="stylesheet" href="/css/secondary-menu.css">
+    <!-- Flash Sale Styling -->
+    <link rel="stylesheet" href="/css/product-flash-sale.css?v=inline_price_v1">
 </head>
 
 <body>
@@ -164,11 +166,14 @@
                         <div class="product-actions-left">
                             <button class="btn-add-cart" id="addToCartBtn">
                                 <i class="fas fa-shopping-cart"></i>
-                                ADD TO CART
+                                <span>ADD TO CART</span>
+                            </button>
+                            <button type="button" id="applyEmiBtn" class="btn-apply-emi" style="display: none;">
+                                <span class="emi-title">Buy with EMI</span>
                             </button>
                             <button class="btn-buy-now" id="buyNowBtn">
                                 <i class="fas fa-bolt"></i>
-                                BUY NOW
+                                <span>BUY NOW</span>
                             </button>
                         </div>
                     </div>
@@ -190,6 +195,9 @@
                                         <span id="breadcrumbProductInline">Product</span>
                                     </div>
                                 </div>
+
+                                <!-- Flash Sale Banner Placeholder -->
+                                <div id="productFlashSaleBanner" style="display: none;"></div>
 
                                 <!-- Product Title -->
                                 <h1 class="product-title" id="productTitle">
@@ -236,7 +244,7 @@
                                 <!-- Warranty Information -->
                                 <div class="detail-row warranty-row" style="display: none;">
                                     <div class="detail-content warranty-info">
-                                        <img src="/images/mobitez-logo.png" alt="Mobitez" class="warranty-logo"
+                                        <img src="/images/mobitez-logo.png" alt="Mobitez Private Limited" class="warranty-logo"
                                             style="height: 20px; margin-right: 8px;">
                                         <span>1 year warranty for phone and 1 year warranty for in Box
                                             Accessories.</span>
@@ -319,7 +327,7 @@
                                 </div>
 
                                 <!-- Easy Payment Options -->
-                                <div class="detail-row">
+                                <div class="detail-row" id="emiOptionRow">
                                     <div class="detail-label">Easy Payment Options</div>
                                     <div class="detail-content">
                                         <ul class="payment-options-list">
@@ -327,7 +335,9 @@
                                             <li>Cash on Delivery</li>
                                             <li>Net banking & Credit/ Debit/ ATM card</li>
                                         </ul>
-                                        <a href="#" class="detail-link">View Details</a>
+                                        <div class="emi-actions-wrapper" style="margin-top: 10px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+                                            <a href="#" class="detail-link">View Details</a>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -798,7 +808,11 @@
                 const productInfo = document.querySelector('.product-info');
                 if (productInfo) {
                     productInfo.style.marginTop = '0px';
-                    productInfo.style.paddingTop = '24px';
+                    if (window.innerWidth > 768) {
+                        productInfo.style.paddingTop = '24px';
+                    } else {
+                        productInfo.style.paddingTop = '0px';
+                    }
                     productInfo.style.zIndex = '10';
                     productInfo.style.visibility = 'visible';
                     productInfo.style.opacity = '1';
@@ -992,7 +1006,11 @@
             // Force product-info spacing to push content down
             const productInfo = document.querySelector('.product-info');
             if (productInfo) {
-                productInfo.style.paddingTop = '24px';
+                if (window.innerWidth > 768) {
+                    productInfo.style.paddingTop = '24px';
+                } else {
+                    productInfo.style.paddingTop = '0px';
+                }
                 productInfo.style.marginTop = '0px';
                 productInfo.style.zIndex = '10';
                 productInfo.style.visibility = 'visible';
@@ -1027,7 +1045,11 @@
                 }
                 const productInfoEl = document.querySelector('.product-info');
                 if (productInfoEl) {
-                    productInfoEl.style.paddingTop = '24px';
+                    if (window.innerWidth > 768) {
+                        productInfoEl.style.paddingTop = '24px';
+                    } else {
+                        productInfoEl.style.paddingTop = '0px';
+                    }
                     productInfoEl.style.visibility = 'visible';
                     productInfoEl.style.opacity = '1';
                 }
@@ -1144,10 +1166,10 @@
             setupMoreDropdown();
         });
     </script>
-    <script src="/js/category-nav-common.js?v=1769841025"></script>
-    <script src="/js/header-common.js?v=1769841025"></script>
+    <script src="/js/category-nav-common.js?v=1773128102"></script>
+    <script src="/js/header-common.js?v=1773128102"></script>
     <!-- Footer loaded dynamically -->
-    <script src="/js/footer-common.js?v=1769841025"></script>
+    <script src="/js/footer-common.js?v=1773128102"></script>
     <!-- Header common loader will handle structure -->
     </script>
     <!-- CRITICAL: Force Variation UI Alignment (Inline for immediate effect) -->
@@ -1214,19 +1236,22 @@
             background-color: #ccc;
         }
     </style>
-    <script src="/js/auth.js?v=1769841025"></script>
-    <script src="/js/cart-api.js?v=1769841025"></script>
-    <script src="/js/wishlist-api.js?v=1769841025"></script>
-    <script src="/js/order-api.js?v=1769841025"></script>
-    <script src="/js/search-common.js?v=1769841025"></script>
-    <script src="/js/secondary-menu.js?v=1769841025" defer></script>
-    <script src="/js/category-nav-common.js?v=1769841025"></script>
-    <script src="/js/mobile-menu.js?v=1769841025"></script>
-    <script src="/js/flipkart-mobile-header.js?v=1769841025"></script>
-    <script src="/js/product.js?v=1769841025"></script>
-    <script src="/js/recently-viewed.js?v=1769841025"></script>
+    <script src="/js/auth.js?v=1773128102"></script>
+    <script src="/js/profile-api.js?v=1773128102"></script>
+    <script src="/js/cart-api.js?v=1773128102"></script>
+    <script src="/js/wishlist-api.js?v=1773128102"></script>
+    <script src="/js/order-api.js?v=1773128102"></script>
+    <script src="/js/search-common.js?v=1773128102"></script>
+    <script src="/js/secondary-menu.js?v=1773128102" defer></script>
+    <script src="/js/category-nav-common.js?v=1773128102"></script>
+    <script src="/js/mobile-menu.js?v=1773128102"></script>
+    <script src="/js/mobitez-mobile-header.js?v=1773128102"></script>
+    <script src="/js/product.js?v=1773128102"></script>
+    <script src="/js/recently-viewed.js?v=1773128102"></script>
     <!-- MOBILE CRITICAL FIXES: Override inline styles - MUST BE LAST -->
-    <script src="/js/mobile-critical-fixes.js?v=1769841025"></script>
+    <script src="/js/mobile-critical-fixes.js?v=1773128102"></script>
+
+
 </body>
 
 </html>

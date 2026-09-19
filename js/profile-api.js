@@ -643,5 +643,167 @@ const PROFILE_API = {
         } catch (error) {
             return { success: false, message: 'Failed to load reviews: ' + error.message };
         }
+    },
+
+    // Get customer's EMI requests
+    async getEmiRequests(page = 1, perPage = 20) {
+        try {
+            if (typeof getAuthHeaders === 'undefined') {
+                return { success: false, message: 'Authentication not available' };
+            }
+
+            const endpoint = `${this.baseUrl}/emi-requests?page=${page}&per_page=${perPage}`;
+            console.log('Fetching EMI requests from:', endpoint);
+
+            const response = await fetch(endpoint, {
+                method: 'GET',
+                headers: getAuthHeaders()
+            });
+
+            let data;
+            try {
+                data = await response.clone().json();
+                console.log('EMI requests response:', data);
+            } catch (jsonError) {
+                const rawText = await response.text();
+                console.error('EMI requests JSON Parse Error. Raw Response:', rawText);
+                throw jsonError;
+            }
+
+            const unauthorized = handleUnauthorizedResponse(response, 'Please login to view EMI requests');
+            if (unauthorized) {
+                return unauthorized;
+            }
+            return data;
+        } catch (error) {
+            console.error('EMI requests error:', error);
+            return { success: false, message: 'Failed to load EMI requests' };
+        }
+    },
+
+    // Get details of a specific EMI request
+    async getEmiRequestDetails(id) {
+        try {
+            if (typeof getAuthHeaders === 'undefined') {
+                return { success: false, message: 'Authentication not available' };
+            }
+
+            const response = await fetch(`${this.baseUrl}/emi-requests/${id}`, {
+                method: 'GET',
+                headers: getAuthHeaders()
+            });
+
+            const data = await response.json();
+            const unauthorized = handleUnauthorizedResponse(response, 'Please login to view EMI request details');
+            if (unauthorized) {
+                return unauthorized;
+            }
+            return data;
+        } catch (error) {
+            return { success: false, message: 'Failed to load EMI request details' };
+        }
+    },
+
+    // Submit a new EMI request (uses multipart/form-data)
+    async submitEmiRequest(formData) {
+        try {
+            if (typeof getAuthHeaders === 'undefined') {
+                return { success: false, message: 'Authentication not available' };
+            }
+
+            const authHeaders = getAuthHeaders();
+            const headers = {
+                'Accept': 'application/json',
+                'Authorization': authHeaders.Authorization
+            };
+            
+            // X-API-Key setup (fallback, in case we are calling API directly or via proxy)
+            const apiKey = (typeof AUTH_CONFIG !== 'undefined' && AUTH_CONFIG.headers && AUTH_CONFIG.headers['X-API-Key']) 
+                ? AUTH_CONFIG.headers['X-API-Key'] 
+                : '';
+            if (apiKey) {
+                headers['X-API-Key'] = apiKey;
+            }
+
+            const response = await fetch(`${this.baseUrl}/emi-requests`, {
+                method: 'POST',
+                headers: headers,
+                body: formData
+            });
+
+            const data = await response.json();
+            const unauthorized = handleUnauthorizedResponse(response, 'Please login to submit EMI request');
+            if (unauthorized) {
+                return unauthorized;
+            }
+            return data;
+        } catch (error) {
+            return { success: false, message: 'Failed to submit EMI request' };
+        }
+    },
+
+    // Cancel an EMI request
+    async cancelEmiRequest(id) {
+        try {
+            if (typeof getAuthHeaders === 'undefined') {
+                return { success: false, message: 'Authentication not available' };
+            }
+
+            const response = await fetch(`${this.baseUrl}/emi-requests/${id}/cancel`, {
+                method: 'POST',
+                headers: getAuthHeaders()
+            });
+
+            const data = await response.json();
+            const unauthorized = handleUnauthorizedResponse(response, 'Please login to cancel EMI request');
+            if (unauthorized) {
+                return unauthorized;
+            }
+            return data;
+        } catch (error) {
+            return { success: false, message: 'Failed to cancel EMI request' };
+        }
+    },
+
+    // Submit account deletion request
+    async submitDeletionRequest(reason = '') {
+        try {
+            if (typeof getAuthHeaders === 'undefined') {
+                return { success: false, message: 'Authentication not available' };
+            }
+
+            const authHeaders = getAuthHeaders();
+            const headers = {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': authHeaders.Authorization
+            };
+
+            const apiKey = (typeof AUTH_CONFIG !== 'undefined' && AUTH_CONFIG.headers && AUTH_CONFIG.headers['X-API-Key']) 
+                ? AUTH_CONFIG.headers['X-API-Key'] 
+                : '';
+            if (apiKey) {
+                headers['X-API-Key'] = apiKey;
+            }
+
+            const response = await fetch(`${this.baseUrl}/user/delete-account`, {
+                method: 'POST',
+                headers: headers,
+                body: JSON.stringify({ reason })
+            });
+
+            const data = await response.json();
+            const unauthorized = handleUnauthorizedResponse(response, 'Please login to submit deletion request');
+            if (unauthorized) {
+                return unauthorized;
+            }
+
+            return {
+                ...data,
+                status: response.status
+            };
+        } catch (error) {
+            return { success: false, message: 'Failed to submit account deletion request' };
+        }
     }
 };

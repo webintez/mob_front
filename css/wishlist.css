@@ -591,12 +591,12 @@
     }
 
     .wishlist-item-btn-add {
-        background: #ff9f00 !important;
+        background: #24db65 !important;
         color: #fff !important;
     }
 }
 
-/* CRITICAL: Override flipkart-mobile-header.css padding specifically for the wishlist page */
+/* CRITICAL: Override mobitez-mobile-header.css padding specifically for the wishlist page */
 @media (max-width: 768px) {
     html body:not(.homepage) main.main-content[class],
     body:not(.homepage) main.main-content[class],

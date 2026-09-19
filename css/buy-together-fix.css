@@ -118,7 +118,7 @@
 }
 
 .addon-checkbox.checked {
-    background: #f7a200;
+    background: #24db65;
     border-color: #0a4409;
 }
 
@@ -316,7 +316,7 @@
     align-items: center;
     gap: 8px;
     padding: 14px 32px;
-    background: #ff9f00;
+    background: #24db65;
     color: white;
     border: none;
     border-radius: 2px;

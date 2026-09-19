@@ -143,7 +143,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 clearInterval(resendTimer);
 
                 if (result.isNewUser) {
-                    showNotification('Account created successfully! Welcome to Mobitez!', 'success');
+                    showNotification('Account created successfully! Welcome to Mobitez Private Limited!', 'success');
                 } else {
                     showNotification('Welcome back! Login successful.', 'success');
                 }

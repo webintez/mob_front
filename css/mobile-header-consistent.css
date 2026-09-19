@@ -12,7 +12,7 @@
        ============================================ */
     
     /* Header - Fixed, non-scrollable */
-    /* NOTE: Height overridden by flipkart-mobile-header.css for two-row layout */
+    /* NOTE: Height overridden by mobitez-mobile-header.css for two-row layout */
     html body .header,
     body .header,
     .header {
@@ -29,7 +29,7 @@
     }
     
     /* Header container - Consistent layout */
-    /* NOTE: Layout overridden by flipkart-mobile-header.css for two-row layout */
+    /* NOTE: Layout overridden by mobitez-mobile-header.css for two-row layout */
     html body .header-container,
     body .header-container,
     .header-container {

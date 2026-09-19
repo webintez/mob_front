@@ -239,7 +239,7 @@ function buildHeaderMenuItems() {
             </a>
             <a href="#" class="mobile-nav-sublink">
                 <i class="fas fa-star"></i>
-                <span>Mobitez Plus Zone</span>
+                <span>Mobitez Private Limited Plus Zone</span>
             </a>
             <a href="/orders.html" class="mobile-nav-sublink">
                 <i class="fas fa-shopping-bag"></i>

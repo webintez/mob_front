@@ -984,7 +984,7 @@
  }
 
  .product-actions-left .btn-add-cart {
-     background: #ff9f00;
+     background: #24db65;
      color: white;
      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .2);
  }
@@ -994,13 +994,15 @@
  }
 
  .product-actions-left .btn-buy-now {
-     background: #fb641b;
+     background: #FF8400;
      color: white;
      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .2);
+     transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
  }
 
  .product-actions-left .btn-buy-now:hover {
-     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .2);
+     transform: translateY(-1px) !important;
+     box-shadow: 0 4px 10px rgba(255, 132, 0, 0.4) !important;
  }
 
  .product-actions-left .btn-add-cart i,
@@ -1306,7 +1308,7 @@
      align-items: center;
      gap: 8px;
      padding: 12px 20px;
-     background: #f7a200;
+     background: #24db65;
      color: #ffffff;
      text-decoration: none;
      border-radius: 4px;
@@ -2071,7 +2073,7 @@
      position: absolute;
      top: 8px;
      left: 8px;
-     background: #f7a200;
+     background: #24db65;
      color: white;
      font-size: 10px;
      font-weight: 500;
@@ -2279,7 +2281,7 @@
  }
 
  .addon-checkbox.checked {
-     background: #f7a200;
+     background: #24db65;
      border-color: #0a4409;
  }
 
@@ -2395,7 +2397,7 @@
      align-items: center;
      gap: 8px;
      padding: 14px 32px;
-     background: #ff9f00;
+     background: #24db65;
      color: white;
      border: none;
      border-radius: 2px;
@@ -2410,7 +2412,7 @@
  }
 
  .buy-together-add-cart-btn:enabled {
-     background: #ff9f00;
+     background: #24db65;
      cursor: pointer;
  }
 
@@ -4042,7 +4044,7 @@
      bottom: 0;
      left: 0;
      right: 0;
-     background: #f7a200;
+     background: #24db65;
      color: #ffffff;
      padding: 12px 24px;
      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.15);
@@ -4221,3 +4223,691 @@
          position: relative !important;
      }
  }
+
+/* ==========================================================================
+   EMI Request System Styles
+   ========================================================================== */
+
+/* Apply for EMI Button */
+.btn-apply-emi {
+    background: linear-gradient(135deg, #2874f0 0%, #1e56b3 100%);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    box-shadow: 0 2px 5px rgba(40, 116, 240, 0.2);
+    font-family: 'Roboto', sans-serif;
+}
+
+.btn-apply-emi:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(40, 116, 240, 0.4);
+    background: linear-gradient(135deg, #1e56b3 0%, #143d82 100%);
+}
+
+.btn-apply-emi i {
+    font-size: 14px;
+}
+
+/* Modal Overlay */
+.emi-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10002; /* Ensure it is above all header/navigation layers */
+    padding: 20px;
+    box-sizing: border-box;
+    animation: emiFadeIn 0.3s ease-out;
+}
+
+/* Modal Content Container */
+.emi-modal-content {
+    background: #ffffff;
+    width: 100%;
+    max-width: 750px;
+    max-height: 90vh;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    animation: emiSlideUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    font-family: 'Roboto', sans-serif;
+}
+
+/* Modal Header */
+.emi-modal-header {
+    padding: 18px 24px;
+    background: #f1f3f6;
+    border-bottom: 1px solid #e0e0e0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.emi-modal-header h3 {
+    margin: 0;
+    font-size: 20px;
+    color: #212121;
+    font-weight: 500;
+}
+
+.emi-modal-close {
+    background: none;
+    border: none;
+    font-size: 28px;
+    color: #878787;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0;
+    transition: color 0.2s;
+}
+
+.emi-modal-close:hover {
+    color: #212121;
+}
+
+/* Modal Body */
+.emi-modal-body {
+    padding: 24px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+/* Product Summary Banner inside Modal */
+.emi-product-summary {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: #f9f9f9;
+    padding: 16px;
+    border-radius: 8px;
+    margin-bottom: 24px;
+    border: 1px solid #f0f0f0;
+}
+
+.emi-summary-img {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+    background: #fff;
+    border-radius: 4px;
+    padding: 4px;
+    border: 1px solid #e0e0e0;
+}
+
+.emi-summary-details h4 {
+    margin: 0 0 6px 0;
+    font-size: 16px;
+    color: #212121;
+    font-weight: 500;
+}
+
+.emi-summary-price {
+    margin: 0;
+    font-size: 15px;
+    color: #388e3c;
+    font-weight: 600;
+}
+
+/* Form Styling inside Modal */
+.emi-form-section {
+    margin-bottom: 28px;
+    border-bottom: 1px dashed #e0e0e0;
+    padding-bottom: 20px;
+}
+
+.emi-form-section:last-of-type {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.emi-section-title {
+    margin: 0 0 16px 0;
+    font-size: 16px;
+    color: #212121;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    border-left: 3px solid #2874f0;
+    padding-left: 8px;
+}
+
+.emi-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+@media (max-width: 600px) {
+    .emi-form-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.form-group.full-width {
+    grid-column: 1 / -1;
+}
+
+.required {
+    color: #f44336;
+    margin-left: 2px;
+}
+
+.section-sub-label {
+    display: block;
+    font-size: 13px;
+    color: #878787;
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+
+/* Address Cards List */
+.emi-addresses-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+@media (max-width: 600px) {
+    .emi-addresses-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.emi-address-card {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 12px 16px;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s ease;
+    background: #ffffff;
+}
+
+.emi-address-card:hover {
+    border-color: #2874f0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.emi-address-card.selected {
+    border-color: #2874f0;
+    background-color: #f2f7ff;
+}
+
+.emi-address-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+}
+
+.emi-address-card-header h5 {
+    margin: 0;
+    font-size: 14px;
+    color: #212121;
+    font-weight: 500;
+}
+
+.emi-address-badge {
+    background: #f1f3f6;
+    color: #878787;
+    font-size: 11px;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+
+.emi-address-card.selected .emi-address-badge {
+    background: #2874f0;
+    color: #ffffff;
+}
+
+.emi-address-card p {
+    margin: 3px 0;
+    font-size: 13px;
+    color: #666;
+    line-height: 1.4;
+}
+
+.emi-address-card .phone {
+    font-weight: 500;
+    color: #212121;
+}
+
+/* Upload Grid and Cards */
+.emi-upload-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+}
+
+@media (max-width: 768px) {
+    .emi-upload-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.emi-upload-card {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.emi-upload-card label {
+    font-size: 13px;
+    color: #212121;
+    font-weight: 500;
+}
+
+.emi-upload-zone {
+    border: 2px dashed #d0d0d0;
+    border-radius: 8px;
+    background: #fdfdfd;
+    padding: 24px 12px;
+    text-align: center;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+    height: 130px;
+    box-sizing: border-box;
+}
+
+.emi-upload-zone:hover {
+    border-color: #2874f0;
+    background: #f9fbfd;
+}
+
+.emi-upload-zone.dragover {
+    border-color: #388e3c;
+    background: #f1f9f2;
+}
+
+.upload-icon {
+    font-size: 26px;
+    color: #878787;
+    transition: color 0.2s;
+}
+
+.emi-upload-zone:hover .upload-icon {
+    color: #2874f0;
+}
+
+.emi-upload-zone span {
+    font-size: 12px;
+    color: #666;
+}
+
+/* Document Live Preview */
+.emi-preview-container {
+    position: relative;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    overflow: hidden;
+    height: 130px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f5f5f5;
+}
+
+.emi-preview-img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.emi-preview-remove {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 26px;
+    height: 26px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    transition: background 0.2s;
+    z-index: 2;
+}
+
+.emi-preview-remove:hover {
+    background: #f44336;
+}
+
+/* Modal Footer */
+.emi-modal-footer {
+    padding: 16px 24px;
+    border-top: 1px solid #e0e0e0;
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    background: #f9f9f9;
+}
+
+.btn-emi-primary,
+.btn-emi-secondary {
+    padding: 12px 24px;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: 'Roboto', sans-serif;
+    border: none;
+    transition: all 0.2s;
+}
+
+.btn-emi-primary {
+    background: #ff9f00;
+    color: white;
+    box-shadow: 0 2px 4px rgba(255, 159, 0, 0.2);
+}
+
+.btn-emi-primary:hover {
+    background: #f39600;
+    box-shadow: 0 4px 8px rgba(255, 159, 0, 0.3);
+}
+
+.btn-emi-primary:disabled {
+    background: #cccccc;
+    color: #666666;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.btn-emi-secondary {
+    background: #ffffff;
+    color: #212121;
+    border: 1px solid #d0d0d0;
+}
+
+.btn-emi-secondary:hover {
+    background: #f5f5f5;
+    border-color: #bcbcbc;
+}
+
+/* Animations */
+@keyframes emiFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes emiSlideUp {
+    from { transform: translateY(40px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* Multi-Step EMI Modal Stepper & Forms Styles */
+.emi-modal-stepper {
+    display: flex;
+    background: #fff;
+    padding: 16px;
+    margin-bottom: 24px;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+    justify-content: space-around;
+    position: relative;
+}
+
+.emi-modal-stepper .step-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #878787;
+    font-size: 13px;
+    font-weight: 500;
+    background: white;
+    padding: 0 8px;
+}
+
+.emi-modal-stepper .step-item.active {
+    color: #2874f0;
+}
+
+.emi-modal-stepper .step-item i {
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #e0e0e0;
+    border-radius: 50%;
+    font-size: 11px;
+    font-style: normal;
+}
+
+.emi-modal-stepper .step-item.active i {
+    background: #2874f0;
+    border-color: #2874f0;
+    color: white;
+}
+
+/* Address form row alignments */
+.emi-address-form-fields .form-row {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 16px;
+    width: 100%;
+}
+
+.emi-address-form-fields .form-row .f-form-group {
+    flex: 1;
+    min-width: 0;
+    margin-bottom: 0;
+}
+
+.emi-address-form-fields .f-input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    font-size: 14px;
+    box-sizing: border-box;
+    font-family: inherit;
+    background: #fff;
+}
+
+.emi-address-form-fields .f-input:focus {
+    border-color: #2874f0;
+    outline: none;
+}
+
+/* Address type selector buttons */
+.emi-address-form-fields .address-type-btn {
+    transition: all 0.2s;
+}
+
+.emi-address-form-fields .address-type-btn.active {
+    border-color: #2874f0 !important;
+    color: #2874f0 !important;
+    background-color: #f2f7ff !important;
+}
+
+.emi-address-form-fields .address-type-btn:hover:not(.active) {
+    background: #f9f9f9 !important;
+}
+
+/* Stepper labels on mobile */
+@media (max-width: 600px) {
+    .emi-modal-stepper {
+        padding: 10px;
+    }
+    .emi-modal-stepper .step-item {
+        flex-direction: column;
+        gap: 4px;
+        text-align: center;
+        font-size: 11px;
+    }
+}
+
+/* EMI actions layout overrides */
+html body .product-actions-left.has-emi,
+body .product-actions-left.has-emi,
+.product-actions-left.has-emi {
+    display: flex !important;
+    flex-direction: row !important;
+    gap: 8px !important;
+    padding: 10px !important;
+    box-sizing: border-box !important;
+    align-items: center !important;
+}
+
+/* Square Add to Cart Button (Only Icon) */
+html body .product-actions-left.has-emi .btn-add-cart,
+body .product-actions-left.has-emi .btn-add-cart,
+.product-actions-left.has-emi .btn-add-cart {
+    flex: 0 0 54px !important;
+    width: 54px !important;
+    height: 54px !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 8px !important;
+    box-sizing: border-box !important;
+}
+
+html body .product-actions-left.has-emi .btn-add-cart span,
+body .product-actions-left.has-emi .btn-add-cart span,
+.product-actions-left.has-emi .btn-add-cart span {
+    display: none !important;
+}
+
+html body .product-actions-left.has-emi .btn-add-cart i,
+body .product-actions-left.has-emi .btn-add-cart i,
+.product-actions-left.has-emi .btn-add-cart i {
+    margin: 0 !important;
+    font-size: 20px !important;
+}
+
+/* Buy with EMI Button (White Background, Gray Border, Blue Rate Subtext) */
+html body .product-actions-left.has-emi .btn-apply-emi,
+body .product-actions-left.has-emi .btn-apply-emi,
+.product-actions-left.has-emi .btn-apply-emi {
+    flex: 1 !important;
+    height: 54px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: #ffffff !important;
+    color: #212121 !important;
+    border: 1px solid #d0d0d0 !important;
+    border-radius: 8px !important;
+    padding: 6px 8px !important;
+    cursor: pointer;
+    font-family: 'Roboto', sans-serif !important;
+    transition: all 0.2s !important;
+    box-sizing: border-box !important;
+    text-transform: none !important;
+    letter-spacing: 0 !important;
+    line-height: 1.2 !important;
+}
+
+html body .product-actions-left.has-emi .btn-apply-emi:hover,
+body .product-actions-left.has-emi .btn-apply-emi:hover,
+.product-actions-left.has-emi .btn-apply-emi:hover {
+    background: #f9f9f9 !important;
+    border-color: #bcbcbc !important;
+}
+
+html body .product-actions-left.has-emi .btn-apply-emi .emi-title,
+body .product-actions-left.has-emi .btn-apply-emi .emi-title,
+.product-actions-left.has-emi .btn-apply-emi .emi-title {
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    color: #212121 !important;
+    display: block !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    text-transform: none !important;
+    letter-spacing: 0 !important;
+}
+
+html body .product-actions-left.has-emi .btn-apply-emi .emi-subtitle,
+body .product-actions-left.has-emi .btn-apply-emi .emi-subtitle,
+.product-actions-left.has-emi .btn-apply-emi .emi-subtitle {
+    font-size: 10px !important;
+    color: #2874f0 !important;
+    display: block !important;
+    margin-top: 2px !important;
+    padding: 0 !important;
+    text-transform: none !important;
+    letter-spacing: 0 !important;
+    font-weight: 500 !important;
+}
+
+/* Buy Now Button (Two-line Layout with Price Subtext) */
+html body .product-actions-left.has-emi .btn-buy-now,
+body .product-actions-left.has-emi .btn-buy-now,
+.product-actions-left.has-emi .btn-buy-now {
+    flex: 1 !important;
+    height: 54px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 8px !important;
+    padding: 6px 8px !important;
+    box-sizing: border-box !important;
+    line-height: 1.2 !important;
+}
+
+html body .product-actions-left.has-emi .btn-buy-now .buy-now-title,
+body .product-actions-left.has-emi .btn-buy-now .buy-now-title,
+.product-actions-left.has-emi .btn-buy-now .buy-now-title {
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    color: #ffffff !important;
+    display: block !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    text-transform: none !important;
+    letter-spacing: 0 !important;
+}
+
+html body .product-actions-left.has-emi .btn-buy-now .buy-now-subtitle,
+body .product-actions-left.has-emi .btn-buy-now .buy-now-subtitle,
+.product-actions-left.has-emi .btn-buy-now .buy-now-subtitle {
+    font-size: 10px !important;
+    color: #ffffff !important;
+    opacity: 0.95 !important;
+    display: block !important;
+    margin-top: 2px !important;
+    padding: 0 !important;
+    text-transform: none !important;
+    letter-spacing: 0 !important;
+    font-weight: 500 !important;
+}
+
+html body .product-actions-left.has-emi .btn-buy-now i,
+body .product-actions-left.has-emi .btn-buy-now i,
+.product-actions-left.has-emi .btn-buy-now i {
+    display: none !important;
+}

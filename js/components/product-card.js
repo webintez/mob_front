@@ -41,8 +41,27 @@ const ProductCard = {
         const showRating = options.showRating !== false;
         const extraClass = options.extraClass ? ` ${options.extraClass}` : '';
         const slug = product.slug || product.id;
-        const imageUrl = product.image_url || product.image || '/img/placeholder-vertical.png';
-        const discount = this._discountPct(product);
+        
+        // Handle Flash Sale data
+        const fsData = product.flash_sale_data;
+        const isFlashSaleLive = fsData && fsData.is_live === true;
+        
+        // Image priority: Flash Sale custom image > product image > placeholder
+        let imageUrl = product.image_url || product.image || '/img/placeholder-vertical.png';
+        if (fsData && fsData.custom_image) {
+            imageUrl = '/' + fsData.custom_image; // assuming custom_image is a relative path like storage/...
+        }
+        
+        let discount = this._discountPct(product);
+        let currentPrice = product.price;
+        let originalPrice = product.original_price;
+        
+        if (isFlashSaleLive) {
+            currentPrice = fsData.flash_price;
+            originalPrice = product.price; // The old current price becomes the crossed out price
+            discount = Math.round(parseFloat(fsData.discount_percentage));
+        }
+
         const name = product.name || '';
 
         return `
@@ -59,10 +78,10 @@ const ProductCard = {
     </div>
     <div class="product-info">
         <div class="product-title">${name}</div>
-        ${showPrice && product.price ? `
+        ${showPrice && currentPrice ? `
         <div class="product-price">
-            <span class="price-current">₹${this._formatPrice(product.price)}</span>
-            ${product.original_price ? `<span class="price-original">₹${this._formatPrice(product.original_price)}</span>` : ''}
+            <span class="price-current">₹${this._formatPrice(currentPrice)}</span>
+            ${originalPrice ? `<span class="price-original">₹${this._formatPrice(originalPrice)}</span>` : ''}
         </div>` : ''}
         ${showRating && product.rating && parseFloat(product.rating) > 0 ? `
         <div class="product-rating">

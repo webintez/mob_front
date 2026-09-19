@@ -4,11 +4,20 @@ const SEARCH_API_CONFIG = {
     baseUrl: '/api',
     minChars: 2,
     debounceTime: 300,
+    perPage: 10, // Initial 10 results, then lazy load
     headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
         'X-API-Key': ''
     }
+};
+
+// Global state for suggestion pagination
+let suggestionState = {
+    currentPage: 1,
+    currentQuery: '',
+    isLoadingMore: false,
+    hasMore: true
 };
 
 // Initialize search on any page
@@ -46,12 +55,6 @@ function initSearch() {
     searchSuggestions.id = 'searchSuggestions';
     searchSuggestions.style.display = 'none';
     searchSuggestions.style.position = 'absolute';
-    searchSuggestions.style.zIndex = '999999';
-    searchSuggestions.style.backgroundColor = '#ffffff';
-    searchSuggestions.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.15)';
-    searchSuggestions.style.borderRadius = '0 0 4px 4px';
-    searchSuggestions.style.maxHeight = '400px';
-    searchSuggestions.style.overflowY = 'auto';
 
     // Initial content container
     searchSuggestions.innerHTML = '<div class="search-suggestions-content" id="searchSuggestionsContent"></div>';
@@ -133,7 +136,18 @@ function initSearch() {
         const query = newSearchInput.value.trim();
         if (query && query.length >= SEARCH_API_CONFIG.minChars) {
             positionSuggestions();
-            loadSearchSuggestionsCommon(query);
+            loadSearchSuggestionsCommon(query, 1); // Reset to page 1
+        }
+    });
+
+    // Handle scroll for infinite loading
+    searchSuggestions.addEventListener('scroll', () => {
+        if (!suggestionState.hasMore || suggestionState.isLoadingMore) return;
+
+        const { scrollTop, scrollHeight, clientHeight } = searchSuggestions;
+        // Trigger if within 20px of bottom
+        if (scrollTop + clientHeight >= scrollHeight - 20) {
+            loadSearchSuggestionsCommon(suggestionState.currentQuery, suggestionState.currentPage + 1);
         }
     });
 }
@@ -144,29 +158,54 @@ window.initializeSearch = initSearch;
 // Alias for common usage
 window.initSearch = initSearch;
 
-// Load suggestions
-async function loadSearchSuggestionsCommon(query) {
+// Load suggestions with pagination support
+async function loadSearchSuggestionsCommon(query, page = 1) {
     const searchSuggestions = document.getElementById('searchSuggestions');
     const searchSuggestionsContent = document.getElementById('searchSuggestionsContent');
 
     if (!searchSuggestions || !searchSuggestionsContent) return;
 
+    // Reset state if it's a new query
+    if (page === 1) {
+        suggestionState.currentPage = 1;
+        suggestionState.currentQuery = query;
+        suggestionState.hasMore = true;
+        searchSuggestionsContent.innerHTML = '<div class="suggestion-loading">Searching for items...</div>';
+    }
+
+    if (suggestionState.isLoadingMore || !suggestionState.hasMore) return;
+    
+    suggestionState.isLoadingMore = true;
+    suggestionState.currentPage = page;
+
     try {
-        searchSuggestionsContent.innerHTML = '<div class="suggestion-loading" style="padding: 12px; color: #878787;">Searching...</div>';
         searchSuggestions.style.display = 'block';
 
         const params = new URLSearchParams();
         params.append('search', query);
         params.append('name', query);
-        params.append('per_page', '10');
+        params.append('page', page);
+        params.append('per_page', SEARCH_API_CONFIG.perPage);
+
+        // Show loading more indicator at bottom if not page 1
+        if (page > 1) {
+            const loader = document.createElement('div');
+            loader.id = 'suggestionLoader';
+            loader.className = 'suggestion-loading-more';
+            loader.textContent = 'Loading more results...';
+            searchSuggestionsContent.appendChild(loader);
+        }
 
         const response = await fetch(`${SEARCH_API_CONFIG.baseUrl}/products?${params.toString()}`, {
             headers: SEARCH_API_CONFIG.headers
         });
 
+        // Remove loading indicator
+        const oldLoader = document.getElementById('suggestionLoader');
+        if (oldLoader) oldLoader.remove();
+
         if (response.ok) {
             const result = await response.json();
-            console.log(`Search API Response [GET /products?search=${query}]:`, result);
 
             if (result.success && result.data) {
                 let products = [];
@@ -177,36 +216,45 @@ async function loadSearchSuggestionsCommon(query) {
                 }
 
                 if (products.length > 0) {
-                    processAndRenderSuggestions(products, query, searchSuggestionsContent);
+                    processAndRenderSuggestions(products, query, searchSuggestionsContent, page);
+                    
+                    // Update hasMore based on pagination or results length
+                    if (products.length < SEARCH_API_CONFIG.perPage) {
+                        suggestionState.hasMore = false;
+                    }
                 } else {
-                    searchSuggestionsContent.innerHTML = '<div class="suggestion-empty" style="padding: 12px; color: #878787;">No suggestions found</div>';
+                    suggestionState.hasMore = false;
+                    if (page === 1) {
+                        searchSuggestionsContent.innerHTML = '<div class="suggestion-empty">No products found matching your search.</div>';
+                    }
                 }
             } else {
-                searchSuggestionsContent.innerHTML = '<div class="suggestion-empty" style="padding: 12px; color: #878787;">No suggestions found</div>';
+                suggestionState.hasMore = false;
+                if (page === 1) {
+                    searchSuggestionsContent.innerHTML = '<div class="suggestion-empty">No products found matching your search.</div>';
+                }
             }
         }
     } catch (error) {
         console.error('Search Suggestions Error:', error);
+    } finally {
+        suggestionState.isLoadingMore = false;
     }
 }
 
-// Process and Render
-function processAndRenderSuggestions(products, query, container) {
+// Process and Render Suggestions (Supports Appending)
+function processAndRenderSuggestions(products, query, container, page = 1) {
     const queryLower = query.toLowerCase().trim();
-    container.innerHTML = '';
+    if (page === 1) container.innerHTML = '';
 
     // Render Products
-    products.slice(0, 8).forEach(p => {
+    products.forEach(p => {
         const item = document.createElement('div');
         item.className = 'search-suggestion-item product';
         item.style.padding = '10px 16px';
         item.style.cursor = 'pointer';
-        item.style.borderBottom = '1px solid #f0f0f0';
         item.style.display = 'flex';
         item.style.alignItems = 'center';
-
-        item.addEventListener('mouseenter', () => item.style.backgroundColor = '#f5f5f5');
-        item.addEventListener('mouseleave', () => item.style.backgroundColor = 'transparent');
 
         const imgUrl = p.image_url || '/images/placeholder.jpg';
 
@@ -215,12 +263,14 @@ function processAndRenderSuggestions(products, query, container) {
             window.location.href = `/product.html?slug=${p.slug}`;
         };
 
+        const highlightedName = highlightMatch(escapeHtmlCommon(p.name), query);
+
         item.innerHTML = `
             <div style="width: 32px; height: 32px; margin-right: 12px; flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
                 <img src="${imgUrl}" style="max-width: 100%; max-height: 100%; object-fit: contain;" onerror="this.src='/images/placeholder.jpg'">
             </div>
             <div style="flex: 1; min-width: 0;">
-                <div style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden; font-size: 14px; color: #212121;">${escapeHtmlCommon(p.name)}</div>
+                <div class="suggestion-text" style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden; font-size: 14px; color: #212121;">${highlightedName}</div>
                 <div style="font-size: 12px; color: #878787;">in ${p.category ? (typeof p.category === 'object' ? (p.category.name || 'Category') : p.category) : 'All Categories'}</div>
             </div>
         `;

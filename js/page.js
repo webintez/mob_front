@@ -94,7 +94,7 @@ async function loadPageContent() {
 // Display page content
 function displayPage(pageData) {
     // Update page title
-    document.title = pageData.meta_title || `${pageData.name} - Mobitez`;
+    document.title = pageData.meta_title || `${pageData.name} - Mobitez Private Limited`;
 
     // Update meta tags if available
     if (pageData.meta_description) {
@@ -659,7 +659,7 @@ function escapeHtml(text) {
 // Display section group content
 function displaySectionGroup(groupData) {
     // Update page title
-    document.title = `${groupData.name} - Mobitez`;
+    document.title = `${groupData.name} - Mobitez Private Limited`;
 
     // Update page header
     const pageHeader = document.getElementById('page-header');

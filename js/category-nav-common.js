@@ -301,10 +301,16 @@
         dropdown.setAttribute('data-category', category.slug);
 
         // Load subcategories only
-        const subcategories = await loadSubcategories(category.slug);
+        const rawSubcategories = await loadSubcategories(category.slug);
+        
+        // Sort subcategories by sort_order
+        const subcategories = Array.isArray(rawSubcategories) 
+            ? [...rawSubcategories].sort((a, b) => (a.sort_order || 999) - (b.sort_order || 999))
+            : [];
 
         // Create dropdown content
         const content = document.createElement('div');
+
         content.className = 'category-dropdown-content';
 
         // Subcategories columns only (no filters, no featured)
@@ -349,7 +355,7 @@
                         <div class="subcategory-column-title">${category.name}</div>
                         <ul class="subcategory-list">
                             <li class="subcategory-item">
-                                <a href="${viewAllHref}" class="subcategory-link">View All ${category.name}</a>
+                                <a href="${viewAllHref}" class="subcategory-link view-all-link">View All ${category.name}</a>
                             </li>
                     </ul>
                 </div>

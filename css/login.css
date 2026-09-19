@@ -1,9 +1,6 @@
 /* Login Page Styles - OTP Based Authentication */
 
-/* Force hide search bar globally for login and signup */
-.search-container {
-    display: none !important;
-}
+
 
 .main-content {
     min-height: 100vh;
@@ -461,7 +458,7 @@
 /* Responsive */
 @media (max-width: 768px) {
 
-    /* High specificity rule to override flipkart-mobile-header.css and JS removal */
+    /* High specificity rule to override mobitez-mobile-header.css and JS removal */
     html body:not(.homepage) main.main-content.main-content {
         padding-top: 80px !important;
     }

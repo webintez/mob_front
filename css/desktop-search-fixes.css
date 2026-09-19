@@ -23,8 +23,8 @@
     .filter-sidebar,
     #filterSidebar {
         display: block !important;
-        position: sticky !important;
-        top: 80px;
+        /* position: sticky !important;
+        top: 80px; */
         width: 280px;
         min-width: 280px;
     }
@@ -99,7 +99,7 @@
     }
 
     /* Rating badge */
-    .product-card .flipkart-rating-badge {
+    .product-card .mobitez-rating-badge {
         background-color: #388e3c;
         color: #fff;
         font-size: 12px;

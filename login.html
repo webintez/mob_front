@@ -5,112 +5,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="/favicon.png" type="image/png">
-    <title>Login - Mobitez</title>
+    <title>Login - Mobitez Private Limited</title>
     <link rel="stylesheet" href="/css/style.css?v=branding_fix_v11">
-    <link rel="stylesheet" href="/css/login.css?v=nocache_1773128051">
-    <link rel="stylesheet" href="/css/mobile-responsive.css?v=nocache_1773128051">
-    <link rel="stylesheet" href="/css/flipkart-mobile-style.css?v=branding_fix_v11">
+    <link rel="stylesheet" href="/css/login.css?v=1773128053">
+    <link rel="stylesheet" href="/css/mobile-responsive.css?v=1773128053">
+    <link rel="stylesheet" href="/css/mobitez-mobile-style.css?v=branding_fix_v11">
     <!-- CRITICAL: Mobile header consistency - MUST load LAST -->
     <link rel="stylesheet" href="/css/mobile-header-consistent.css?v=branding_fix_v11">
-    <link rel="stylesheet" href="/css/flipkart-mobile-header.css?v=nocache_1773128051">
+    <link rel="stylesheet" href="/css/mobitez-mobile-header.css?v=1773128053">
 
-    <link rel="stylesheet" href="/css/secondary-menu.css?v=nocache_1773128051">
-    <link rel="stylesheet" href="/css/nav-menu-visible.css">
-    <link rel="stylesheet" href="/css/flipkart-dropdown.css">
+    <link rel="stylesheet" href="/css/secondary-menu.css?v=1773128053">
+    <link rel="stylesheet" href="/css/nav-menu-visible.css?v=fixed_nav">
+    <link rel="stylesheet" href="/css/mobitez-dropdown.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="/js/secondary-menu.js?v=1769841025" defer></script>
+    <script src="/js/secondary-menu.js?v=1773128102" defer></script>
 </head>
 
 <body>
     <!-- Header -->
-    <header class="header">
-        <div class="header-container">
-            <!-- Logo -->
-            <div class="logo">
-                <a href="/">
-                    <img src="/PNG/logo-yw.png?v=2" alt="Mobitez" class="logo-image">
-                </a>
-            </div>
-
-
-
-            <!-- Right Side Menu -->
-            <div class="header-right">
-                <div class="header-item login-dropdown-wrapper">
-                    <a href="#" class="login-btn" id="loginBtn">
-                        Login
-                        <i class="fas fa-chevron-down"></i>
-                    </a>
-                    <div class="login-dropdown" id="loginDropdown">
-                        <a href="#" class="dropdown-item">
-                            <i class="fas fa-sign-in-alt"></i>
-                            Login
-                        </a>
-                        <a href="/signup.html" class="dropdown-item">
-                            <i class="fas fa-user-plus"></i>
-                            Sign Up
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="/profile.html" class="dropdown-item">
-                            <i class="fas fa-user"></i>
-                            My Profile
-                        </a>
-                        <a href="#" class="dropdown-item">
-                            <i class="fas fa-star"></i>
-                            Mobitez Plus Zone
-                        </a>
-                        <a href="/orders.html" class="dropdown-item">
-                            <i class="fas fa-shopping-bag"></i>
-                            Orders
-                        </a>
-                        <a href="/wishlist.html" class="dropdown-item">
-                            <i class="fas fa-heart"></i>
-                            Wishlist
-                        </a>
-                        <a href="#" class="dropdown-item">
-                            <i class="fas fa-gift"></i>
-                            Rewards
-                        </a>
-                        <a href="#" class="dropdown-item">
-                            <i class="fas fa-credit-card"></i>
-                            Gift Cards
-                        </a>
-                    </div>
-                </div>
-                <div class="header-item">
-                    <a href="#" class="become-seller">Sell with Us</a>
-                </div>
-                <div class="header-item more-dropdown-wrapper">
-                    <a href="#" class="more-options">
-                        More
-                        <i class="fas fa-chevron-down"></i>
-                    </a>
-                    <div class="more-dropdown">
-                        <a href="#" class="dropdown-item">
-                            <i class="fas fa-bell"></i>
-                            Notification Preferences
-                        </a>
-                        <a href="#" class="dropdown-item">
-                            <i class="fas fa-headset"></i>
-                            24x7 Customer Care
-                        </a>
-
-                        <a href="#" class="dropdown-item">
-                            <i class="fas fa-download"></i>
-                            Download App
-                        </a>
-                    </div>
-                </div>
-                <div class="header-item">
-                    <a href="/cart.html" class="cart">
-                        <i class="fas fa-shopping-cart"></i>
-                        <span class="cart-text">Cart</span>
-                        <span class="cart-count">0</span>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </header>
+    <header id="header-container"></header>
 
     <!-- Navigation Menu (Added for consistency) -->
     <nav class="nav-menu">
@@ -146,7 +59,7 @@
                     </form>
 
                     <div class="signup-link">
-                        <p>New to Mobitez? <a href="/signup.html">Create an account</a></p>
+                        <p>New to Mobitez Private Limited? <a href="/signup.html">Create an account</a></p>
                     </div>
                 </div>
 
@@ -205,42 +118,19 @@
 
     <div id="notificationContainer"></div>
 
-    <script src="/js/auth.js?v=1769841025"></script>
-    <script src="/js/cart-api.js?v=1769841025"></script>
-    <script src="/js/search-common.js?v=1769841025"></script>
-    <script src="/js/category-nav-common.js?v=1769841025"></script>
-    <script src="/js/mobile-menu.js?v=1769841025"></script>
-    <script src="/js/flipkart-mobile-header.js?v=1769841025"></script>
-    <script src="/js/login.js?v=1769841025"></script>
+    <script src="/js/auth.js?v=1773128102"></script>
+    <script src="/js/cart-api.js?v=1773128102"></script>
+    <script src="/js/header-common.js?v=1773128102"></script>
+    <script src="/js/search-common.js?v=1773128102"></script>
+    <script src="/js/category-nav-common.js?v=1773128102"></script>
+    <script src="/js/mobile-menu.js?v=1773128102"></script>
+    <script src="/js/mobitez-mobile-header.js?v=1773128102"></script>
+    <script src="/js/login.js?v=1773128102"></script>
 
-    <script>
-        // Setup login dropdown (consistent with product.html)
-        document.addEventListener('DOMContentLoaded', () => {
-            const loginBtn = document.getElementById('loginBtn');
-            const loginDropdown = document.getElementById('loginDropdown');
 
-            if (loginBtn && loginDropdown) {
-                loginBtn.addEventListener('mouseenter', () => {
-                    loginDropdown.classList.add('show');
-                });
-
-                loginBtn.addEventListener('mouseleave', () => {
-                    setTimeout(() => {
-                        if (!loginDropdown.matches(':hover')) {
-                            loginDropdown.classList.remove('show');
-                        }
-                    }, 200);
-                });
-
-                loginDropdown.addEventListener('mouseleave', () => {
-                    loginDropdown.classList.remove('show');
-                });
-            }
-        });
-    </script>
 
     <!-- Footer loaded dynamically -->
-    <script src="/js/footer-common.js?v=1769841025"></script>
+    <script src="/js/footer-common.js?v=1773128102"></script>
 </body>
 
 </html>

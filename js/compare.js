@@ -1,6 +1,6 @@
 // Compare Page JavaScript - Flipkart Style
 
-const COMPARE_STORAGE_KEY = 'mobitez.webintez.compare_products';
+const COMPARE_STORAGE_KEY = 'mobitez.compare_products';
 const MAX_COMPARE_PRODUCTS = 4;
 
 let compareProducts = [];

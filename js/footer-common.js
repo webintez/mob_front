@@ -6,7 +6,7 @@
 
     // 1. Inject CSS Dependencies
     const cssResources = [
-        '/css/flipkart-footer.css?v=' + Date.now(), // Global footer styles with cache busting
+        '/css/mobitez-footer.css?v=' + Date.now(), // Global footer styles with cache busting
     ];
 
     // Only add SEO footer styles on homepage
@@ -41,11 +41,11 @@
 
 function loadFooter() {
     // Check if footer already exists
-    if (document.querySelector('.flipkart-footer')) return;
+    if (document.querySelector('.mobitez-footer')) return;
 
     // Defines the precise HTML structure matching the image
     const footerHtml = `
-    <footer class="flipkart-footer">
+    <footer class="mobitez-footer">
         <div class="footer-wrapper">
             <!-- Top Section: Links & Address -->
             <div class="footer-top">
@@ -86,14 +86,14 @@ function loadFooter() {
                 <div class="footer-links-column footer-address-column">
                     <div class="footer-col-header">Mail Us:</div>
                     <div class="address-content">
-                        <p>hi@mobitez.webintez.com</p>
+                        <p>hi@mobitez.com</p>
                     </div>
                     
                     <div class="social-links">
                         <div class="footer-col-header">Social:</div>
-                        <a href="/coming-soon.html"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://www.facebook.com/mobitez.in" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook-f"></i></a>
                         <a href="/coming-soon.html"><i class="fab fa-twitter"></i></a>
-                        <a href="/coming-soon.html"><i class="fab fa-youtube"></i></a>
+                        <a href="https://www.youtube.com/@MobiTez" target="_blank" rel="noopener noreferrer"><i class="fab fa-youtube"></i></a>
                     </div>
                 </div>
 
@@ -101,7 +101,7 @@ function loadFooter() {
                 <div class="footer-links-column footer-address-column">
                     <div class="footer-col-header">Registered Office Address:</div>
                     <div class="address-content">
-                        <p>Mobitez 
+                        <p>Mobitez Private Limited 
                         Bamangachi Chowmatha, Barasat, Barasat, West Bengal 743294
                         
                         Telephone: +91 9748006859</p>
@@ -112,7 +112,7 @@ function loadFooter() {
             <!-- Bottom Section -->
             <div class="footer-bottom">
                 <div class="footer-bottom-links">
-                    <a href="https://seller.mobitez.webintez.com" class="bottom-link">
+                    <a href="https://seller.mobitez.com" class="bottom-link">
                         <i class="fas fa-store bottom-icon"></i>
                         Sell With Us
                     </a>
@@ -137,16 +137,78 @@ function loadFooter() {
             </div>
         </div>
     </footer>
+    <a href="https://wa.me/919748006859?text=Hi%2C%20I%20have%20a%20query%20regarding%20Mobitez" class="mobitez-whatsapp-float" target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+        <span class="whatsapp-float-tooltip">Chat with us</span>
+    </a>
     `;
 
     // Insert into body
     document.body.insertAdjacentHTML('beforeend', footerHtml);
 
-    // CRITICAL: Inject Mobile Hide Style Universal Fix
+    // CRITICAL: Inject Mobile Hide Style Universal Fix & WhatsApp Floating Styles
     const style = document.createElement('style');
     style.innerHTML = `
+        .mobitez-whatsapp-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: #25d366;
+            color: #ffffff !important;
+            width: 58px;
+            height: 58px;
+            border-radius: 50px;
+            text-align: center;
+            font-size: 32px;
+            box-shadow: 2px 4px 12px rgba(0, 0, 0, 0.3);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none !important;
+            transition: all 0.3s ease;
+            animation: mobitez-whatsapp-pulse 2s infinite;
+        }
+        .mobitez-whatsapp-float:hover {
+            background-color: #128c7e;
+            transform: scale(1.1);
+            color: #ffffff !important;
+        }
+        .whatsapp-float-tooltip {
+            visibility: hidden;
+            width: 90px;
+            background-color: #222;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px 8px;
+            position: absolute;
+            z-index: 1;
+            right: 68px;
+            font-size: 12px;
+            font-family: sans-serif;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+        .mobitez-whatsapp-float:hover .whatsapp-float-tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+        @keyframes mobitez-whatsapp-pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 14px rgba(37, 211, 102, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+            }
+        }
         @media (max-width: 768px) {
-            .flipkart-footer {
+            .mobitez-footer {
                 display: none !important;
             }
             /* Also hide generic footer class if used */
@@ -156,6 +218,13 @@ function loadFooter() {
             /* Hide SEO footer if present */
             .seo-footer-section, .seo-footer-container {
                 display: none !important;
+            }
+            .mobitez-whatsapp-float {
+                bottom: 75px; /* Above mobile bottom nav */
+                right: 18px;
+                width: 48px;
+                height: 48px;
+                font-size: 26px;
             }
         }
     `;

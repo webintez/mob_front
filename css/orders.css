@@ -606,7 +606,7 @@
 }
 
 .review-star-picker i.active {
-    color: #ff9f00; /* Gold/Orange */
+    color: #24db65; /* Gold/Orange */
 }
 
 .review-text-section {
@@ -656,7 +656,7 @@
 }
 
 .btn-review-submit {
-    background: #ff9f00;
+    background: #24db65;
     border: none;
     color: white;
     padding: 8px 24px;

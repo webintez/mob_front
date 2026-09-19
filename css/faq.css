@@ -1,6 +1,6 @@
 /* ============================================================
    FAQ Page – Premium Design (Fixed)
-   Colors: #011C08 (dark), #f7a200 (gold), #0a4409 (green)
+   Colors: #011C08 (dark), #24db65 (gold), #0a4409 (green)
    Header: 56px fixed | Nav: 36px fixed | Total offset: 92px
    ============================================================ */
 
@@ -33,7 +33,7 @@ section.faq-hero::before {
 .faq-hero-badge {
     display: inline-block;
     background: rgba(247, 162, 0, 0.15);
-    color: #f7a200;
+    color: #24db65;
     border: 1px solid rgba(247, 162, 0, 0.45);
     font-size: 11px;
     font-weight: 700;
@@ -53,7 +53,7 @@ section.faq-hero::before {
 }
 
 .faq-hero-content h1 span {
-    color: #f7a200;
+    color: #24db65;
 }
 
 .faq-hero-content>p {
@@ -124,7 +124,7 @@ section.faq-hero::before {
 .faq-tab-btn.active,
 .faq-tab-btn:hover {
     background: #011C08;
-    color: #f7a200;
+    color: #24db65;
     border-color: #011C08;
 }
 
@@ -148,7 +148,7 @@ section.faq-hero::before {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #f7a200;
+    color: #24db65;
     font-size: 15px;
     flex-shrink: 0;
 }
@@ -237,7 +237,7 @@ section.faq-hero::before {
 
 .faq-item.active .faq-icon {
     transform: rotate(180deg);
-    color: #f7a200;
+    color: #24db65;
 }
 
 /* ---- Answer ---- */
@@ -257,7 +257,7 @@ section.faq-hero::before {
     color: #555 !important;
     font-size: 14px;
     line-height: 1.75;
-    border-left: 3px solid #f7a200;
+    border-left: 3px solid #24db65;
     background: #fafafa;
     border-radius: 0 4px 4px 0;
 }
@@ -322,7 +322,7 @@ section.faq-hero::before {
     display: inline-block;
     padding: 11px 28px;
     background: #011C08;
-    color: #f7a200;
+    color: #24db65;
     font-weight: 700;
     border-radius: 6px;
     text-decoration: none;
@@ -380,7 +380,7 @@ section.faq-hero::before {
 
 .faq-cta-btn {
     display: inline-block;
-    background: #f7a200;
+    background: #24db65;
     color: #011C08 !important;
     font-weight: 700;
     font-size: 13px;

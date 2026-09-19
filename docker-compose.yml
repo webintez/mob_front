@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  mobitez_frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mobitez_frontend
+    restart: unless-stopped
+    ports:
+      - "${PORT:-3055}:3055"
+    environment:
+      - PORT=3055
+      - NODE_ENV=production
+      - API_BASE_URL=${API_BASE_URL:-https://seller.mobitez.com/api}
+      - API_KEY=${API_KEY:-mHRT3jvUD7tqSVy+iPIn3DE+wyuJXcBeLaPIjBGVHMo=}
+    # If deploying on the same VPS, uncomment to join the backend's Docker network:
+    # networks:
+    #   - mobitez_net
+
+# Optional: Shared network with mobitez_app (FrankenPHP) on VPS
+# networks:
+#   mobitez_net:
+#     external: true

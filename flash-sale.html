@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/favicon.png" type="image/png">
+    <title>Flash Sale - Mobitez Private Limited</title>
+    <link rel="stylesheet" href="/css/secondary-menu.css">
+    <script src="/js/secondary-menu.js?v=1773128102" defer></script>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/categories.css">
+    <link rel="stylesheet" href="/css/category-filters.css">
+    <link rel="stylesheet" href="/css/search.css">
+    <link rel="stylesheet" href="/css/desktop-search-fixes.css">
+    <link rel="stylesheet" href="/css/nav-menu-visible.css?v=fixed_nav">
+    <link rel="stylesheet" href="/css/mobitez-dropdown.css">
+    <link rel="stylesheet" href="/css/mobile-responsive.css">
+    <link rel="stylesheet" href="/css/mobitez-mobile-style.css">
+    <!-- CRITICAL: Mobile header consistency - MUST load LAST -->
+    <link rel="stylesheet" href="/css/mobile-header-consistent.css">
+    <link rel="stylesheet" href="/css/mobitez-mobile-header.css?v=nocache_1773128051">
+    <!-- CRITICAL: Remove empty container under search bar - MUST load AFTER all header styles -->
+    <link rel="stylesheet" href="/css/remove-empty-container-search.css">
+    <!-- CRITICAL: Mobile product buttons - side by side -->
+    <link rel="stylesheet" href="/css/mobile-product-buttons.css?v=1773128052">
+    <link rel="stylesheet" href="/css/mobile-search-fixes.css">
+    <!-- MOBILE CRITICAL FIXES: Gap, Title, FBT - MUST BE ABSOLUTELY LAST FOR MOBILE -->
+    <link rel="stylesheet" href="/css/mobile-critical-fixes.css">
+    <link rel="stylesheet" href="/css/flash-sale-promo.css?v=12">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="/js/auth.js?v=1773128102"></script>
+    <script src="/js/cart-api.js?v=1773128102"></script>
+    <script src="/js/wishlist-api.js?v=1773128102"></script>
+    <script src="/js/search-common.js?v=1773128102"></script>
+    <script src="/js/header-common.js?v=1773128102"></script>
+    <style>
+        .flash-sale-banner {
+            background: linear-gradient(135deg, #ff3e6c, #ff6a00);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .flash-sale-banner h1 {
+            margin: 0;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .flash-sale-timer {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        /* Make grid span full width without sidebar */
+        .search-container-wrapper {
+            display: block !important;
+            max-width: 100% !important;
+            padding: 0 !important;
+        }
+        .search-results {
+            width: 100% !important;
+            border-radius: 0 !important;
+        }
+
+        /* Mega Card Styles */
+        .products-grid {
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)) !important;
+            gap: 30px !important;
+            padding: 20px;
+        }
+
+        .mega-card {
+            width: 100%;
+            max-width: 310px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 15px;
+            position: relative;
+            overflow: hidden;
+            border: 3px solid #ff5a00;
+            box-shadow: 0 0 35px rgba(255,90,0,0.35);
+            animation: megaShake 2.5s infinite;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .mega-card::after {
+            content: "FLASH SALE";
+            position: absolute;
+            top: 6px;
+            left: -45px;
+            width: 160px;
+            background: #111827;
+            color: white;
+            text-align: center;
+            padding: 8px 0;
+            font-size: 11px;
+            font-weight: 900;
+            transform: rotate(-35deg);
+            letter-spacing: 1px;
+            z-index: 5;
+        }
+
+        .offer-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #ff3366, #ff5a00);
+            color: #fff;
+            padding: 9px 11px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 900;
+            z-index: 6;
+            box-shadow: 0 0 20px rgba(255,51,102,0.7);
+            animation: badgeBoom 0.7s infinite alternate;
+        }
+
+        .mega-product-img {
+            height: 215px;
+            background: radial-gradient(circle, #fff0e6, #ffffff);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mega-product-img img {
+            max-width: 88%;
+            max-height: 190px;
+            animation: productFloat 2s infinite alternate;
+        }
+
+        .mega-product-name {
+            margin: 16px 0;
+            font-size: 15px;
+            line-height: 1.4;
+            font-weight: 700;
+            color: #111827;
+            flex-grow: 1;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .price-line {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            margin-bottom: 12px;
+        }
+
+        .main-price {
+            font-size: 36px;
+            font-weight: 900;
+            color: #ff5a00;
+            animation: priceFire 0.65s infinite alternate;
+        }
+
+        .cut-price {
+            color: #888;
+            text-decoration: line-through;
+            font-size: 16px;
+        }
+
+        .mega-timer {
+            background: #111827;
+            color: #fff;
+            padding: 9px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 800;
+            display: inline-block;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        .buy-btn {
+            width: 100%;
+            border: none;
+            background: linear-gradient(135deg, #ff5a00, #e64600);
+            color: #fff;
+            padding: 13px;
+            border-radius: 10px;
+            font-weight: 900;
+            cursor: pointer;
+            font-size: 15px;
+            box-shadow: 0 12px 25px rgba(255,90,0,0.4);
+            animation: buttonPulse 1s infinite alternate;
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        @keyframes productFloat {
+            from { transform: translateY(0) scale(1); }
+            to { transform: translateY(-8px) scale(1.05); }
+        }
+
+        @keyframes badgeBoom {
+            from { transform: scale(1); }
+            to { transform: scale(1.13) rotate(-3deg); }
+        }
+
+        @keyframes priceFire {
+            from { transform: scale(1); text-shadow: 0 0 8px rgba(255,90,0,0.4); }
+            to { transform: scale(1.16); text-shadow: 0 0 28px rgba(255,90,0,0.9); }
+        }
+
+        @keyframes buttonPulse {
+            from { transform: scale(1); }
+            to { transform: scale(1.04); }
+        }
+
+        @keyframes megaShake {
+            0%, 100% { transform: rotate(0deg); }
+            96% { transform: rotate(0deg); }
+            97% { transform: rotate(1deg); }
+            98% { transform: rotate(-1deg); }
+            99% { transform: rotate(1deg); }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <!-- Mobile Menu Toggle -->
+            <button class="mobile-menu-toggle" aria-label="Toggle mobile menu">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <!-- Logo -->
+            <div class="logo">
+                <a href="/">
+                    <img src="/PNG/logo-yw.png?v=2" alt="Mobitez Private Limited" class="logo-image">
+                </a>
+            </div>
+
+            <!-- Search Bar -->
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="Search for products, brands and more"
+                    id="searchInput" autocomplete="off">
+                <button class="search-btn" id="searchBtn">
+                    <i class="fas fa-search"></i>
+                </button>
+                <!-- Search Suggestions Dropdown -->
+                <div class="search-suggestions" id="searchSuggestions" style="display: none;">
+                    <div class="search-suggestions-content" id="searchSuggestionsContent">
+                        <!-- Suggestions will be populated here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side Menu -->
+            <div class="header-right">
+                <div class="header-item login-dropdown-wrapper">
+                    <a href="#" class="login-btn" id="loginBtn">
+                        Login
+                        <i class="fas fa-chevron-down"></i>
+                    </a>
+                    <div class="login-dropdown" id="loginDropdown">
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-sign-in-alt"></i>
+                            Login
+                        </a>
+                        <a href="/signup.html" class="dropdown-item">
+                            <i class="fas fa-user-plus"></i>
+                            Sign Up
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="/profile.html" class="dropdown-item">
+                            <i class="fas fa-user"></i>
+                            My Profile
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-star"></i>
+                            Mobitez Private Limited Plus Zone
+                        </a>
+                        <a href="/orders.html" class="dropdown-item">
+                            <i class="fas fa-shopping-bag"></i>
+                            Orders
+                        </a>
+                        <a href="/wishlist.html" class="dropdown-item">
+                            <i class="fas fa-heart"></i>
+                            Wishlist
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-gift"></i>
+                            Rewards
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-credit-card"></i>
+                            Gift Cards
+                        </a>
+                    </div>
+                </div>
+                <div class="header-item">
+                    <a href="#" class="become-seller">Sell with Us</a>
+                </div>
+                <div class="header-item more-dropdown-wrapper">
+                    <a href="#" class="more-options">
+                        More
+                        <i class="fas fa-chevron-down"></i>
+                    </a>
+                    <div class="more-dropdown">
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-bell"></i>
+                            Notification Preferences
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-headset"></i>
+                            24x7 Customer Care
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-download"></i>
+                            Download App
+                        </a>
+                    </div>
+                </div>
+                <div class="header-item">
+                    <a href="/cart.html" class="cart">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-text">Cart</span>
+                        <span class="cart-count">0</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation Menu -->
+    <nav class="nav-menu">
+        <div class="nav-container" id="navContainer">
+            <!-- Categories will be loaded here -->
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Flash Sale Carousel Section (Reused from index.html) -->
+        <section class="flash-sale-section-wrapper" id="flashSaleSection" style="display: none; margin-top: 5px; margin-bottom: 0;">
+            <div class="promo-carousel-container">
+                <div id="flashSaleCardContainer" style="width: 100%; height: 100%;">
+                    <!-- Promo slides will be loaded here dynamically -->
+                </div>
+            </div>
+        </section>
+
+        <section class="products-section search-main" id="productsSection" style="margin-top: 0; padding-top: 0;">
+            <div class="search-container-wrapper">
+                
+                <div class="search-results">
+
+
+
+
+
+
+                    <!-- Products Grid -->
+                    <div class="products-grid" id="allProducts">
+                        <div class="loading-spinner">
+                            <div class="spinner"></div>
+                            <p>Loading amazing deals...</p>
+                        </div>
+                    </div>
+
+                    <!-- Pagination -->
+                    <div class="pagination" id="pagination" style="display: none;">
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Mobile Bottom Navigation -->
+    <div class="mobile-bottom-nav">
+        <a href="/" class="nav-item">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </a>
+        <a href="/all-categories.html" class="nav-item">
+            <i class="fas fa-th-large"></i>
+            <span>Categories</span>
+        </a>
+        <a href="/profile.html" class="nav-item">
+            <i class="fas fa-user"></i>
+            <span>Account</span>
+        </a>
+        <a href="/cart.html" class="nav-item">
+            <i class="fas fa-shopping-cart"></i>
+            <span>Cart</span>
+        </a>
+    </div>
+
+    <script src="/js/app.js?v=1773128102"></script>
+    <script src="/js/category-nav-common.js?v=1773128102"></script>
+    <script src="/js/mobile-menu.js?v=1773128102"></script>
+    <script src="/js/mobitez-mobile-header.js?v=1773128102"></script>
+    <script src="/js/footer-common.js?v=1773128102"></script>
+    <script src="/js/flash-sale.js?v=1773128102"></script>
+</body>
+
+</html>
